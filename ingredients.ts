@@ -60,6 +60,12 @@ export function is_nut_allergy_friendly(ingredient: Ingredient): boolean {
     return ingredient.nut_allergy_friendly; 
 }
 
-
+export function randomize_cooking_instruction(ingredient: Ingredient): string {
+    const method_arr: Array<string> = get_ingredient_cooking_methods(ingredient);
+    const len: number = method_arr.length;
+    const index = Math.floor(Math.random() * len);
+    const randomized = method_arr[index]
+    return randomized; 
+}
 
 
