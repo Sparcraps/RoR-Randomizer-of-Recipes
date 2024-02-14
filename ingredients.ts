@@ -20,6 +20,8 @@ export type Ingredient = {
     
 }
 
+
+
 export function is_ingredient(input: TaggedRecord): input is Ingredient {
     return input.tag === "ingredient";    
 }
