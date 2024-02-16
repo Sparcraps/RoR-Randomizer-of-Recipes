@@ -3,13 +3,17 @@ import {
 } from "./ingredients";
 
 import {
-    type Queue, empty, is_empty, enqueue, head, dequeue, display_queue
+    type Queue, empty, enqueue, head as qhead, dequeue, display_queue
 } from "./lib/queue_array";
 
 type CookingStep = {
     ingredients: Array<Ingredient>,
     cooking_method: string
 }
+
+
+
+
 
 function print_cooking_instructions(ingredients: Array<Ingredient>): void {
     const len  = ingredients.length;
