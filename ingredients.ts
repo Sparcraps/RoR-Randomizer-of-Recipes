@@ -77,3 +77,24 @@ export function randomize_cooking_instruction(ingredient: Ingredient): string {
 }
 
 
+export function find_ingredient(name: string, arr: Array<Ingredient>): Ingredient | undefined {
+    arr.forEach(i => {
+        if (i.name === name) {
+            return i;
+        }
+    })
+
+    return undefined;
+}
+
+export function new_ingredient(ingredient_type: IngredientCategory, 
+    name: string,
+    allergies: Array<string>, 
+    measurement: string, 
+    kcal_per_measurement: number, 
+    range: Pair<number, number>): Ingredient {
+return {
+name, ingredient_type, allergies, measurement, 
+kcal_per_measurement, range, tag: "ingredient", history: []
+};
+}
