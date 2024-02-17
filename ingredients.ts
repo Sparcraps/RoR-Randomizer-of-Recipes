@@ -18,7 +18,7 @@ export type Ingredient = {
     // nutrition_type: Array<string>, // e.g. vitamin A, protein, fat, carbs
 }
 
-type IngredientCategory = {
+export type IngredientCategory = {
     tag: "ingredientcategory",
     name: string,
     cooking_methods: Array<string>
