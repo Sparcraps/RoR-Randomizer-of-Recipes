@@ -1,46 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ingredients_1 = require("./ingredients");
-// function read_json_to_array<T>(fd: number): Array<T> {
-//     const fs = require('fs');
-//     let arr = [];
-//     fs.read(fd, (err: Error, buff: Buffer) => {
-//         if (err) throw err;
-//         const data = buff.toString();
-//         arr = JSON.parse(data);
-//         console.log(arr);
-//     });
-//     console.log(arr);
-//     return arr;
-// }
-function save_ingredient(ingredient) {
-    var json_ingredient = JSON.stringify(ingredient, null, 2);
-    var filename = "./ingredient_data.json";
+function load_ingredients() {
     var fs = require('fs');
+    var filepath = "./ingredient_data.json";
+    var json_ingredients = fs.readFileSync(filepath);
+    var ingredient_arr = JSON.parse(json_ingredients);
+    return ingredient_arr;
+}
+function save_ingredients(ingredient_arr) {
+    var json_ingredients = JSON.stringify(ingredient_arr, null, 2);
+    var fs = require('fs');
+    var filepath = "./ingredient_data.json";
+    fs.writeFileSync(filepath, json_ingredients);
+}
+function save_new_ingredients(new_ingredients) {
     try {
-        fs.open(filename, 'r+', function (err, fd) {
-            if (err)
-                throw err;
-            try {
-                var ingredient_arr = [];
-                // const ingredient_arr: Array<Ingredient> = read_json_to_array(fd);
-                // if (!(find_ingredient(ingredient.name, ingredient_arr) === undefined)) {
-                //     console.log("hej");
-                //     throw new Error("Error: Ingredient with this name already exists.");
-                // } else {}
-                ingredient_arr.push(ingredient);
-                var json_ingredient_arr = JSON.stringify(ingredient_arr, null, 2);
-                fs.write(fd, json_ingredient_arr, 0, function (err) {
-                    fs.close(fd);
-                    if (err)
-                        throw err;
-                });
+        var ingredient_arr_1 = load_ingredients();
+        new_ingredients.forEach(function (i) {
+            var find = (0, ingredients_1.find_ingredient)(i.name, ingredient_arr_1);
+            if (!(find === undefined)) {
+                throw new Error("Ingredient with name " + i.name + " already exists.");
             }
-            catch (err) {
-                fs.close(fd);
-                throw err;
-            }
+            else { }
+            ingredient_arr_1.push(i);
         });
+        save_ingredients(ingredient_arr_1);
     }
     catch (err) {
         console.error(err);
@@ -53,7 +38,10 @@ var test_category = {
     name: "test category"
 };
 try {
-    save_ingredient((0, ingredients_1.new_ingredient)(test_category, "test ingredient", ["cat"], "liters", 100, [50, 500]));
+    save_new_ingredients([
+        (0, ingredients_1.new_ingredient)(test_category, "test ingredient", ["cat"], "liters", 100, [50, 500]),
+        (0, ingredients_1.new_ingredient)(test_category, "test ingredient 2", ["dog"], "liters", 100, [50, 300])
+    ]);
 }
 catch (err) {
     console.error(err);

@@ -39,12 +39,13 @@ function randomize_cooking_instruction(ingredient) {
 }
 exports.randomize_cooking_instruction = randomize_cooking_instruction;
 function find_ingredient(name, arr) {
+    var ingredient = undefined;
     arr.forEach(function (i) {
         if (i.name === name) {
-            return i;
+            ingredient = i;
         }
     });
-    return undefined;
+    return ingredient;
 }
 exports.find_ingredient = find_ingredient;
 function new_ingredient(ingredient_type, name, allergies, measurement, kcal_per_measurement, range) {

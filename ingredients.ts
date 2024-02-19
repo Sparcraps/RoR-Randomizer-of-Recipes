@@ -78,13 +78,13 @@ export function randomize_cooking_instruction(ingredient: Ingredient): string {
 
 
 export function find_ingredient(name: string, arr: Array<Ingredient>): Ingredient | undefined {
+    let ingredient: Ingredient | undefined = undefined;
     arr.forEach(i => {
         if (i.name === name) {
-            return i;
+             ingredient = i;
         }
     })
-
-    return undefined;
+    return ingredient;
 }
 
 export function new_ingredient(ingredient_type: IngredientCategory, 

@@ -3,48 +3,34 @@ import {
 } from "./ingredients"
 import { Pair } from "./lib/list"
 
-// function read_json_to_array<T>(fd: number): Array<T> {
-//     const fs = require('fs');
-//     let arr = [];
-//     fs.read(fd, (err: Error, buff: Buffer) => {
-//         if (err) throw err;
-//         const data = buff.toString();
-//         arr = JSON.parse(data);
-//         console.log(arr);
-//     });
-//     console.log(arr);
-//     return arr;
-// }
-
-function save_ingredient(ingredient: Ingredient): void {
-    const json_ingredient = JSON.stringify(ingredient, null, 2);
-    const filename = "./ingredient_data.json";
+function load_ingredients(): Array<Ingredient> {
     const fs = require('fs');
+    const filepath = "./ingredient_data.json"
+    const json_ingredients = fs.readFileSync(filepath);
+    const ingredient_arr = JSON.parse(json_ingredients);
+    return ingredient_arr;
+}
 
+function save_ingredients(ingredient_arr: Array<Ingredient>): void {
+    const json_ingredients = JSON.stringify(ingredient_arr, null, 2);
+    const fs = require('fs');
+    const filepath = "./ingredient_data.json"
+    fs.writeFileSync(filepath, json_ingredients);
+}
+
+function save_new_ingredients(new_ingredients: Array<Ingredient>): void {
     try {
-        fs.open(filename, 'r+', (err: Error, fd: number) => {
-            if (err) throw err;
-            try {
-                const ingredient_arr: Array<Ingredient> = [];
-                // const ingredient_arr: Array<Ingredient> = read_json_to_array(fd);
+        const ingredient_arr = load_ingredients();
 
-                // if (!(find_ingredient(ingredient.name, ingredient_arr) === undefined)) {
-                //     console.log("hej");
-                //     throw new Error("Error: Ingredient with this name already exists.");
-                // } else {}
-
-                ingredient_arr.push(ingredient);
-                const json_ingredient_arr = JSON.stringify(ingredient_arr, null, 2);
-                fs.write(fd, json_ingredient_arr, 0, (err: Error) => {
-                    fs.close(fd);
-                    if (err) throw err;
-                });
-
-            } catch (err) {
-                fs.close(fd);
-                throw err;
-            }
-        });
+        new_ingredients.forEach(i => {
+            const find = find_ingredient(i.name, ingredient_arr);
+            if (!(find === undefined)) {
+                throw new Error("Ingredient with name " + i.name + " already exists.");
+            } else {}
+            ingredient_arr.push(i);
+        })
+        
+        save_ingredients(ingredient_arr);
 
     } catch (err) {
         console.error(err);
@@ -60,7 +46,10 @@ const test_category: IngredientCategory = {
 };
 
 try {
-    save_ingredient(new_ingredient(test_category, "test ingredient", ["cat"], "liters", 100, [50, 500]));
+    save_new_ingredients([
+        new_ingredient(test_category, "test ingredient", ["cat"], "liters", 100, [50, 500]),
+        new_ingredient(test_category, "test ingredient 2", ["dog"], "liters", 100, [50, 300])
+    ]);
 } catch (err) {
     console.error(err);
 }
