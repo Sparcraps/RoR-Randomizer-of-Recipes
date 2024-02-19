@@ -1,20 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.save_new_ingredient = exports.save_ingredients = exports.load_ingredients = void 0;
 var ingredients_1 = require("./ingredients");
+var fs = require('fs');
+var filepath = __dirname + "/ingredient_data.json";
 function load_ingredients() {
-    var fs = require('fs');
-    var filepath = "./ingredient_data.json";
     var json_ingredients = fs.readFileSync(filepath);
     var ingredient_arr = JSON.parse(json_ingredients);
     return ingredient_arr;
 }
+exports.load_ingredients = load_ingredients;
 function save_ingredients(ingredient_arr) {
-    var json_ingredients = JSON.stringify(ingredient_arr, null, 2);
-    var fs = require('fs');
-    var filepath = "./ingredient_data.json";
+    var json_ingredients = JSON.stringify(ingredient_arr, null, 4);
     fs.writeFileSync(filepath, json_ingredients);
 }
-function save_new_ingredients(new_ingredients) {
+exports.save_ingredients = save_ingredients;
+function save_new_ingredient() {
+    var new_ingredients = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        new_ingredients[_i] = arguments[_i];
+    }
     try {
         var ingredient_arr_1 = load_ingredients();
         new_ingredients.forEach(function (i) {
@@ -32,17 +37,4 @@ function save_new_ingredients(new_ingredients) {
     }
     return;
 }
-var test_category = {
-    tag: "ingredientcategory",
-    cooking_methods: ["chop", "boil"],
-    name: "test category"
-};
-try {
-    save_new_ingredients([
-        (0, ingredients_1.new_ingredient)(test_category, "test ingredient", ["cat"], "liters", 100, [50, 500]),
-        (0, ingredients_1.new_ingredient)(test_category, "test ingredient 2", ["dog"], "liters", 100, [50, 300])
-    ]);
-}
-catch (err) {
-    console.error(err);
-}
+exports.save_new_ingredient = save_new_ingredient;

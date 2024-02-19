@@ -1,24 +1,23 @@
 import {
-    Ingredient, IngredientCategory, new_ingredient, find_ingredient
+    Ingredient, find_ingredient, new_ingredient
 } from "./ingredients"
 import { Pair } from "./lib/list"
 
-function load_ingredients(): Array<Ingredient> {
-    const fs = require('fs');
-    const filepath = "./ingredient_data.json"
+const fs = require('fs');
+const filepath = __dirname + "/ingredient_data.json"
+
+export function load_ingredients(): Array<Ingredient> {
     const json_ingredients = fs.readFileSync(filepath);
     const ingredient_arr = JSON.parse(json_ingredients);
     return ingredient_arr;
 }
 
-function save_ingredients(ingredient_arr: Array<Ingredient>): void {
-    const json_ingredients = JSON.stringify(ingredient_arr, null, 2);
-    const fs = require('fs');
-    const filepath = "./ingredient_data.json"
+export function save_ingredients(ingredient_arr: Array<Ingredient>): void {
+    const json_ingredients = JSON.stringify(ingredient_arr, null, 4);
     fs.writeFileSync(filepath, json_ingredients);
 }
 
-function save_new_ingredients(new_ingredients: Array<Ingredient>): void {
+export function save_new_ingredient(...new_ingredients: Array<Ingredient>): void {
     try {
         const ingredient_arr = load_ingredients();
 
@@ -37,19 +36,4 @@ function save_new_ingredients(new_ingredients: Array<Ingredient>): void {
     }
 
     return;
-}
-
-const test_category: IngredientCategory = {
-    tag: "ingredientcategory", 
-    cooking_methods: ["chop", "boil"],
-    name: "test category"
-};
-
-try {
-    save_new_ingredients([
-        new_ingredient(test_category, "test ingredient", ["cat"], "liters", 100, [50, 500]),
-        new_ingredient(test_category, "test ingredient 2", ["dog"], "liters", 100, [50, 300])
-    ]);
-} catch (err) {
-    console.error(err);
 }

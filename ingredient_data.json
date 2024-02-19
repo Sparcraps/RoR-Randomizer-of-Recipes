@@ -1,46 +1,68 @@
 [
-  {
-    "name": "test ingredient",
-    "ingredient_type": {
-      "tag": "ingredientcategory",
-      "cooking_methods": [
-        "chop",
-        "boil"
-      ],
-      "name": "test category"
+    {
+        "name": "test ingredient",
+        "ingredient_type": {
+            "tag": "ingredientcategory",
+            "cooking_methods": [
+                "chop",
+                "boil"
+            ],
+            "name": "test category"
+        },
+        "allergies": [
+            "cat"
+        ],
+        "measurement": "liters",
+        "kcal_per_measurement": 100,
+        "range": [
+            50,
+            500
+        ],
+        "tag": "ingredient",
+        "history": []
     },
-    "allergies": [
-      "cat"
-    ],
-    "measurement": "liters",
-    "kcal_per_measurement": 100,
-    "range": [
-      50,
-      500
-    ],
-    "tag": "ingredient",
-    "history": []
-  },
-  {
-    "name": "test ingredient 2",
-    "ingredient_type": {
-      "tag": "ingredientcategory",
-      "cooking_methods": [
-        "chop",
-        "boil"
-      ],
-      "name": "test category"
+    {
+        "name": "test ingredient 2",
+        "ingredient_type": {
+            "tag": "ingredientcategory",
+            "cooking_methods": [
+                "chop",
+                "boil"
+            ],
+            "name": "test category"
+        },
+        "allergies": [
+            "dog"
+        ],
+        "measurement": "liters",
+        "kcal_per_measurement": 100,
+        "range": [
+            50,
+            300
+        ],
+        "tag": "ingredient",
+        "history": []
     },
-    "allergies": [
-      "dog"
-    ],
-    "measurement": "liters",
-    "kcal_per_measurement": 100,
-    "range": [
-      50,
-      300
-    ],
-    "tag": "ingredient",
-    "history": []
-  }
+    {
+        "name": "test ingredient 3",
+        "ingredient_type": {
+            "tag": "ingredientcategory",
+            "cooking_methods": [
+                "chop",
+                "boil"
+            ],
+            "name": "test category"
+        },
+        "allergies": [
+            "snake"
+        ],
+        "measurement": "liters",
+        "kcal_per_measurement": 100,
+        "range": [
+            20,
+            300
+        ],
+        "tag": "ingredient",
+        "history": []
+    }
 ]
