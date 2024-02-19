@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.save_new_ingredient = exports.save_ingredients = exports.load_ingredients = void 0;
+exports.delete_ingredient = exports.save_new_ingredient = exports.save_ingredients = exports.load_ingredients = void 0;
 var ingredients_1 = require("./ingredients");
 var fs = require('fs');
 var filepath = __dirname + "/ingredient_data.json";
@@ -20,21 +20,45 @@ function save_new_ingredient() {
     for (var _i = 0; _i < arguments.length; _i++) {
         new_ingredients[_i] = arguments[_i];
     }
-    try {
-        var ingredient_arr_1 = load_ingredients();
-        new_ingredients.forEach(function (i) {
-            var find = (0, ingredients_1.find_ingredient)(i.name, ingredient_arr_1);
-            if (!(find === undefined)) {
-                throw new Error("Ingredient with name " + i.name + " already exists.");
-            }
-            else { }
-            ingredient_arr_1.push(i);
-        });
-        save_ingredients(ingredient_arr_1);
-    }
-    catch (err) {
-        console.error(err);
-    }
-    return;
+    var ingredient_arr = load_ingredients();
+    new_ingredients.forEach(function (i) {
+        var index = (0, ingredients_1.find_ingredient)(i.name, ingredient_arr);
+        if (!(index === -1)) {
+            console.error(new Error("Ingredient with name " + i.name + " already exists."));
+        }
+        else {
+            ingredient_arr.push(i);
+        }
+    });
+    save_ingredients(ingredient_arr);
+    return ingredient_arr;
 }
 exports.save_new_ingredient = save_new_ingredient;
+function delete_ingredient() {
+    var names = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        names[_i] = arguments[_i];
+    }
+    var ingredient_arr = load_ingredients();
+    var updated_arr = [];
+    for (var i = 0; i < ingredient_arr.length; i++) {
+        var ingredient = ingredient_arr[i];
+        if (!(names.includes(ingredient.name))) {
+            updated_arr.push(ingredient);
+        }
+        else {
+            var name_index = names.indexOf(ingredient.name);
+            names.splice(name_index, 1);
+        }
+        if (names.length === 0) {
+            break;
+        }
+    }
+    for (var i = 0; i < names.length; i++) {
+        var name_1 = names[i];
+        console.error(new Error("There is no saved ingredient with the name " + name_1 + "."));
+    }
+    save_ingredients(updated_arr);
+    return updated_arr;
+}
+exports.delete_ingredient = delete_ingredient;

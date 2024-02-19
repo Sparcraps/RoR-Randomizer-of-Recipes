@@ -77,14 +77,26 @@ export function randomize_cooking_instruction(ingredient: Ingredient): string {
 }
 
 
-export function find_ingredient(name: string, arr: Array<Ingredient>): Ingredient | undefined {
-    let ingredient: Ingredient | undefined = undefined;
-    arr.forEach(i => {
-        if (i.name === name) {
-             ingredient = i;
-        }
-    })
-    return ingredient;
+export function get_ingredient(name: string, arr: Array<Ingredient>): Ingredient | undefined {
+    const l = arr.length;
+    for (let i = 0; i < arr.length; i++) {
+        const ingredient = arr[i];
+        if (ingredient.name === name) {
+            return ingredient;
+        } else {}
+    }
+    return undefined;
+}
+
+export function find_ingredient(name: string, arr: Array<Ingredient>): number {
+    const l = arr.length;
+    for (let i = 0; i < arr.length; i++) {
+        const ingredient = arr[i];
+        if (ingredient.name === name) {
+            return i;
+        } else {}
+    }
+    return -1;
 }
 
 export function new_ingredient(ingredient_type: IngredientCategory, 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.new_ingredient = exports.find_ingredient = exports.randomize_cooking_instruction = void 0;
+exports.new_ingredient = exports.find_ingredient = exports.get_ingredient = exports.randomize_cooking_instruction = void 0;
 function is_ingredient(input) {
     return input.tag === "ingredient";
 }
@@ -38,14 +38,28 @@ function randomize_cooking_instruction(ingredient) {
     return randomized;
 }
 exports.randomize_cooking_instruction = randomize_cooking_instruction;
-function find_ingredient(name, arr) {
-    var ingredient = undefined;
-    arr.forEach(function (i) {
-        if (i.name === name) {
-            ingredient = i;
+function get_ingredient(name, arr) {
+    var l = arr.length;
+    for (var i = 0; i < arr.length; i++) {
+        var ingredient = arr[i];
+        if (ingredient.name === name) {
+            return ingredient;
         }
-    });
-    return ingredient;
+        else { }
+    }
+    return undefined;
+}
+exports.get_ingredient = get_ingredient;
+function find_ingredient(name, arr) {
+    var l = arr.length;
+    for (var i = 0; i < arr.length; i++) {
+        var ingredient = arr[i];
+        if (ingredient.name === name) {
+            return i;
+        }
+        else { }
+    }
+    return -1;
 }
 exports.find_ingredient = find_ingredient;
 function new_ingredient(ingredient_type, name, allergies, measurement, kcal_per_measurement, range) {

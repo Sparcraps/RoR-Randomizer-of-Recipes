@@ -1,7 +1,6 @@
 import {
-    Ingredient, find_ingredient, new_ingredient
+    Ingredient, find_ingredient
 } from "./ingredients"
-import { Pair } from "./lib/list"
 
 const fs = require('fs');
 const filepath = __dirname + "/ingredient_data.json"
@@ -17,23 +16,53 @@ export function save_ingredients(ingredient_arr: Array<Ingredient>): void {
     fs.writeFileSync(filepath, json_ingredients);
 }
 
-export function save_new_ingredient(...new_ingredients: Array<Ingredient>): void {
-    try {
-        const ingredient_arr = load_ingredients();
+export function save_new_ingredient(
+    ...new_ingredients: Array<Ingredient>
+    ): Array<Ingredient> {
+    const ingredient_arr = load_ingredients();
 
-        new_ingredients.forEach(i => {
-            const find = find_ingredient(i.name, ingredient_arr);
-            if (!(find === undefined)) {
-                throw new Error("Ingredient with name " + i.name + " already exists.");
-            } else {}
+    new_ingredients.forEach(i => {
+        const index = find_ingredient(i.name, ingredient_arr);
+        if (!(index === -1)) {
+            console.error(
+                new Error("Ingredient with name " + i.name + " already exists.")
+                );
+        } else {
             ingredient_arr.push(i);
-        })
-        
-        save_ingredients(ingredient_arr);
+        }
+    })
+    
+    save_ingredients(ingredient_arr);
+    return ingredient_arr;
+}
 
-    } catch (err) {
-        console.error(err);
+export function delete_ingredient(...names: Array<string>): Array<Ingredient> {
+    const ingredient_arr = load_ingredients();
+    const updated_arr: Array<Ingredient> = [];
+
+    for (let i = 0; i < ingredient_arr.length; i++) {
+        const ingredient = ingredient_arr[i];
+        
+        if (!(names.includes(ingredient.name))) {
+            updated_arr.push(ingredient);
+        } else {
+            const name_index = names.indexOf(ingredient.name);
+            names.splice(name_index, 1);
+        }
+
+        if (names.length === 0) {
+            break;
+        }
+    }
+    
+    for (let i = 0; i < names.length; i++) {
+        const name = names[i];
+        console.error(
+            new Error(
+                "There is no saved ingredient with the name " + name + "."
+                ));
     }
 
-    return;
+    save_ingredients(updated_arr);
+    return updated_arr;
 }
