@@ -42,7 +42,7 @@ export function delete_ingredient(...names: Array<string>): Array<Ingredient> {
 
     for (let i = 0; i < ingredient_arr.length; i++) {
         const ingredient = ingredient_arr[i];
-        
+
         if (!(names.includes(ingredient.name))) {
             updated_arr.push(ingredient);
         } else {

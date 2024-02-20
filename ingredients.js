@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.new_ingredient = exports.find_ingredient = exports.get_ingredient = exports.randomize_cooking_instruction = void 0;
+exports.randomize_cooking_instruction = exports.new_ingredient = exports.find_ingredient = exports.get_ingredient = void 0;
 function is_ingredient(input) {
     return input.tag === "ingredient";
 }
@@ -30,14 +30,6 @@ function is_vegan(ingredient) {
 function is_lactose_friendly(ingredient) {
     return ingredient.ingredient_type.name !== "dairy";
 }
-function randomize_cooking_instruction(ingredient) {
-    var method_arr = get_ingredient_cooking_methods(ingredient);
-    var len = method_arr.length;
-    var index = Math.floor(Math.random() * len);
-    var randomized = method_arr[index];
-    return randomized;
-}
-exports.randomize_cooking_instruction = randomize_cooking_instruction;
 function get_ingredient(name, arr) {
     var l = arr.length;
     for (var i = 0; i < arr.length; i++) {
@@ -74,3 +66,11 @@ function new_ingredient(ingredient_type, name, allergies, measurement, kcal_per_
     };
 }
 exports.new_ingredient = new_ingredient;
+function randomize_cooking_instruction(ingredient) {
+    var method_arr = get_ingredient_cooking_methods(ingredient);
+    var len = method_arr.length;
+    var index = Math.floor(Math.random() * len);
+    var randomized = method_arr[index];
+    return randomized;
+}
+exports.randomize_cooking_instruction = randomize_cooking_instruction;

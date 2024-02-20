@@ -63,20 +63,6 @@ function is_lactose_friendly(ingredient: Ingredient): boolean {
     return ingredient.ingredient_type.name !== "dairy";
 }
 
-
-
-
-
-
-export function randomize_cooking_instruction(ingredient: Ingredient): string {
-    const method_arr: Array<string> = get_ingredient_cooking_methods(ingredient);
-    const len: number = method_arr.length;
-    const index = Math.floor(Math.random() * len);
-    const randomized = method_arr[index];
-    return randomized; 
-}
-
-
 export function get_ingredient(name: string, arr: Array<Ingredient>): Ingredient | undefined {
     const l = arr.length;
     for (let i = 0; i < arr.length; i++) {
@@ -109,4 +95,15 @@ return {
 name, ingredient_type, allergies, measurement, 
 kcal_per_measurement, range, tag: "ingredient", history: []
 };
+}
+
+
+
+
+export function randomize_cooking_instruction(ingredient: Ingredient): string {
+    const method_arr: Array<string> = get_ingredient_cooking_methods(ingredient);
+    const len: number = method_arr.length;
+    const index = Math.floor(Math.random() * len);
+    const randomized = method_arr[index];
+    return randomized; 
 }
