@@ -1,11 +1,11 @@
 import {
-    Pair
+    type Pair
 } from "./lib/list";
 
 /**
- * Tag type for record type checking.
+ * Tag data type for record type checking.
  */
-type TaggedRecord = {
+export type TaggedRecord = {
     tag: string
 }
 
@@ -16,7 +16,7 @@ type TaggedRecord = {
 export type Ingredient = {
     tag: "ingredient",
     name: string,
-    ingredient_type: IngredientCategory, // e.g. vegetable, fruit
+    category: IngredientCategory, // e.g. vegetable, fruit
     allergies: Array<string>,
     history: Array<string>,
     measurement: string,
@@ -29,7 +29,7 @@ export type Ingredient = {
  * Ingredient category data type.
  * Contains the available cooking methods of ingredients.
  */
-type IngredientCategory = {
+export type IngredientCategory = {
     tag: "ingredientcategory",
     name: string,
     cooking_methods: Array<string>
@@ -39,82 +39,179 @@ type IngredientCategory = {
  * Kitchenware data type.
  * Has an inventory of ingredients currently contained in the kitchenware.
  */
-type KitchenWare = {
+export type KitchenWare = {
     tag: "kitchenware",
     name: string,
     inventory: Array<Ingredient>
 }
 
-
-function is_ingredient(input: TaggedRecord): input is Ingredient {
+/**
+ * Check whether the input is of type Ingredient.
+ * @param input argument to check the type of
+ * @returns Returns true if the type of the input is Ingredient, and false otherwise.
+ */
+export function is_ingredient(input: TaggedRecord): input is Ingredient {
     return input.tag === "ingredient";
 }
-function is_ingredient_category(input: TaggedRecord): input is IngredientCategory {
+/**
+ * Check whether the input is of type IngredientCategory.
+ * @param input argument to check the type of
+ * @returns Returns true if the type of the input is IngredientCategory, and false otherwise.
+ */
+export function is_ingredient_category(input: TaggedRecord): input is IngredientCategory {
     return input.tag === "ingredientcategory";
 }
-function is_kitchenware(input: TaggedRecord): input is KitchenWare {
+/**
+ * Check whether the input is of type KitchenWare.
+ * @param input argument to check the type of
+ * @returns Returns true if the type of the input is KitchenWare, and false otherwise.
+ */
+export function is_kitchenware(input: TaggedRecord): input is KitchenWare {
     return input.tag === "kitchenware";
 }
 
-function get_ingredient_name(ingredient: Ingredient): string {
+/**
+ * Fetch the name of an Ingredient.
+ * @param ingredient Ingredient to check
+ * @returns Returns a string containing the name of ingredient.
+ */
+export function get_ingredient_name(ingredient: Ingredient): string {
     return ingredient.name;
 }
-function get_ingredient_allergies(ingredient: Ingredient): Array<string> {
+/**
+ * Fetch the allergies of an Ingredient.
+ * @param ingredient Ingredient to check
+ * @returns Returns an Array containing the allergies that ingredient tests positive for.
+ */
+export function get_ingredient_allergies(ingredient: Ingredient): Array<string> {
     return ingredient.allergies;
 }
-function get_ingredient_history(ingredient: Ingredient): Array<string> {
+/**
+ * Fetch the history of an Ingredient.
+ * @param ingredient Ingredient to check
+ * @returns Returns an Array containing the processing that ingredient has been through.
+ */
+export function get_ingredient_history(ingredient: Ingredient): Array<string> {
     return ingredient.history;
 }
-function get_ingredient_measurement(ingredient: Ingredient): string {
+/**
+ * Fetch the measurement of an Ingredient.
+ * @param ingredient Ingredient to check
+ * @returns Returns a string containing the unit of measure used for ingredient.
+ */
+export function get_ingredient_measurement(ingredient: Ingredient): string {
     return ingredient.measurement;
 }
-function get_ingredient_kcal(ingredient: Ingredient): number {
+/**
+ * Fetch the kcal per measurement of an Ingredient.
+ * @param ingredient Ingredient to check
+ * @returns Returns the kcal per measurement for ingredient.
+ */
+export function get_ingredient_kcal(ingredient: Ingredient): number {
     return ingredient.kcal_per_measurement;
 }
-function get_ingredient_kcal_range(ingredient: Ingredient): Pair<number, number> {
+/**
+ * Fetch the lower and upper kcal limit of an Ingredient.
+ * @param ingredient Ingredient to check
+ * @returns Returns a Pair whose head is the lower kcal limit and tail is the upper kcal limit.
+ */
+export function get_ingredient_kcal_range(ingredient: Ingredient): Pair<number, number> {
     return ingredient.range;
 }
-function get_category_name(ingredient: Ingredient): string {
-    return ingredient.ingredient_type.name;
+/**
+ * Fetch the name of an IngredientCategory.
+ * @param ingredient Ingredient to check
+ * @returns Returns a string containing the name of the category.
+ */
+export function get_category_name(ingredient: Ingredient): string {
+    return ingredient.category.name;
 }
-function get_ingredient_cooking_methods(ingredient: Ingredient): Array<string> {
-    return ingredient.ingredient_type.cooking_methods;
+/**
+ * Fetch an Ingredients associated cooking methods based on its category.
+ * @param ingredient Ingredient to check
+ * @returns Returns an Array containing the cooking methods as strings.
+ */
+export function get_ingredient_cooking_methods(ingredient: Ingredient): Array<string> {
+    return ingredient.category.cooking_methods;
 }
-function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingredient> {
+/**
+ * Fetch the inventory of a KitchenWare.
+ * @param kitchenware KitchenWare to check
+ * @returns an Array of the Ingredients that are currently in kitchenware's inventory.
+ */
+export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingredient> {
     return kitchenware.inventory;
 }
 
-function create_category(name: string): IngredientCategory {
+/**
+ * Create an IngredientCategory from a name.
+ * @param name the name of the IngredientCategory to be created
+ * @returns an IngredientCategory with an empty cooking_methods Array.
+ */
+export function new_category(name: string): IngredientCategory {
     return { tag: "ingredientcategory", name: name, cooking_methods: [] }
 }
-function create_kitchenware(name: string): KitchenWare {
+/**
+ * Create a KitchenWare from a name.
+ * @param name the name of the KitchenWare to be created
+ * @returns a KitchenWare with an empty inventory.
+ */
+export function new_kitchenware(name: string): KitchenWare {
     return { tag: "kitchenware", name: name, inventory: [] }
 }
 
-function add_to_ingredient_history(ingredient: Ingredient, str: string): Ingredient {
+/**
+ * Add a string to an Ingredients history.
+ * @param ingredient Ingredient whose history is being altered
+ * @param str string to be added to history
+ * @returns Returns ingredient with updated history.
+ */
+export function add_to_ingredient_history(ingredient: Ingredient, str: string): Ingredient {
     get_ingredient_history(ingredient).push(str);
     return ingredient;
 }
-function add_ingredient_to_kitchenware(ingredient: Ingredient, kitchenware: KitchenWare): KitchenWare {
+/**
+ * Add an Ingredient to an existing KitchenWare's inventory.
+ * @param ingredient Ingredient that is being added
+ * @param kitchenware Kitchenware to add ingredient to
+ * @returns Returns kitchenware with updated inventory.
+ */
+export function add_ingredient_to_kitchenware(ingredient: Ingredient, kitchenware: KitchenWare): KitchenWare {
     kitchenware.inventory.push(ingredient);
     return kitchenware;
 }
 // Not sure if this is going to be used:
 // function add_cooking_method_to_ingredient(ingredient: Ingredient, cooking_method: string): Ingredient {
-//     ingredient.ingredient_type.cooking_methods.push(cooking_method);
+//     ingredient.category.cooking_methods.push(cooking_method);
 //     return ingredient;
 // }
 
-function is_vegetarian(ingredient: Ingredient): boolean {
-    return ingredient.allergies.includes("meat");
+/**
+ * Check whether an Ingredient is vegetarian.
+ * @param ingredient ingredient to be checked
+ * @returns true if ingredient is vegetarian, false otherwise.
+ */
+export function is_vegetarian(ingredient: Ingredient): boolean {
+    return get_ingredient_allergies(ingredient).includes("meat");
 }
-function is_vegan(ingredient: Ingredient): boolean {
-    return ingredient.ingredient_type.name !== "meat" &&
-           ingredient.ingredient_type.name !== "egg" &&
-           ingredient.ingredient_type.name !== "dairy";
+/**
+ * Check whether an Ingredient is vegan.
+ * @param ingredient ingredient to be checked
+ * @returns true if ingredient is vegan, false otherwise.
+ */
+export function is_vegan(ingredient: Ingredient): boolean {
+    const allergies = get_ingredient_allergies(ingredient);
+    return !(allergies.includes("meat")) &&
+           !(allergies.includes("egg")) &&
+           !(allergies.includes("dairy"));
 }
-function is_lactose_friendly(ingredient: Ingredient): boolean {
-    return ingredient.ingredient_type.name !== "dairy";
+/**
+ * Check whether an Ingredient is lactose_friendly.
+ * @param ingredient ingredient to be checked
+ * @returns true if ingredient is lactose_friendly, false otherwise.
+ */
+export function is_lactose_friendly(ingredient: Ingredient): boolean {
+    return get_ingredient_allergies(ingredient).includes("dairy");
 }
 
 
