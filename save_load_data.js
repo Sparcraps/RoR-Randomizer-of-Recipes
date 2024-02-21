@@ -4,12 +4,21 @@ exports.delete_ingredient = exports.save_new_ingredient = exports.save_ingredien
 var ingredients_1 = require("./ingredients");
 var fs = require('fs');
 var filepath = __dirname + "/ingredient_data.json";
+/**
+ * Reads and returns saved ingredients in array.
+ * @returns {Array<Ingredient>} - Array of the saved ingredients.
+ */
 function load_ingredients() {
     var json_ingredients = fs.readFileSync(filepath);
     var ingredient_arr = JSON.parse(json_ingredients);
     return ingredient_arr;
 }
 exports.load_ingredients = load_ingredients;
+/**
+ * Saves an array of ingredients to ingredient_data.json.
+ * Note: overwrites the file's data
+ * @param {Array<Ingredient>} ingredient_arr - The array of ingredients to save.
+ */
 function save_ingredients(ingredient_arr) {
     var json_ingredients = JSON.stringify(ingredient_arr, null, 4);
     fs.writeFileSync(filepath, json_ingredients);
@@ -62,3 +71,12 @@ function delete_ingredient() {
     return updated_arr;
 }
 exports.delete_ingredient = delete_ingredient;
+var test_category = {
+    tag: "ingredientcategory",
+    cooking_methods: ["chop", "boil"],
+    name: "test category"
+};
+var ti1 = (0, ingredients_1.new_ingredient)(test_category, "test ingredient", ["cat"], "liters", 100, [50, 500]);
+var ti2 = (0, ingredients_1.new_ingredient)(test_category, "test ingredient 2", ["dog"], "liters", 100, [50, 300]);
+var ti3 = (0, ingredients_1.new_ingredient)(test_category, "test ingredient 3", ["snake"], "liters", 100, [20, 300]);
+save_ingredients([ti1, ti2, ti3]);
