@@ -1,6 +1,6 @@
 import {
     type Ingredient, type Category, type KitchenWare, randomize_cooking_instruction
-} from "./ingredients";
+} from "./basics";
 
 import {
     type Queue, empty, enqueue, head as qhead, dequeue, display_queue
