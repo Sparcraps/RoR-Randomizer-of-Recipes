@@ -37,6 +37,7 @@ export type Category = {
     tag: "category",
     name: string,
     cooking_methods: Array<string>
+    max_ingredients: number
 };
 
 /**
@@ -174,6 +175,15 @@ export function get_category_name(category: Category): string {
  */
 export function get_ingredient_cooking_methods(ingredient: Ingredient, category_data: Array<Category>): Array<string> {
     return get_ingredient_category(ingredient, category_data).cooking_methods;
+}
+
+/**
+ * Fetch the maximum number of times a category can be generated.
+ * @param @param category - category to check
+ * @returns Returns an integer symbolising the maximum number of times the category can be generated.
+ */
+export function get_category_max(category: Category): number {
+    return category.max_ingredients;
 }
 
 /**
