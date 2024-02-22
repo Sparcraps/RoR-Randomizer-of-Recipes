@@ -11,7 +11,11 @@ import {
  */
 export type TaggedRecord = {
     tag: string
-}
+};
+
+export type NamedRecord = {
+    name: string
+};
 
 /**
  * Ingredient data type; the main data type of RoR.
@@ -27,7 +31,7 @@ export type Ingredient = {
     kcal_per_measurement: number, // to determine portion size
     range: Pair<number, number> // (lower kcal limit, upper kcal limit)
     // nutrition_type: Array<string>, // e.g. vitamin A, protein, fat, carbs
-}
+};
 
 /**
  * Ingredient category data type.
@@ -37,7 +41,7 @@ export type Category = {
     tag: "category",
     name: string,
     cooking_methods: Array<string>
-}
+};
 
 /**
  * Kitchenware data type.
@@ -47,7 +51,7 @@ export type KitchenWare = {
     tag: "kitchenware",
     name: string,
     inventory: Array<Ingredient>
-}
+};
 
 /**
  * Check whether the input is of type Ingredient.
@@ -255,9 +259,34 @@ export function is_lactose_friendly(ingredient: Ingredient): boolean {
     return get_ingredient_allergies(ingredient).includes("dairy");
 }
 
-
-
-
+/**
+ * Makes a new ingredient object.
+ * @param {Category} category - The ingredient's category.
+ * @param {string} name - The name of the ingredient.
+ * @param {Array<string>} allergies - Strings describing allergies/dietary
+ * restritions which the ingredient matches (for example dairy for milk).
+ * @param {string} measurement - The type of measurement to use for the 
+ * ingredient.
+ * @param {number} kcal_per_measurement - Number describing kcal per measurement
+ * (specified in measurement parameter) of the ingredient.
+ * @param {Pair<number>} range - A pair of numbers describing the lower and
+ * upper boundaries of the reasonable amount of the ingredient to have in a
+ * portion.
+ * @returns {Ingredient} - Ingredient object.
+ */
+export function new_ingredient(
+    category: string,
+    name: string,
+    allergies: Array<string>,
+    measurement: string,
+    kcal_per_measurement: number,
+    range: Pair<number, number>
+    ): Ingredient {
+    return {
+        name, category, allergies, measurement, 
+        kcal_per_measurement, range, tag: "ingredient", history: []
+    };
+}
 
 
 export function randomize_cooking_instruction(ingredient: Ingredient): string {
@@ -267,5 +296,3 @@ export function randomize_cooking_instruction(ingredient: Ingredient): string {
     const randomized = method_arr[index];
     return randomized; 
 }
-
-
