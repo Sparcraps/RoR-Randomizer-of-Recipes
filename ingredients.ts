@@ -2,10 +2,6 @@ import {
     type Pair
 } from "./lib/list";
 
-import {
-    ingredient_data, category_data, kitchenware_data
-} from "./RoR";
-
 /**
  * Tag data type for record type checking.
  */
@@ -148,7 +144,7 @@ export function get_ingredient_category_name(ingredient: Ingredient): string {
  * @param ingredient {Ingredient} Ingredient which category is being checked
  * @returns Returns a Category object if one can be found, and undefind otherwise.
  */
-export function get_ingredient_category(ingredient: Ingredient): Category {
+export function get_ingredient_category(ingredient: Ingredient, category_data: Array<Category>): Category {
     const cat = ingredient.category;
     for (let i = 0; i < category_data.length; i++) {
         if (category_data[i].name === cat) {
@@ -173,8 +169,8 @@ export function get_category_name(category: Category): string {
  * @param ingredient {Ingredient} Ingredient to check
  * @returns Returns an Array containing the cooking methods as strings.
  */
-export function get_category_cooking_methods(ingredient: Ingredient): Array<string> {
-    return get_ingredient_category(ingredient).cooking_methods;
+export function get_ingredient_cooking_methods(ingredient: Ingredient, category_data: Array<Category>): Array<string> {
+    return get_ingredient_category(ingredient, category_data).cooking_methods;
 }
 
 /**
@@ -201,7 +197,7 @@ export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingre
  * @modifies kitchenware_data by adding the new KitchenWare to the end of it
  * @returns a KitchenWare with an empty inventory.
  */
-export function new_kitchenware(name: string): KitchenWare {
+export function new_kitchenware(name: string, kitchenware_data: Array<KitchenWare>): KitchenWare {
     let new_kit: KitchenWare = { tag: "kitchenware", name: name, inventory: [] };
         kitchenware_data.push(new_kit);
     return new_kit;
@@ -289,8 +285,8 @@ export function new_ingredient(
 }
 
 
-export function randomize_cooking_instruction(ingredient: Ingredient): string {
-    const method_arr: Array<string> = get_category_cooking_methods(ingredient);
+export function randomize_cooking_instruction(ingredient: Ingredient, category_data: Array<Category>): string {
+    const method_arr: Array<string> = get_ingredient_cooking_methods(ingredient, category_data);
     const len: number = method_arr.length;
     const index = Math.floor(Math.random() * len);
     const randomized = method_arr[index];
