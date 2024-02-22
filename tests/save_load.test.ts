@@ -1,5 +1,6 @@
 import {
-    load_data, save_data, save_new_ingredient, delete_ingredient, save_new_category, find_by_name, delete_category
+    load_data, save_data, save_new_ingredient, delete_ingredient,
+    save_new_category, find_by_name, delete_category
 } from "../save_load_data";
 
 import {

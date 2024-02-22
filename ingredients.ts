@@ -67,25 +67,6 @@ export type KitchenWare = {
 //     return ingredient.ingredient_type.name !== "dairy";
 // }
 
-// /**
-//  * Returns the ingredient with specified name in an array or undefined 
-//  * if the ingredient is not found.
-//  * @param {string} name - The name of the ingredient.
-//  * @param {Array<Ingredient>} arr - The ingredient array to search.
-//  * @returns {number} - The ingredient with the name in the array or undefined 
-//  * if not found.
-//  */
-// export function get_ingredient(name: string, arr: Array<Ingredient>): Ingredient | undefined {
-//     const l = arr.length;
-//     for (let i = 0; i < arr.length; i++) {
-//         const ingredient = arr[i];
-//         if (ingredient.name === name) {
-//             return ingredient;
-//         } else {}
-//     }
-//     return undefined;
-// }
-
 /**
  * Makes a new ingredient object.
  * @param {Category} category - The ingredient's category.

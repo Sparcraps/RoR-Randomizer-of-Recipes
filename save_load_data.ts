@@ -168,7 +168,6 @@ export function delete_category(...names: Array<string>): SaveData {
         }
     }
     
-    
     for (let i = 0; i < names.length; i++) {
         const name = names[i];
         console.error(
@@ -222,7 +221,6 @@ export function delete_ingredient(...names: Array<string>): SaveData {
             delete_from_arr(arr);
         }
     })
-    
     
     for (let i = 0; i < names.length; i++) {
         const name = names[i];
