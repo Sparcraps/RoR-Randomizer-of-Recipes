@@ -47,6 +47,7 @@ export type Category = {
 export type KitchenWare = {
     tag: "kitchenware",
     name: string,
+    cooking_methods: Array<string>,
     inventory: Array<Ingredient>
 };
 
@@ -207,7 +208,7 @@ export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingre
 /**
  * Create an IngredientCategory from a name and an Array of cooking methods.
  * @param name - the name of the IngredientCategory to be created
- * @param cooking_methods - an Array containing the available cooking methods for the created category
+ * @param cooking_methods - an Array containing the available cooking methods for the created Category
  * @param max_ingredients - maximum number of times the category can be generated.
  * @returns an IngredientCategory with an empty cooking_methods Array.
  */
@@ -218,11 +219,12 @@ export function new_category(name: string, cooking_methods: Array<string>, max_i
 /**
  * Create a KitchenWare from a name.
  * @param name - the name of the KitchenWare to be created
+ * @param cooking_methods - an Array containing the available cooking methods for the created KitchenWare
  * @modifies kitchenware_data by adding the new KitchenWare to the end of it
  * @returns a KitchenWare with an empty inventory.
  */
-export function new_kitchenware(name: string): KitchenWare {
-    return { tag: "kitchenware", name, inventory: [] };
+export function new_kitchenware(name: string, cooking_methods: Array<string>): KitchenWare {
+    return { tag: "kitchenware", name, cooking_methods, inventory: [] };
 }
 
 /**
