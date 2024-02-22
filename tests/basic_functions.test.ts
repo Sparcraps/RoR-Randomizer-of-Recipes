@@ -6,7 +6,7 @@ import {
     get_ingredient_category_name, get_ingredient_category, get_category_name,
     get_ingredient_cooking_methods, get_kitchenware_name,
     get_kitchenware_inventory, new_kitchenware, add_to_ingredient_history,
-    add_ingredient_to_kitchenware, is_vegetarian, is_vegan, is_lactose_friendly
+    add_ingredient_to_kitchenware, is_vegetarian, is_vegan, is_lactose_friendly, new_category
 } from "../ingredients";
 
 import {
@@ -61,9 +61,7 @@ describe('testing basic ingredients.ts functions', () => {
         inventory: [test_ingredient_meat]
     };
 
-    let ingredient_data: Array<Ingredient> = [test_ingredient_meat];
     let category_data: Array<Category> = [test_category];
-    let kitchenware_data: Array<KitchenWare> = [test_kitchenware];
 
     test('function is_ingredient works', () => {
         expect(is_ingredient(test_ingredient_meat)).toBe(true);
@@ -128,10 +126,16 @@ describe('testing basic ingredients.ts functions', () => {
         expect(get_kitchenware_inventory(test_kitchenware)).toStrictEqual([test_ingredient_meat]);
     })
 
+    test('function new_category works', () => {
+        const RoR_cat: Category = new_category("The best category ever made", ["qwe"]);
+        expect(is_category(RoR_cat)).toBe(true);
+        expect(get_category_name(RoR_cat)).toEqual("The best category ever made");
+        expect(RoR_cat.cooking_methods).toEqual(["qwe"]);
+    }) 
+
     test('function new_kitchenware works', () => {
-        const RoR_kit: KitchenWare = new_kitchenware("The best kitchenware ever made", kitchenware_data);
-        expect(is_category(RoR_kit)).toBe(true);
-        expect(kitchenware_data).toContain(RoR_kit);
+        const RoR_kit: KitchenWare = new_kitchenware("The best kitchenware ever made");
+        expect(is_kitchenware(RoR_kit)).toBe(true);
         expect(get_kitchenware_name(RoR_kit)).toEqual("The best kitchenware ever made");
     })
 

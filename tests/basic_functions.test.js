@@ -44,9 +44,7 @@ describe('testing basic ingredients.ts functions', function () {
         name: "frying pan",
         inventory: [test_ingredient_meat]
     };
-    var ingredient_data = [test_ingredient_meat];
     var category_data = [test_category];
-    var kitchenware_data = [test_kitchenware];
     test('function is_ingredient works', function () {
         expect((0, ingredients_1.is_ingredient)(test_ingredient_meat)).toBe(true);
         expect((0, ingredients_1.is_ingredient)(test_ingredient_vegan)).toBe(true);
@@ -96,10 +94,15 @@ describe('testing basic ingredients.ts functions', function () {
     test('function get_kitchenware_inventory works', function () {
         expect((0, ingredients_1.get_kitchenware_inventory)(test_kitchenware)).toStrictEqual([test_ingredient_meat]);
     });
+    test('function new_category works', function () {
+        var RoR_cat = (0, ingredients_1.new_category)("The best category ever made", ["qwe"]);
+        expect((0, ingredients_1.is_category)(RoR_cat)).toBe(true);
+        expect((0, ingredients_1.get_category_name)(RoR_cat)).toEqual("The best category ever made");
+        expect(RoR_cat.cooking_methods).toEqual(["qwe"]);
+    });
     test('function new_kitchenware works', function () {
-        var RoR_kit = (0, ingredients_1.new_kitchenware)("The best kitchenware ever made", kitchenware_data);
-        expect((0, ingredients_1.is_category)(RoR_kit)).toBe(true);
-        expect(kitchenware_data).toContain(RoR_kit);
+        var RoR_kit = (0, ingredients_1.new_kitchenware)("The best kitchenware ever made");
+        expect((0, ingredients_1.is_kitchenware)(RoR_kit)).toBe(true);
         expect((0, ingredients_1.get_kitchenware_name)(RoR_kit)).toEqual("The best kitchenware ever made");
     });
     test('function add_to_ingredient_history works', function () {
