@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.randomize_cooking_instruction = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.add_to_ingredient_history = exports.new_kitchenware = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_category_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_history = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
-var RoR_1 = require("./RoR");
+exports.randomize_cooking_instruction = exports.new_ingredient = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.add_to_ingredient_history = exports.new_kitchenware = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_history = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
 /**
  * Check whether the input is of type Ingredient.
  * @param input {TaggedRecord} argument to check the type of
@@ -97,11 +96,11 @@ exports.get_ingredient_category_name = get_ingredient_category_name;
  * @param ingredient {Ingredient} Ingredient which category is being checked
  * @returns Returns a Category object if one can be found, and undefind otherwise.
  */
-function get_ingredient_category(ingredient) {
+function get_ingredient_category(ingredient, category_data) {
     var cat = ingredient.category;
-    for (var i = 0; i < RoR_1.category_data.length; i++) {
-        if (RoR_1.category_data[i].name === cat) {
-            return RoR_1.category_data[i];
+    for (var i = 0; i < category_data.length; i++) {
+        if (category_data[i].name === cat) {
+            return category_data[i];
         }
         else { }
     }
@@ -122,10 +121,10 @@ exports.get_category_name = get_category_name;
  * @param ingredient {Ingredient} Ingredient to check
  * @returns Returns an Array containing the cooking methods as strings.
  */
-function get_category_cooking_methods(ingredient) {
-    return get_ingredient_category(ingredient).cooking_methods;
+function get_ingredient_cooking_methods(ingredient, category_data) {
+    return get_ingredient_category(ingredient, category_data).cooking_methods;
 }
-exports.get_category_cooking_methods = get_category_cooking_methods;
+exports.get_ingredient_cooking_methods = get_ingredient_cooking_methods;
 /**
  * Fetch the name of a KitchenWare.
  * @param kitchenware {KitchenWare} KitchenWare to check
@@ -150,9 +149,9 @@ exports.get_kitchenware_inventory = get_kitchenware_inventory;
  * @modifies kitchenware_data by adding the new KitchenWare to the end of it
  * @returns a KitchenWare with an empty inventory.
  */
-function new_kitchenware(name) {
+function new_kitchenware(name, kitchenware_data) {
     var new_kit = { tag: "kitchenware", name: name, inventory: [] };
-    RoR_1.kitchenware_data.push(new_kit);
+    kitchenware_data.push(new_kit);
     return new_kit;
 }
 exports.new_kitchenware = new_kitchenware;
@@ -208,8 +207,35 @@ function is_lactose_friendly(ingredient) {
     return get_ingredient_allergies(ingredient).includes("dairy");
 }
 exports.is_lactose_friendly = is_lactose_friendly;
-function randomize_cooking_instruction(ingredient) {
-    var method_arr = get_category_cooking_methods(ingredient);
+/**
+ * Makes a new ingredient object.
+ * @param {Category} category - The ingredient's category.
+ * @param {string} name - The name of the ingredient.
+ * @param {Array<string>} allergies - Strings describing allergies/dietary
+ * restritions which the ingredient matches (for example dairy for milk).
+ * @param {string} measurement - The type of measurement to use for the
+ * ingredient.
+ * @param {number} kcal_per_measurement - Number describing kcal per measurement
+ * (specified in measurement parameter) of the ingredient.
+ * @param {Pair<number>} range - A pair of numbers describing the lower and
+ * upper boundaries of the reasonable amount of the ingredient to have in a
+ * portion.
+ * @returns {Ingredient} - Ingredient object.
+ */
+function new_ingredient(category, name, allergies, measurement, kcal_per_measurement, range) {
+    return {
+        name: name,
+        category: category,
+        allergies: allergies,
+        measurement: measurement,
+        kcal_per_measurement: kcal_per_measurement,
+        range: range,
+        tag: "ingredient", history: []
+    };
+}
+exports.new_ingredient = new_ingredient;
+function randomize_cooking_instruction(ingredient, category_data) {
+    var method_arr = get_ingredient_cooking_methods(ingredient, category_data);
     var len = method_arr.length;
     var index = Math.floor(Math.random() * len);
     var randomized = method_arr[index];

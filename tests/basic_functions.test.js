@@ -85,19 +85,19 @@ describe('testing basic ingredients.ts functions', function () {
         expect((0, ingredients_1.get_ingredient_category_name)(test_ingredient_meat)).toEqual("meat");
     });
     test('function get_ingredient_category works', function () {
-        expect((0, ingredients_1.get_ingredient_category)(test_ingredient_meat)).toStrictEqual("meat");
+        expect((0, ingredients_1.get_ingredient_category)(test_ingredient_meat, category_data)).toStrictEqual(test_category);
     });
     test('function get_category_name works', function () {
         expect((0, ingredients_1.get_category_name)(test_category)).toStrictEqual("meat");
     });
     test('function get_ingredient_cooking_methods works', function () {
-        expect((0, ingredients_1.get_category_cooking_methods)(test_ingredient_meat)).toStrictEqual(["fry"]);
+        expect((0, ingredients_1.get_ingredient_cooking_methods)(test_ingredient_meat, category_data)).toStrictEqual(["fry"]);
     });
     test('function get_kitchenware_inventory works', function () {
         expect((0, ingredients_1.get_kitchenware_inventory)(test_kitchenware)).toStrictEqual([test_ingredient_meat]);
     });
     test('function new_kitchenware works', function () {
-        var RoR_kit = (0, ingredients_1.new_kitchenware)("The best kitchenware ever made");
+        var RoR_kit = (0, ingredients_1.new_kitchenware)("The best kitchenware ever made", kitchenware_data);
         expect((0, ingredients_1.is_category)(RoR_kit)).toBe(true);
         expect(kitchenware_data).toContain(RoR_kit);
         expect((0, ingredients_1.get_kitchenware_name)(RoR_kit)).toEqual("The best kitchenware ever made");
