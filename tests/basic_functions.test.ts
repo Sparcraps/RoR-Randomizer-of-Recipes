@@ -6,7 +6,8 @@ import {
     get_ingredient_category_name, get_ingredient_category, get_category_name,
     get_ingredient_cooking_methods, get_kitchenware_name,
     get_kitchenware_inventory, new_kitchenware, add_to_ingredient_history,
-    add_ingredient_to_kitchenware, is_vegetarian, is_vegan, is_lactose_friendly, new_category
+    add_ingredient_to_kitchenware, is_vegetarian, is_vegan, is_lactose_friendly, new_category,
+    get_category_max
 } from "../basics";
 
 import {
@@ -52,7 +53,8 @@ describe('testing basic ingredients.ts functions', () => {
     let test_category: Category = {
         tag: "category",
         name: "meat",
-        cooking_methods: ["fry"]
+        cooking_methods: ["fry"],
+        max_ingredients: 10
     };
 
     let test_kitchenware: KitchenWare = {
@@ -120,6 +122,10 @@ describe('testing basic ingredients.ts functions', () => {
 
     test('function get_ingredient_cooking_methods works', () => {
         expect(get_ingredient_cooking_methods(test_ingredient_meat, category_data)).toStrictEqual(["fry"]);
+    })
+
+    test('function get_category_max works', ()=> {
+        expect(get_category_max(test_category)).toBe(10);
     })
 
     test('function get_kitchenware_inventory works', () => {
