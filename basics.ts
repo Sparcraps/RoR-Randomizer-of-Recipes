@@ -208,10 +208,11 @@ export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingre
  * Create an IngredientCategory from a name and an Array of cooking methods.
  * @param name - the name of the IngredientCategory to be created
  * @param cooking_methods - an Array containing the available cooking methods for the created category
+ * @param max_ingredients - maximum number of times the category can be generated.
  * @returns an IngredientCategory with an empty cooking_methods Array.
  */
-export function new_category(name: string, cooking_methods: Array<string>): Category {
-    return { tag: "category", name, cooking_methods }
+export function new_category(name: string, cooking_methods: Array<string>, max_ingredients: number): Category {
+    return { tag: "category", name, cooking_methods, max_ingredients}
 }
 
 /**
