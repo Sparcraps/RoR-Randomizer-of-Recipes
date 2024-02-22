@@ -1,6 +1,6 @@
 import {
     type Ingredient, type Category, type KitchenWare, NamedRecord
-} from "./ingredients"
+} from "./basics"
 
 export type SaveData = {
     categories: Array<Category>,
@@ -18,7 +18,7 @@ const filepath = __dirname + "/ror_data.json"
  * @returns {number} - The index of the object in the array or -1 if not
  * found.
  */
-export function find_by_name<T>(name: string, arr: Array<NamedRecord>): number {
+export function find_by_name(name: string, arr: Array<NamedRecord>): number {
     const l = arr.length;
     for (let i = 0; i < arr.length; i++) {
         const obj = arr[i];

@@ -5,7 +5,7 @@ import {
 
 import {
     new_ingredient, Category
-} from "../ingredients";
+} from "../basics";
 
 describe("testing functions to save and load data", () => {
     test("save_data and load_data work", () => {
