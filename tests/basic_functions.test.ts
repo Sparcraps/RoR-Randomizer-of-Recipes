@@ -7,7 +7,7 @@ import {
     get_ingredient_cooking_methods, get_kitchenware_name,
     get_kitchenware_inventory, new_kitchenware, add_to_ingredient_history,
     add_ingredient_to_kitchenware, is_vegetarian, is_vegan, is_lactose_friendly, new_category
-} from "../ingredients";
+} from "../basics";
 
 import {
     type Pair, pair
@@ -42,7 +42,7 @@ describe('testing basic ingredients.ts functions', () => {
         tag: "ingredient",
         name: "milk",
         category: "liquid",
-        allergies: ["lactose"],
+        allergies: ["lactose", "dairy"],
         history: ["boil"],
         measurement: "ml",
         kcal_per_measurement: 1,
@@ -140,11 +140,16 @@ describe('testing basic ingredients.ts functions', () => {
     })
 
     test('function add_to_ingredient_history works', () => {
-        expect(get_ingredient_history(add_to_ingredient_history(test_ingredient_meat, "boiled"))).toStrictEqual(["boiled"]);
+        expect(get_ingredient_history(add_to_ingredient_history(test_ingredient_meat, "boil"))).toStrictEqual(["slice", "boil"]);
     })
 
     test('function add_ingredient_to_kitchenware works', () => {
-        expect(get_kitchenware_inventory(add_ingredient_to_kitchenware(test_ingredient_meat, test_kitchenware))).toEqual([test_ingredient_meat]);
+        let new_kit = add_ingredient_to_kitchenware(test_ingredient_meat, test_kitchenware)
+        expect(get_kitchenware_inventory(new_kit)).toStrictEqual([test_ingredient_meat]);
+
+        new_kit = add_ingredient_to_kitchenware(test_ingredient_vegan, test_kitchenware)
+        expect(new_kit).toStrictEqual(test_kitchenware); //checks that they are aliases
+        expect(get_kitchenware_inventory(new_kit)).toStrictEqual([test_ingredient_meat, test_ingredient_vegan]);
     })
 
     test('function is_vegan works', () => {

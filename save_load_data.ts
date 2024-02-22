@@ -1,33 +1,14 @@
 import {
-    type Ingredient, type Category, type KitchenWare, NamedRecord
+    type Ingredient, type Category, type KitchenWare, NamedRecord, find_by_name
 } from "./basics"
 
 export type SaveData = {
     categories: Array<Category>,
     ingredients: Array<Array<Ingredient>>,
-}
+};
 
 const fs = require('fs');
-const filepath = __dirname + "/ror_data.json"
-
-/**
- * Returns the index of the specified named object in an array or -1 if 
- * the ingredient is not found.
- * @param {string} name - The name of the object.
- * @param {Array<NamedRecord>} arr - The array to search.
- * @returns {number} - The index of the object in the array or -1 if not
- * found.
- */
-export function find_by_name(name: string, arr: Array<NamedRecord>): number {
-    const l = arr.length;
-    for (let i = 0; i < arr.length; i++) {
-        const obj = arr[i];
-        if (obj.name === name) {
-            return i;
-        } else {}
-    }
-    return -1;
-}
+const filepath = __dirname + "/ror_data.json";
 
 /**
  * Reads and returns save data.
