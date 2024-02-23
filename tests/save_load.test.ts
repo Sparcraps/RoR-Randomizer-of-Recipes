@@ -73,7 +73,7 @@ describe("testing functions to save and load data", () => {
     test("save_new_ingredient and delete_ingredient works on test ingredients", () => {
         const test_category: Category = {
             tag: "category", 
-            cooking_methods: ["chop", "boil"],
+            cooking_methods: [["chop"], ["boil"]],
             name: "test category",
             max_ingredients: 100
         };

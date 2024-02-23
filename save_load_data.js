@@ -38,6 +38,7 @@ exports.load_data = load_data;
  * Saves a savedata object to ror_data.json.
  * Note: overwrites existing save data.
  * @param {SaveData} data - Save data to save.
+ * @modifies ror_data.json
  */
 function save_data(data) {
     var json_data = JSON.stringify(data, null, 4);
@@ -49,6 +50,7 @@ exports.save_data = save_data;
  * the file's contents.
  * @param {...Category} new_cats - Optional amount of new ingredients
  * to save.
+ * @modifies ror_data.json
  * @returns {SaveData} - The updated save data.
  */
 function save_new_category() {
@@ -77,6 +79,7 @@ exports.save_new_category = save_new_category;
  * the file's contents.
  * @param {...Ingredient} new_ingredients - Optional amount of new ingredients
  * to save.
+ * @modifies ror_data.json
  * @returns {SaveData} - The updated save data.
  */
 function save_new_ingredient() {
@@ -132,6 +135,7 @@ exports.save_new_ingredient = save_new_ingredient;
  * Deletes categories with the specified names from ror_data.json and
  * returns the updated save data.
  * @param {...string} names - The sames of the categories to delete.
+ * @modifies ror_data.json
  * @returns {SaveData} - Updated save data.
  */
 function delete_category() {
@@ -173,6 +177,7 @@ exports.delete_category = delete_category;
  * Deletes ingredients with the specified name from ror_data.json and
  * returns the updated save data.
  * @param {...string} names - The sames of the ingredients to delete.
+ * @modifies ror_data.json
  * @returns {SaveData} - Updated save data.
  */
 function delete_ingredient() {
