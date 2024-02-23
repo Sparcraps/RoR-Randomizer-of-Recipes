@@ -74,7 +74,8 @@ describe("testing functions to save and load data", () => {
         const test_category: Category = {
             tag: "category", 
             cooking_methods: ["chop", "boil"],
-            name: "test category"
+            name: "test category",
+            max_ingredients: 100
         };
 
         const ti1 = new_ingredient("test category", "test ingredient", 

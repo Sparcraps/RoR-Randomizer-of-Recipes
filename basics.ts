@@ -25,7 +25,7 @@ export type Ingredient = {
     history: Array<string>,
     measurement: string,
     kcal_per_measurement: number, // to determine portion size
-    range: Pair<number, number> // (lower kcal limit, upper kcal limit)
+    range: Pair<number, number> // (lower measurement limit, upper measurement limit)
     // nutrition_type: Array<string>, // e.g. vitamin A, protein, fat, carbs
 };
 
@@ -37,6 +37,7 @@ export type Category = {
     tag: "category",
     name: string,
     cooking_methods: Array<string>
+    max_ingredients: number
 };
 
 /**
@@ -47,6 +48,7 @@ export type KitchenWare = {
     tag: "kitchenware",
     name: string,
     inventory: Array<Ingredient>
+    cooking_methods: Array<string>
 };
 
 /**
@@ -199,8 +201,8 @@ export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingre
  * @param cooking_methods - an Array containing the available cooking methods for the created category
  * @returns an IngredientCategory with an empty cooking_methods Array.
  */
-export function new_category(name: string, cooking_methods: Array<string>): Category {
-    return { tag: "category", name, cooking_methods }
+export function new_category(name: string, cooking_methods: Array<string>,  max_ingredients: number): Category {
+    return { tag: "category", name, cooking_methods, max_ingredients }
 }
 
 /**
@@ -209,8 +211,8 @@ export function new_category(name: string, cooking_methods: Array<string>): Cate
  * @modifies kitchenware_data by adding the new KitchenWare to the end of it
  * @returns a KitchenWare with an empty inventory.
  */
-export function new_kitchenware(name: string): KitchenWare {
-    return { tag: "kitchenware", name, inventory: [] };
+export function new_kitchenware(name: string, cooking_methods: Array<string>): KitchenWare {
+    return { tag: "kitchenware", name, inventory: [], cooking_methods };
 }
 
 /**
@@ -275,8 +277,8 @@ export function is_lactose_friendly(ingredient: Ingredient): boolean {
  * ingredient.
  * @param kcal_per_measurement - Number describing kcal per measurement
  * (specified in measurement parameter) of the ingredient.
- * @param range - A pair of numbers describing the lower and
- * upper boundaries of the reasonable amount of the ingredient to have in a
+ * @param range - A pair of numbers describing the lower and upper boundaries,
+ * in measurements, of the reasonable amount of the ingredient to have in a
  * portion.
  * @returns An ingredient object.
  */

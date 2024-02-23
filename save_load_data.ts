@@ -1,5 +1,5 @@
 import {
-    type Ingredient, type Category, type KitchenWare, NamedRecord
+    type Ingredient, type Category, type KitchenWare, NamedRecord, new_ingredient, new_category
 } from "./basics"
 
 export type SaveData = {
