@@ -37,6 +37,7 @@ export type Category = {
     tag: "category",
     name: string,
     cooking_methods: Array<string>
+    max_ingredients: number
 };
 
 /**
@@ -46,6 +47,7 @@ export type Category = {
 export type KitchenWare = {
     tag: "kitchenware",
     name: string,
+    cooking_methods: Array<string>,
     inventory: Array<Ingredient>
 };
 
@@ -177,6 +179,15 @@ export function get_ingredient_cooking_methods(ingredient: Ingredient, category_
 }
 
 /**
+ * Fetch the maximum number of times a category can be generated.
+ * @param @param category - category to check
+ * @returns Returns an integer symbolising the maximum number of times the category can be generated.
+ */
+export function get_category_max(category: Category): number {
+    return category.max_ingredients;
+}
+
+/**
  * Fetch the name of a KitchenWare.
  * @param kitchenware - KitchenWare to check
  * @returns Returns a string containing the name of the kitchenware.
@@ -197,21 +208,23 @@ export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingre
 /**
  * Create an IngredientCategory from a name and an Array of cooking methods.
  * @param name - the name of the IngredientCategory to be created
- * @param cooking_methods - an Array containing the available cooking methods for the created category
+ * @param cooking_methods - an Array containing the available cooking methods for the created Category
+ * @param max_ingredients - maximum number of times the category can be generated.
  * @returns an IngredientCategory with an empty cooking_methods Array.
  */
-export function new_category(name: string, cooking_methods: Array<string>): Category {
-    return { tag: "category", name, cooking_methods }
+export function new_category(name: string, cooking_methods: Array<string>, max_ingredients: number): Category {
+    return { tag: "category", name, cooking_methods, max_ingredients}
 }
 
 /**
  * Create a KitchenWare from a name.
  * @param name - the name of the KitchenWare to be created
+ * @param cooking_methods - an Array containing the available cooking methods for the created KitchenWare
  * @modifies kitchenware_data by adding the new KitchenWare to the end of it
  * @returns a KitchenWare with an empty inventory.
  */
-export function new_kitchenware(name: string): KitchenWare {
-    return { tag: "kitchenware", name, inventory: [] };
+export function new_kitchenware(name: string, cooking_methods: Array<string>): KitchenWare {
+    return { tag: "kitchenware", name, cooking_methods, inventory: [] };
 }
 
 /**
