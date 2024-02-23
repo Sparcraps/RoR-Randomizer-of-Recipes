@@ -4,8 +4,8 @@ import {
 
 export type SaveData = {
     categories: Array<Category>,
-    ingredients: Array<Array<Ingredient>>,
-    kitchenware: Array<KitchenWare>
+    kitchenware: Array<KitchenWare>,
+    ingredients: Array<Array<Ingredient>>
 };
 
 const fs = require('fs');
@@ -17,9 +17,13 @@ const filepath = __dirname + "/ror_data.json";
  * kitchenware.
  */
 export function load_data(): SaveData {
-    const json_data = fs.readFileSync(filepath);
-    const data = JSON.parse(json_data);
-    return data;
+    if (fs.existsSync(filepath)) {
+        const json_data = fs.readFileSync(filepath);
+        const data = JSON.parse(json_data);
+        return data;
+    } else {
+        throw new Error("ror_data.json does not exist.");
+    }
 }
 
 /**
