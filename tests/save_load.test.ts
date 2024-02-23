@@ -1,10 +1,10 @@
 import {
     load_data, save_data, save_new_ingredient, delete_ingredient,
-    save_new_category, find_by_name, delete_category
+    save_new_category, delete_category, save_new_kitchenware, delete_kitchenware
 } from "../save_load_data";
 
 import {
-    new_ingredient, Category
+    new_ingredient, Category, new_category, new_kitchenware
 } from "../basics";
 
 describe("testing functions to save and load data", () => {
@@ -70,12 +70,8 @@ describe("testing functions to save and load data", () => {
                 ));
     })
 
-    test("save_new_ingredient and delete_ingredient works on test ingredients", () => {
-        const test_category: Category = {
-            tag: "category", 
-            cooking_methods: ["chop", "boil"],
-            name: "test category"
-        };
+    test("functions to save and delete work on test ingredients and test category", () => {
+        const test_category = new_category("test category", ["chop", "boil"], 10); 
 
         const ti1 = new_ingredient("test category", "test ingredient", 
                                     ["cat"], "liters", 100, [50, 500]);
@@ -94,7 +90,15 @@ describe("testing functions to save and load data", () => {
 
         saved = save_new_ingredient(ti3);
         ingredient_data = saved.ingredients;
-        test_arr = ingredient_data[ingredient_data.length - 1];
+        test_arr = ingredient_data[index];
+        expect(test_arr).toContainEqual(ti3);
+
+        saved = delete_ingredient(ti2.name);
+        ingredient_data = saved.ingredients;
+
+        test_arr = ingredient_data[index];
+        expect(test_arr.some(e => e.name === "test ingredient 2")).toBe(false);
+        expect(test_arr).toContainEqual(ti1);
         expect(test_arr).toContainEqual(ti3);
 
         saved = delete_category("test category");
@@ -102,5 +106,15 @@ describe("testing functions to save and load data", () => {
         ingredient_data = saved.ingredients;
         expect(cats.length).toBe(index);
         expect(ingredient_data.length).toBe(index);
+    });
+
+    test("save_new_kitchenware and delete_kitchenware works on test kitchenware", () => {
+        const name = "test kitchenware";
+        const test_kit = new_kitchenware(name, ["fry"]);
+        let saved = save_new_kitchenware(test_kit);
+        expect(saved.kitchenware).toContainEqual(test_kit);
+
+        saved = delete_kitchenware(name);
+        expect(saved.kitchenware.some(e => e.name === name)).toBe(false);
     });
 });

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var save_load_data_1 = require("../save_load_data");
-var ingredients_1 = require("../ingredients");
+var basics_1 = require("../basics");
 describe("testing functions to save and load data", function () {
     test("save_data and load_data work", function () {
         var data = (0, save_load_data_1.load_data)();
@@ -48,15 +48,11 @@ describe("testing functions to save and load data", function () {
         (0, save_load_data_1.delete_category)(no_name);
         expect(console_spy).toHaveBeenCalledWith(new Error("There is no saved category with the name " + no_name + "."));
     });
-    test("save_new_ingredient and delete_ingredient works on test ingredients", function () {
-        var test_category = {
-            tag: "category",
-            cooking_methods: ["chop", "boil"],
-            name: "test category"
-        };
-        var ti1 = (0, ingredients_1.new_ingredient)("test category", "test ingredient", ["cat"], "liters", 100, [50, 500]);
-        var ti2 = (0, ingredients_1.new_ingredient)("test category", "test ingredient 2", ["dog"], "liters", 100, [50, 300]);
-        var ti3 = (0, ingredients_1.new_ingredient)("test category", "test ingredient 3", ["snake"], "liters", 100, [20, 300]);
+    test("functions to save and delete work on test ingredients and test category", function () {
+        var test_category = (0, basics_1.new_category)("test category", ["chop", "boil"], 10);
+        var ti1 = (0, basics_1.new_ingredient)("test category", "test ingredient", ["cat"], "liters", 100, [50, 500]);
+        var ti2 = (0, basics_1.new_ingredient)("test category", "test ingredient 2", ["dog"], "liters", 100, [50, 300]);
+        var ti3 = (0, basics_1.new_ingredient)("test category", "test ingredient 3", ["snake"], "liters", 100, [20, 300]);
         (0, save_load_data_1.save_new_category)(test_category);
         var saved = (0, save_load_data_1.save_new_ingredient)(ti1, ti2);
         var ingredient_data = saved.ingredients;
@@ -66,12 +62,26 @@ describe("testing functions to save and load data", function () {
         expect(test_arr).toContainEqual(ti2);
         saved = (0, save_load_data_1.save_new_ingredient)(ti3);
         ingredient_data = saved.ingredients;
-        test_arr = ingredient_data[ingredient_data.length - 1];
+        test_arr = ingredient_data[index];
+        expect(test_arr).toContainEqual(ti3);
+        saved = (0, save_load_data_1.delete_ingredient)(ti2.name);
+        ingredient_data = saved.ingredients;
+        test_arr = ingredient_data[index];
+        expect(test_arr.some(function (e) { return e.name === "test ingredient 2"; })).toBe(false);
+        expect(test_arr).toContainEqual(ti1);
         expect(test_arr).toContainEqual(ti3);
         saved = (0, save_load_data_1.delete_category)("test category");
         var cats = saved.categories;
         ingredient_data = saved.ingredients;
         expect(cats.length).toBe(index);
         expect(ingredient_data.length).toBe(index);
+    });
+    test("save_new_kitchenware and delete_kitchenware works on test kitchenware", function () {
+        var name = "test kitchenware";
+        var test_kit = (0, basics_1.new_kitchenware)(name, ["fry"]);
+        var saved = (0, save_load_data_1.save_new_kitchenware)(test_kit);
+        expect(saved.kitchenware).toContainEqual(test_kit);
+        saved = (0, save_load_data_1.delete_kitchenware)(name);
+        expect(saved.kitchenware.some(function (e) { return e.name === name; })).toBe(false);
     });
 });
