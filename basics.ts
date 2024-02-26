@@ -36,7 +36,7 @@ export type Ingredient = {
 export type Category = {
     tag: "category",
     name: string,
-    cooking_methods: Array<string>
+    cooking_methods: Array<Array<string>>
     max_ingredients: number
 };
 
