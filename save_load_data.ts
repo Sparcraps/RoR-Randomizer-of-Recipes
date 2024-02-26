@@ -5,6 +5,7 @@ import {
 export type SaveData = {
     categories: Array<Category>,
     ingredients: Array<Array<Ingredient>>,
+    kitchenware: Array<KitchenWare>
 }
 
 const fs = require('fs');

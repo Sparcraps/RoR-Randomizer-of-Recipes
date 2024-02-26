@@ -46,7 +46,7 @@ export type Category = {
 export type KitchenWare = {
     tag: "kitchenware",
     name: string,
-    inventory: Array<Ingredient>
+    inventory: Array<string>
     cooking_methods: Array<string>
 };
 
@@ -181,7 +181,7 @@ export function get_kitchenware_name(kitchenware: KitchenWare): string {
  * @param kitchenware - KitchenWare to check
  * @returns an Array of the Ingredients that are currently in kitchenware's inventory.
  */
-export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingredient> {
+export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<string> {
     return kitchenware.inventory;
 }
 
@@ -212,7 +212,7 @@ export function new_kitchenware(name: string, cooking_methods: Array<string>): K
  * @returns Returns kitchenware with updated inventory.
  */
 export function add_ingredient_to_kitchenware(ingredient: Ingredient, kitchenware: KitchenWare): KitchenWare {
-    kitchenware.inventory.push(ingredient);
+    kitchenware.inventory.push(ingredient.name);
     return kitchenware;
 }
 
@@ -273,4 +273,12 @@ export function new_ingredient(
         name, category, allergies, measurement, 
         kcal_per_measurement, range, tag: "ingredient"
     };
+}
+
+function has_separable_inventory(kw: KitchenWare) {
+    if (kw.name === "cutting board" || kw.name === "oven") {
+        return true;
+    } else {
+        return false;
+    }
 }
