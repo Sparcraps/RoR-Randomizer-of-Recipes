@@ -58,11 +58,23 @@ function print_recipe(recipe: Recipe): void {
 
 function generate_recipe([min_portion, max_portion]: Pair<number, number>, portions: number, filters: Array<string>): Recipe {
     // Selects a random category from an array of categories and 
-    // returns the category and its index.
-    function randomize_category(cats: Array<Category>): Pair<number, Category> {
-        const cat_i = Math.floor(Math.random() * cats.length);
-        const cat = cats[cat_i];
-        return [cat_i, cat];
+    // returns the category and its ingredient array. Removes both and retries
+    // if the ingredient array is empty.
+    function randomize_category(): Pair<Category, Array<Ingredient>> {
+        const cat_i = Math.floor(Math.random() * category_data.length);
+        const cat = category_data[cat_i];
+        const ingredient_arr = ingredient_data[cat_i];
+        if (ingredient_arr.length === 0) {
+            category_data.splice(cat_i, 1);
+            ingredient_data.splice(cat_i, 1);
+            if (ingredient_data.length === 0) { // if all ingredients have already been selected:
+                category_data.push(...data.categories); //reloads data by creating a copies fron saved data
+                ingredient_data.push(...JSON.parse(JSON.stringify(data.ingredients))); 
+            }
+            return randomize_category();
+        } else {
+            return [cat, ingredient_arr];
+        }
     }
 
     // Returns a random ingredient from an array of ingredients and 
@@ -128,8 +140,7 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
         let kcal = 0;
 
         while (kcal < min_kcal) {
-            const [i, cat] = randomize_category(category_data); // get random category with its index
-            const ingredient_arr = ingredient_data[i]; // get ingredient array for category
+            const [cat, ingredient_arr] = randomize_category(); // get random category with its ingredients
 
             const ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
             const kcal_per_measure = ingredient.kcal_per_measurement;
@@ -154,12 +165,12 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
     const category_data: Array<Category> = JSON.parse(JSON.stringify(data.categories));
     const kitchenware_data: Array<KitchenWare> = [];
 
-    randomize_ingredient
+    randomize_ingredients_and_methods();
     return recipe;
 }
 
 function start_ror(): void {
-    const recipe = generate_recipe(pair(400, 700), 4, []);
+    const recipe = generate_recipe(pair(1000, 1500), 4, []);
     print_recipe(recipe);
 }
 
