@@ -42,13 +42,12 @@ function filter_allergies(save_data: Array<Array<Ingredient>>, allergies: Array<
     let is_done: boolean = false;
     for(let categoryindex = 0; categoryindex < ingredients.length; categoryindex ++)
     {
-        ingredients[categoryindex].filter((ingredient) => ingredient.allergies[0] === allergies[0])
         for(let ingredientindex = 0; ingredientindex < ingredients[categoryindex].length; ingredientindex ++)
         {
             const ingredientallergy = ingredients[categoryindex][ingredientindex].allergies;
             for(let allergyindex = 0; allergyindex < ingredientallergy.length; allergyindex ++)
             {
-                if(is_done == true)
+                if(is_done)
                 {
                     is_done = false;
                     break;
