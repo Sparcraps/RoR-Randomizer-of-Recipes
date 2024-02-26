@@ -5,7 +5,8 @@ import {
     new_ingredient, new_category, type Category, type Ingredient
 } from "./basics"
 import {
-    type Pair, pair
+    type Pair, pair,
+    all
 } from "./lib/list"
 
 /*
@@ -25,7 +26,7 @@ const cucumber = new_ingredient("vegetable", "cucumber", [], "", 45, pair(1, 2))
 const carrot = new_ingredient("root_vegetable", "carrot", [], "", 30, pair(1, 4));
 const potato = new_ingredient("root_vegetable", "potato", [], "", 85, pair(1, 4));
 
-const water = new_ingredient("liquid", "water", [], "ml", 0, pair(200, 600));
+const water = new_ingredient("liquid", "water", ["dairy"], "ml", 0, pair(200, 600));
 const stock = new_ingredient("liquid", "stock", [], "ml", 0, pair(200, 600));
 
 const chicken_breast = new_ingredient("meat", "chicken breast", ["meat"], "", 164, pair(1, 2));
@@ -42,28 +43,16 @@ function filter_allergies(save_data: Array<Array<Ingredient>>, allergies: Array<
     let is_done: boolean = false;
     for(let categoryindex = 0; categoryindex < ingredients.length; categoryindex ++)
     {
+        console.log("categoryindex: " + categoryindex);
         for(let ingredientindex = 0; ingredientindex < ingredients[categoryindex].length; ingredientindex ++)
         {
+            console.log("ingredientindex: " + ingredientindex);
             const ingredientallergy = ingredients[categoryindex][ingredientindex].allergies;
-            for(let allergyindex = 0; allergyindex < ingredientallergy.length; allergyindex ++)
+            for(let userallergyindex = 0; userallergyindex < allergies.length; userallergyindex++)
             {
-                if(is_done)
+                if(ingredientallergy.includes(allergies[userallergyindex]))
                 {
-                    is_done = false;
-                    break;
-                }
-                for(let userallergyindex = 0; userallergyindex < allergies.length; userallergyindex ++)
-                {
-                    if(ingredientallergy[allergyindex] == allergies[userallergyindex])
-                    {
-                        ingredients[categoryindex] = ingredients[categoryindex].splice(ingredientindex, 1);
-                        is_done = true;
-                        break;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                    ingredients[categoryindex] = ingredients[categoryindex].splice(ingredientindex, 1);
                 }
             }
         }
