@@ -4,7 +4,7 @@ import {
 
 
 
-function filter_allergies(ingredients: Array<Array<Ingredient>>, allergies: Array<string>): Array<Array<Ingredient>>{
+export function filter_allergies(ingredients: Array<Array<Ingredient>>, allergies: Array<string>): Array<Array<Ingredient>>{
     for(let categoryindex = 0; categoryindex < ingredients.length; categoryindex ++)
     {
         for(let ingredientindex = ingredients[categoryindex].length - 1; ingredientindex >= 0; ingredientindex = ingredientindex - 1)
