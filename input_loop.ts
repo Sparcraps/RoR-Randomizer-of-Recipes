@@ -1,6 +1,5 @@
 import * as PromptSync from "prompt-sync";
-
-const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
+import { Stack, empty, is_empty, push, top, pop, display_stack } from "./lib/stack";
 
 function RoR_start(): void {
     console.log("----------------------------------------");
@@ -11,127 +10,201 @@ function RoR_start(): void {
     console.log("|  _ < (_) |  _ < ");
     console.log("|_| \\_\\___/|_| \\_\\");
     console.log("----------------------------------------");
-    main_menu();
+    console.log();
+    
+    menu_memory = push(main_menu, menu_memory);
+    while (!is_empty(menu_memory)) {
+        top(menu_memory)();
+    }
+    kill_RoR();
 }
 
 function main_menu(): void {
     let user_input: string | null;
+    const print_menu: Array<string> = ['"h" = help', '"r" = randomize recipe',
+                                       '"q" = quit"', '"s" = saved recipes',
+                                       '"c" = configure"'];
+    const valid_inputs: Array<string> = ["h", "r", "q", "s", "c"];
+    
+    print_alternatives(print_menu);
+    user_input = check_input(valid_inputs, "Choose an alternative: ");
 
-    console.log("");
-    console.log('"h" = help');
-    console.log('"r" = randomize recipe');
-    console.log('"q" = quit"');
-    console.log('"s" = saved recipes');
-    console.log('"c = configure"');
-    user_input = prompt("Choose an alternative: ");
-    console.log("");
-
+    while (!valid_inputs.includes(user_input)) {
+        print_bold("Invalid input. Try again");
+    }
     if (user_input === "h") {
         print_help();
     } else if (user_input === "r") {
         // generate_recipe();
     } else if (user_input === "q") {
-        kill_RoR();
+        oblivion();
     } else if (user_input === "s") {
         // saved_recipes();
     } else if (user_input === "c") {
-        configure();
-    } else {
-        console.log("Invalid input. Try again")
-        main_menu();
+        menu_memory = push(configure, menu_memory);
     }
+    else {}
 }
 
 function print_help(): void {
-    console.log("randomize recipe: ");
+    print_bold("randomize recipe: ");
     console.log("The main feature of RoR.");
     console.log("Generates a randomized recipe based on the current configurations.");
     console.log("The ingredients picked out for the recipe, their quantities and cooking methods will all be randomized,")
     console.log("until the requested number of portions has been met.\n")
 
-    console.log("quit: ");
+    print_bold("quit: ");
     console.log("Terminates the program session.");
     console.log("All configurations and saved recipes carry over to the next time RoR is run.\n");
 
-    console.log("saved recipes: ");
+    print_bold("saved recipes: ");
     console.log("View a menu of all previously saved recipes.");
     console.log("The recipes can be selected to have their contents viewed.\n");
 
-    console.log("configure: ");
+    print_bold("configure: ");
     console.log("View a menu of recipe generation configurations.");
-    console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.\n");
-
-    main_menu();
+    console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.");
 }
 
 function kill_RoR(): void {
-    console.log("");
-    console.log("Goodbye :)");
+    print_bold("Goodbye :)");
 }
 
 function configure(): void {
     let user_input: string | null;
-    console.log("");
-    console.log('"p" = configure portion amount');
-    console.log('"d" = configure dietary restrictions / allergies');
-    console.log('"a" = add ingredient data"');
-    console.log('"b" = back to main menu');
-    user_input = prompt("Choose an alternative: ");
+    let print_menu: Array<string> = ['"p" = portion amount',
+                                       '"d" = dietary restrictions',
+                                       '"i" = ingredient data"',
+                                       '"b" = back to main menu'];
+    let valid_inputs: Array<string> = ["p", "d", "i", "b"];
 
-    function configure_portion_amount(): void {
+    print_alternatives(print_menu);
+    user_input = check_input(valid_inputs, "Choose what you want to configure: ");
+    
+    if (user_input === "p") {
+        menu_memory = push(configure_portion, menu_memory);
+    } else if (user_input === "d") {
+        menu_memory = push(dietary_prompt, menu_memory);
+    } else if (user_input === "i") {
+        menu_memory = push(configure_ingredients, menu_memory)
+    } else if (user_input === "b") {
+        oblivion();
+    }
+
+    function configure_portion(): void {
+        valid_inputs = ["y", "n"];
+
         // print current portion amount from Settings object
-        let change_portion_amount = prompt("Do you wish to change portion amount? (y/n)");
-        
-        if (change_portion_amount === "y") {
-            integer_prompt("Enter new portion amount: ", "New amount registered.", save_settings()); // future function: save new portion amount in Settings object
-            configure();
-        } else if (change_portion_amount === "n") {
-            configure();
-        } else {
-            console.log("Invalid input. Try again");
-            configure_portion_amount();
+        user_input = check_input(valid_inputs, "Do you wish to change the portion amount? (y/n): ");
+
+        if (user_input === "y") {
+            // integer_prompt("Enter new portion amount: ", "New amount registered.", save_configuration()); // future function: save new portion amount in Settings object
+
+        } else if (user_input === "n") {
+            oblivion();
         }
     }
 
-    if (user_input === "p") {
-        configure_portion_amount();
+    function dietary_prompt(): void {
+        valid_inputs = ["y", "n"];
 
-    } else if (user_input === "d") {
         console.log("Active dietary restrictions: ")
-        // print active dietary restrictions from Settings object
-        let portion_amount_input: string | null = prompt("Enter portion amount: ");
+        // print active dietary restrictions from Settings object using print_alternatives
+        user_input = check_input(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
 
+        if (user_input === "y") {
+            menu_memory = push(configure_dietary, menu_memory);
+        } else if (user_input === "n") {
+            oblivion();
+        }
 
-    } else if (user_input === "a") {
-
-    } else if (user_input === "p") {
-
-    } else if (user_input === "b") {
-
-    } else {
-        console.log("Invalid input. Try again")
-        configure();
-    }
+        function configure_dietary(): void {
+            valid_inputs = ["a", "r", "b"];
+            print_menu = ['"a" = add ingredient', '"r" = remove ingredient"', '"b" = back to configurations menu'];
     
+            print_alternatives(print_menu);
+            user_input = check_input(valid_inputs, "Do you want to add or remove an ingredient: ");
+            //add
+        }
+    }
 
-    console.log("");
-    main_menu();
+    function configure_ingredients(): void {
+        valid_inputs = ["a", "r", "b"];
+        print_menu = ['"a" = add ingredient', '"r" = remove ingredient"', '"b" = back to configurations menu'];
+
+        print_alternatives(print_menu);
+        user_input = check_input(valid_inputs, "Do you want to add or remove an ingredient: ");
+        if (user_input === "a") {
+
+        } else if (user_input === "r") {
+
+        }
+        //add
+    }
 }
 
 function integer_prompt(prompt_text: string, success_text = "", fun: Function) {
     let new_portion_amount: string | null = prompt(prompt_text);
     let parsed: number = parseInt(new_portion_amount);
 
-    if (isNaN(parsed)) {
+    while (isNaN(parsed)) {
         console.log("Invalid input. Please enter a valid number.");
-        integer_prompt(prompt_text, success_text, fun);
+        new_portion_amount = prompt(prompt_text);
+        parsed = parseInt(new_portion_amount);
+    }
+    fun(parsed);
+    if (success_text !== "") {
+        console.log(success_text);
+    } else {}
+}
+
+function print_alternatives(alternatives: Array<string>): void {
+    if (alternatives.length === 0) { // to not print empty space
+        return;
     } else {
-        fun(parsed);
-        if (success_text !== "") {
-            console.log(success_text);
-        } else {}
+        for (let i = 0; i < alternatives.length; i++) {
+            console.log(alternatives[i]);
+        }
     }
 }
 
+function print_bold(print_str: string): void {
+    if (print_bold_text) {
+        console.log('\x1b[1m' + print_str + '\x1b[0m');
+    } else {
+        console.log(print_str);
+    }
+    return;
+}
 
+function oblivion<Function>(): undefined {
+    if (!is_empty(menu_memory)) {
+        menu_memory = pop(menu_memory);
+    } else {
+        throw new Error("Error removing function from memory stack")
+    }
+}
+
+function check_input(valid: Array<string>, question: string): string {
+    console.log();
+    let user_input: string | null = prompt(question);
+    if (user_input !== null) {
+        user_input = user_input.toLowerCase();
+    } else {}
+    console.log();
+
+    while (!valid.includes(user_input)) {
+        print_bold("Invalid input. Try again");
+        user_input = prompt(question);
+        if (user_input !== null) {
+            user_input = user_input.toLowerCase();
+        } else {}
+        console.log();
+    }
+    return user_input;
+}
+
+const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
+let menu_memory: Stack<Function> = empty();
+const print_bold_text: boolean = true;
 RoR_start();
