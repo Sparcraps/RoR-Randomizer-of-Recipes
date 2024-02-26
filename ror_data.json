@@ -318,7 +318,8 @@
                     "grill"
                 ],
                 [
-                    "chop, grill"
+                    "chop",
+                    "grill"
                 ]
             ],
             "max_ingredients": 10
@@ -349,7 +350,8 @@
                     "grill"
                 ],
                 [
-                    "chop, grill"
+                    "chop",
+                    "grill"
                 ],
                 [
                     "boil",
@@ -363,7 +365,7 @@
             "name": "liquid",
             "cooking_methods": [
                 [
-                    "boil"
+                    "add"
                 ],
                 [
                     "reduce"
@@ -390,7 +392,8 @@
                     "fry"
                 ],
                 [
-                    "slice, fry"
+                    "slice",
+                    "fry"
                 ],
                 [
                     "boil"
@@ -424,8 +427,59 @@
                     "fry"
                 ]
             ],
-            "max_ingredients": 3
+            "max_ingredients": 1
         }
     ],
-    "kitchenware": []
+    "kitchenware": [
+        {
+            "tag": "kitchenware",
+            "name": "pot",
+            "cooking_methods": [
+                "boil",
+                "reduce",
+                "mash",
+                "saute",
+                "add"
+            ],
+            "inventory": []
+        },
+        {
+            "tag": "kitchenware",
+            "name": "cutting board",
+            "cooking_methods": [
+                "chop",
+                "slice",
+                "pound"
+            ],
+            "inventory": []
+        },
+        {
+            "tag": "kitchenware",
+            "name": "frying pan",
+            "cooking_methods": [
+                "fry",
+                "simmer",
+                "add"
+            ],
+            "inventory": []
+        },
+        {
+            "tag": "kitchenware",
+            "name": "oven",
+            "cooking_methods": [
+                "bake",
+                "grill",
+                "add"
+            ],
+            "inventory": []
+        },
+        {
+            "tag": "kitchenware",
+            "name": "bowl",
+            "cooking_methods": [
+                "marinate"
+            ],
+            "inventory": []
+        }
+    ]
 }

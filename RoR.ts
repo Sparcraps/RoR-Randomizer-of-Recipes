@@ -1,6 +1,6 @@
 import {
     type Ingredient, type Category, type KitchenWare, new_category, 
-    new_ingredient, new_kitchenware
+    new_ingredient, new_kitchenware, has_separable_inventory
 } from "./basics";
 import { Pair, head, pair, tail } from "./lib/list";
 
@@ -39,35 +39,58 @@ function new_cooking_step(cooking_method: string, ingredient_names: Array<string
 
 function print_recipe(recipe: Recipe): void {
     console.log("Portions: " + recipe.portions);
-    console.log("Around " + recipe.kcal_per_portion + " kcal per portion.")
+    console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
+    console.log("-----------------------------------");
     const ingredient_info = recipe.ingredient_info;
     ingredient_info.forEach(p => {
         const [ingredient, amount] = p
-        console.log(amount + " " + stringify_ingredient(ingredient, amount));
+        console.log(stringify_ingredient_info(ingredient, amount));
     })
 
     const steps = recipe.steps;
     steps.forEach(step => {
-        console.log(step.ingredient_names, ": " + step.cooking_method);
+        console.log(step.ingredient_names, ": " + step.cooking_method + in_or_on(step.kitchenware));
     })
     console.log();
 }
 
-function stringify_ingredient(ingredient: Ingredient, amount: number): string {
+function stringify_ingredient_info(ingredient: Ingredient, amount: number): string {
     if (ingredient.measurement === "" && amount > 1) {
-        return ingredient.name + "s";
+        return amount + " " + ingredient.name + "s";
     } else {
-        return ingredient.name;
+        return amount + " " + ingredient.measurement + ingredient.name;
+    }
+}
+
+function in_or_on(kw: KitchenWare): string {
+    if (kw.name === "cutting board") {
+        return " on " + kw.name;
+    } else {
+        return " in " + kw.name;
     }
 }
 
 function generate_recipe([min_portion, max_portion]: Pair<number, number>, portions: number, filters: Array<string>): Recipe {
+    // returns ingredient name with s if it should be referred to in plural
+    function name_with_s(ingredient: Ingredient, amount: number): string {
+        if (ingredient.measurement === "" && amount > 1) {
+            return ingredient.name + "s";
+        } else {
+            return ingredient.name;
+        }
+    }
+
     // Selects a random category from an array of categories and 
     // returns the category and its ingredient array. Removes both and retries
     // if the ingredient array is empty.
     function randomize_category(): Pair<Category, Array<Ingredient>> {
         const cat_i = Math.floor(Math.random() * category_data.length);
         const cat = category_data[cat_i];
+        if (cat.max_ingredients === 0) {
+            return randomize_category();
+        } else {
+            cat.max_ingredients = cat.max_ingredients - 1;
+        }
         const ingredient_arr = ingredient_data[cat_i];
         if (ingredient_arr.length === 0) {
             category_data.splice(cat_i, 1);
@@ -132,16 +155,16 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
     // adds a pair of selected cooking method and [ingredient] to 
     // selected_methods array, or if the method already exists adds ingredient 
     // to corresponding array in selected_methods
-    function add_method(method: Array<string>, ingredient: Ingredient): void {
+    function add_method(method: Array<string>, ingredient_name: string): void {
         for (let i = 0; i < selected_methods.length; i++) {
             const p = selected_methods[i];
             if (head(p).toString() === method.toString()) { // checks if the method arrays are structurally equal (with same order)
-                tail(p).push(ingredient.name);
+                tail(p).push(ingredient_name);
                 return;
             } else {}
         }
 
-        selected_methods.push(pair(method, [ingredient.name]))
+        selected_methods.push(pair(method, [ingredient_name]))
     }
  
     // randomizes ingredients and cooking methods for them within kcal range for
@@ -162,7 +185,7 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
             if (amount === 0) { // amount can be 0 if max_measures is lower than minimum measures for the ingredient and portion amount.
                 continue;
             } else {
-                add_method(randomize_cooking_method(cat), ingredient);
+                add_method(randomize_cooking_method(cat), name_with_s(ingredient, amount));
                 recipe.ingredient_info.push(pair(ingredient, amount));
                 kcal += amount * kcal_per_measure;
             }
@@ -193,27 +216,50 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
             kw = get_kitchenware_from_method(current_method);
         } else {}
         method.shift(); // removes current method from method
+        if (has_separable_inventory(kw)) {
+            const extra_ingredients = do_separable_method(current_method, kw, steps);
+            kw.inventory.push(...extra_ingredients);
+        } else {}
+        kw.inventory.push(...ingredient_names);
         const more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
         ingredient_names.push(...more_ingredients);
-        kw.inventory.push(...ingredient_names);
         steps.push(new_cooking_step(current_method, ingredient_names, kw));
         return add_cooking_step(method, ingredient_names, steps);
+    }
+
+    function do_separable_method(method: string, kw: KitchenWare, steps): Array<string> {
+        const ingredient_names: Array<string> = []
+        for (let i = 0; i < selected_methods.length; i++) {
+            const other_method = head(selected_methods[i]);
+            for (let j = 0; j < other_method.length - 1; j++) {
+                const m = other_method[j];
+                if (m === method) {
+                    const names = tail(selected_methods[i]);
+                    ingredient_names.push(...names); // adds ingredient for matching method to list
+                    const rest_of_method = other_method.splice(0, j + 1); // removes methots up to found method from other method array and saves these in another method
+                    rest_of_method.pop(); // removes found method
+                    add_cooking_step(rest_of_method, names, steps);
+                }
+            }
+        }
+        return ingredient_names;
     }
 
     // finds methods that contain the input method at the end and adds cooking
     // steps for them. Returns their ingredient names.
     function do_similar_methods(method: Array<string>, steps: Array<CookingStep>): Array<string> {
-        const ingredient_names: Array<string> = []
+        const ingredient_names: Array<string> = [];
         for (let i = 0; i < selected_methods.length; i++) {
             const other_method = head(selected_methods[i]);
             const copy_method = [...other_method];
-            for (let j = 0; j < other_method.length; j++) {
+            for (let j = 0; j < other_method.length - 1; j++) {
                 copy_method.shift();
                 if (copy_method === method) {
                     const names = tail(selected_methods[i])
                     ingredient_names.push(...names); // adds ingredient for matching method to list
                     other_method.splice(j, method.length); // removes part of other method that matches method
                     add_cooking_step(other_method, names, steps);
+                    break;
                 } else {}
             }
         }

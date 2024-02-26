@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.randomize_cooking_instruction = exports.new_ingredient = exports.find_by_name = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.new_kitchenware = exports.new_category = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_category_max = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
+exports.has_separable_inventory = exports.new_ingredient = exports.find_by_name = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.new_kitchenware = exports.new_category = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_category_max = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
 /**
  * Check whether the input is of type Ingredient.
  * @param input - argument to check the type of
@@ -187,9 +187,8 @@ export function add_to_ingredient_history(ingredient: Ingredient, str: string): 
 function add_ingredient_to_kitchenware(ingredient, kitchenware) {
     var inv = get_kitchenware_inventory(kitchenware);
     var ingredient_name = get_ingredient_name(ingredient);
-    var ingredient_already_in_inventory = find_by_name(ingredient_name, inv);
-    if (ingredient_already_in_inventory === -1) {
-        kitchenware.inventory.push(ingredient);
+    if (!inv.includes(ingredient_name)) {
+        inv.push(ingredient_name);
         return kitchenware;
     }
     else {
@@ -257,8 +256,8 @@ exports.find_by_name = find_by_name;
  * ingredient.
  * @param kcal_per_measurement - Number describing kcal per measurement
  * (specified in measurement parameter) of the ingredient.
- * @param range - A pair of numbers describing the lower and
- * upper boundaries of the reasonable amount of the ingredient to have in a
+ * @param range - A pair of numbers describing the lower and upper boundaries,
+ * in measurements, of the reasonable amount of the ingredient to have in a
  * portion.
  * @returns An ingredient object.
  */
@@ -274,11 +273,12 @@ function new_ingredient(category, name, allergies, measurement, kcal_per_measure
     };
 }
 exports.new_ingredient = new_ingredient;
-function randomize_cooking_instruction(ingredient, category_data) {
-    var method_arr = get_ingredient_cooking_methods(ingredient, category_data);
-    var len = method_arr.length;
-    var index = Math.floor(Math.random() * len);
-    var randomized = method_arr[index];
-    return randomized;
+function has_separable_inventory(kw) {
+    if (kw.name === "cutting board" || kw.name === "oven") {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
-exports.randomize_cooking_instruction = randomize_cooking_instruction;
+exports.has_separable_inventory = has_separable_inventory;

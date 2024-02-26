@@ -9,6 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var basics_1 = require("./basics");
 var list_1 = require("./lib/list");
 var save_load_data_1 = require("./save_load_data");
 var data = (0, save_load_data_1.load_data)();
@@ -24,33 +25,57 @@ function new_cooking_step(cooking_method, ingredient_names, kitchenware) {
 function print_recipe(recipe) {
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
+    console.log("-----------------------------------");
     var ingredient_info = recipe.ingredient_info;
     ingredient_info.forEach(function (p) {
         var ingredient = p[0], amount = p[1];
-        console.log(amount + " " + stringify_ingredient(ingredient, amount));
+        console.log(stringify_ingredient_info(ingredient, amount));
     });
     var steps = recipe.steps;
     steps.forEach(function (step) {
-        console.log(step.ingredient_names, ": " + step.cooking_method);
+        console.log(step.ingredient_names, ": " + step.cooking_method + in_or_on(step.kitchenware));
     });
     console.log();
 }
-function stringify_ingredient(ingredient, amount) {
+function stringify_ingredient_info(ingredient, amount) {
     if (ingredient.measurement === "" && amount > 1) {
-        return ingredient.name + "s";
+        return amount + " " + ingredient.name + "s";
     }
     else {
-        return ingredient.name;
+        return amount + " " + ingredient.measurement + ingredient.name;
+    }
+}
+function in_or_on(kw) {
+    if (kw.name === "cutting board") {
+        return " on " + kw.name;
+    }
+    else {
+        return " in " + kw.name;
     }
 }
 function generate_recipe(_a, portions, filters) {
     var min_portion = _a[0], max_portion = _a[1];
+    // returns ingredient name with s if it should be referred to in plural
+    function name_with_s(ingredient, amount) {
+        if (ingredient.measurement === "" && amount > 1) {
+            return ingredient.name + "s";
+        }
+        else {
+            return ingredient.name;
+        }
+    }
     // Selects a random category from an array of categories and 
     // returns the category and its ingredient array. Removes both and retries
     // if the ingredient array is empty.
     function randomize_category() {
         var cat_i = Math.floor(Math.random() * category_data.length);
         var cat = category_data[cat_i];
+        if (cat.max_ingredients === 0) {
+            return randomize_category();
+        }
+        else {
+            cat.max_ingredients = cat.max_ingredients - 1;
+        }
         var ingredient_arr = ingredient_data[cat_i];
         if (ingredient_arr.length === 0) {
             category_data.splice(cat_i, 1);
@@ -115,16 +140,16 @@ function generate_recipe(_a, portions, filters) {
     // adds a pair of selected cooking method and [ingredient] to 
     // selected_methods array, or if the method already exists adds ingredient 
     // to corresponding array in selected_methods
-    function add_method(method, ingredient) {
+    function add_method(method, ingredient_name) {
         for (var i = 0; i < selected_methods.length; i++) {
             var p = selected_methods[i];
             if ((0, list_1.head)(p).toString() === method.toString()) { // checks if the method arrays are structurally equal (with same order)
-                (0, list_1.tail)(p).push(ingredient.name);
+                (0, list_1.tail)(p).push(ingredient_name);
                 return;
             }
             else { }
         }
-        selected_methods.push((0, list_1.pair)(method, [ingredient.name]));
+        selected_methods.push((0, list_1.pair)(method, [ingredient_name]));
     }
     // randomizes ingredients and cooking methods for them within kcal range for
     // the recipe.
@@ -142,7 +167,7 @@ function generate_recipe(_a, portions, filters) {
                 continue;
             }
             else {
-                add_method(randomize_cooking_method(cat), ingredient);
+                add_method(randomize_cooking_method(cat), name_with_s(ingredient, amount));
                 recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
                 kcal += amount * kcal_per_measure;
             }
@@ -161,7 +186,7 @@ function generate_recipe(_a, portions, filters) {
     // adds cooking step to steps array, removes first element in method, calls
     // recursively until method is empty.
     function add_cooking_step(method, ingredient_names, steps, kw) {
-        var _a;
+        var _a, _b;
         if (kw === void 0) { kw = undefined; }
         if (method.length === 0) {
             return;
@@ -173,12 +198,34 @@ function generate_recipe(_a, portions, filters) {
         }
         else { }
         method.shift(); // removes current method from method
+        if ((0, basics_1.has_separable_inventory)(kw)) {
+            var extra_ingredients = do_separable_method(current_method, kw, steps);
+            (_a = kw.inventory).push.apply(_a, extra_ingredients);
+        }
+        else { }
+        (_b = kw.inventory).push.apply(_b, ingredient_names);
         var more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
         ingredient_names.push.apply(// finds ingredients that use the same method as the rest of method from some point.
         ingredient_names, more_ingredients);
-        (_a = kw.inventory).push.apply(_a, ingredient_names);
         steps.push(new_cooking_step(current_method, ingredient_names, kw));
         return add_cooking_step(method, ingredient_names, steps);
+    }
+    function do_separable_method(method, kw, steps) {
+        var ingredient_names = [];
+        for (var i = 0; i < selected_methods.length; i++) {
+            var other_method = (0, list_1.head)(selected_methods[i]);
+            for (var j = 0; j < other_method.length - 1; j++) {
+                var m = other_method[j];
+                if (m === method) {
+                    var names = (0, list_1.tail)(selected_methods[i]);
+                    ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
+                    var rest_of_method = other_method.splice(0, j + 1); // removes methots up to found method from other method array and saves these in another method
+                    rest_of_method.pop(); // removes found method
+                    add_cooking_step(rest_of_method, names, steps);
+                }
+            }
+        }
+        return ingredient_names;
     }
     // finds methods that contain the input method at the end and adds cooking
     // steps for them. Returns their ingredient names.
@@ -187,13 +234,14 @@ function generate_recipe(_a, portions, filters) {
         for (var i = 0; i < selected_methods.length; i++) {
             var other_method = (0, list_1.head)(selected_methods[i]);
             var copy_method = __spreadArray([], other_method, true);
-            for (var j = 0; j < other_method.length; j++) {
+            for (var j = 0; j < other_method.length - 1; j++) {
                 copy_method.shift();
                 if (copy_method === method) {
                     var names = (0, list_1.tail)(selected_methods[i]);
                     ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
                     other_method.splice(j, method.length); // removes part of other method that matches method
                     add_cooking_step(other_method, names, steps);
+                    break;
                 }
                 else { }
             }

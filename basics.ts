@@ -325,7 +325,7 @@ export function new_ingredient(
     };
 }
 
-function has_separable_inventory(kw: KitchenWare) {
+export function has_separable_inventory(kw: KitchenWare) {
     if (kw.name === "cutting board" || kw.name === "oven") {
         return true;
     } else {
