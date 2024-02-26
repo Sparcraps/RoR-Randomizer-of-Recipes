@@ -47,11 +47,19 @@
             "tag": "category",
             "name": "a category",
             "cooking_methods": [
-                "cook",
-                "taste"
+                ["cook"],
+                ["taste"],
+                ["cook", "taste"]
             ],
             "max_ingredients": 10
         }
     ],
-    "kitchenware": []
+    "kitchenware": [
+        {
+            "tag": "kitchenware",
+            "name": "cooker",
+            "inventory": [],
+            "cooking_methods": ["cook", "taste"]
+        }
+    ]
 }
