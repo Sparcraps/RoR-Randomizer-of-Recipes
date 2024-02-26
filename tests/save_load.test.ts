@@ -71,7 +71,7 @@ describe("testing functions to save and load data", () => {
     })
 
     test("functions to save and delete work on test ingredients and test category", () => {
-        const test_category = new_category("test category", ["chop", "boil"], 10); 
+        const test_category = new_category("test category", [["chop"], ["boil"]], 10); 
 
         const ti1 = new_ingredient("test category", "test ingredient", 
                                     ["cat"], "liters", 100, [50, 500]);

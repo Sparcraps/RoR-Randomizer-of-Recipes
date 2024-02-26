@@ -24,7 +24,7 @@ export type Ingredient = {
     allergies: Array<string>,
     measurement: string,
     kcal_per_measurement: number, // to determine portion size
-    range: Pair<number, number> // (lower kcal limit, upper kcal limit)
+    range: Pair<number, number> // (lower measurement limit, upper measurement limit)
     // nutrition_type: Array<string>, // e.g. vitamin A, protein, fat, carbs
 };
 
@@ -35,7 +35,7 @@ export type Ingredient = {
 export type Category = {
     tag: "category",
     name: string,
-    cooking_methods: Array<Array<string>>
+    cooking_methods: Array<Array<string>>,
     max_ingredients: number
 };
 
@@ -47,7 +47,7 @@ export type KitchenWare = {
     tag: "kitchenware",
     name: string,
     cooking_methods: Array<string>,
-    inventory: Array<Ingredient>
+    inventory: Array<string>
 };
 
 /**
@@ -191,7 +191,7 @@ export function get_kitchenware_name(kitchenware: KitchenWare): string {
  * @param kitchenware - KitchenWare to check
  * @returns an Array of the Ingredients that are currently in kitchenware's inventory.
  */
-export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingredient> {
+export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<string> {
     return kitchenware.inventory;
 }
 
@@ -238,10 +238,9 @@ export function add_to_ingredient_history(ingredient: Ingredient, str: string): 
 export function add_ingredient_to_kitchenware(ingredient: Ingredient, kitchenware: KitchenWare): KitchenWare {
     const inv = get_kitchenware_inventory(kitchenware);
     const ingredient_name = get_ingredient_name(ingredient);
-    const ingredient_already_in_inventory = find_by_name(ingredient_name, inv);    
     
-    if (ingredient_already_in_inventory === -1) {
-        kitchenware.inventory.push(ingredient);
+    if (!inv.includes(ingredient_name)) {
+        inv.push(ingredient_name);
         return kitchenware;
     } else {
         return kitchenware;
@@ -307,8 +306,8 @@ export function find_by_name(name: string, arr: Array<NamedRecord>): number {
  * ingredient.
  * @param kcal_per_measurement - Number describing kcal per measurement
  * (specified in measurement parameter) of the ingredient.
- * @param range - A pair of numbers describing the lower and
- * upper boundaries of the reasonable amount of the ingredient to have in a
+ * @param range - A pair of numbers describing the lower and upper boundaries,
+ * in measurements, of the reasonable amount of the ingredient to have in a
  * portion.
  * @returns An ingredient object.
  */
@@ -326,11 +325,10 @@ export function new_ingredient(
     };
 }
 
-
-export function randomize_cooking_instruction(ingredient: Ingredient, category_data: Array<Category>): Array<string> {
-    const method_arr: Array<Array<string>> = get_ingredient_cooking_methods(ingredient, category_data);
-    const len: number = method_arr.length;
-    const index = Math.floor(Math.random() * len);
-    const randomized = method_arr[index];
-    return randomized; 
+function has_separable_inventory(kw: KitchenWare) {
+    if (kw.name === "cutting board" || kw.name === "oven") {
+        return true;
+    } else {
+        return false;
+    }
 }
