@@ -157,7 +157,7 @@ exports.get_kitchenware_inventory = get_kitchenware_inventory;
 /**
  * Create an IngredientCategory from a name and an Array of cooking methods.
  * @param name - the name of the IngredientCategory to be created
- * @param cooking_methods - an Array containing the available cooking methods for the created category
+ * @param cooking_methods - an Array containing the available cooking methods for the created Category
  * @param max_ingredients - maximum number of times the category can be generated.
  * @returns an IngredientCategory with an empty cooking_methods Array.
  */
@@ -168,11 +168,12 @@ exports.new_category = new_category;
 /**
  * Create a KitchenWare from a name.
  * @param name - the name of the KitchenWare to be created
+ * @param cooking_methods - an Array containing the available cooking methods for the created KitchenWare
  * @modifies kitchenware_data by adding the new KitchenWare to the end of it
  * @returns a KitchenWare with an empty inventory.
  */
-function new_kitchenware(name) {
-    return { tag: "kitchenware", name: name, inventory: [] };
+function new_kitchenware(name, cooking_methods) {
+    return { tag: "kitchenware", name: name, cooking_methods: cooking_methods, inventory: [] };
 }
 exports.new_kitchenware = new_kitchenware;
 /**

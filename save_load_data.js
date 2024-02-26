@@ -1,28 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delete_ingredient = exports.delete_category = exports.save_new_ingredient = exports.save_new_category = exports.save_data = exports.load_data = exports.find_by_name = void 0;
+exports.delete_ingredient = exports.delete_kitchenware = exports.delete_category = exports.save_new_ingredient = exports.save_new_kitchenware = exports.save_new_category = exports.save_data = exports.load_data = void 0;
+var basics_1 = require("./basics");
 var fs = require('fs');
 var filepath = __dirname + "/ror_data.json";
-/**
- * Returns the index of the specified named object in an array or -1 if
- * the ingredient is not found.
- * @param {string} name - The name of the object.
- * @param {Array<NamedRecord>} arr - The array to search.
- * @returns {number} - The index of the object in the array or -1 if not
- * found.
- */
-function find_by_name(name, arr) {
-    var l = arr.length;
-    for (var i = 0; i < arr.length; i++) {
-        var obj = arr[i];
-        if (obj.name === name) {
-            return i;
-        }
-        else { }
-    }
-    return -1;
-}
-exports.find_by_name = find_by_name;
 /**
  * Reads and returns save data.
  * @returns {SaveData} - Save data object with categories, ingredients and
@@ -38,6 +19,7 @@ exports.load_data = load_data;
  * Saves a savedata object to ror_data.json.
  * Note: overwrites existing save data.
  * @param {SaveData} data - Save data to save.
+ * @modifies ror_data.json
  */
 function save_data(data) {
     var json_data = JSON.stringify(data, null, 4);
@@ -47,8 +29,9 @@ exports.save_data = save_data;
 /**
  * Saves any amount of new categories to ror_data.json without removing
  * the file's contents.
- * @param {...Category} new_cats - Optional amount of new ingredients
+ * @param {...Category} new_cats - Optional amount of new categories
  * to save.
+ * @modifies ror_data.json
  * @returns {SaveData} - The updated save data.
  */
 function save_new_category() {
@@ -59,7 +42,7 @@ function save_new_category() {
     var data = load_data();
     var cats = data.categories;
     new_cats.forEach(function (cat) {
-        var existing_index = find_by_name(cat.name, cats);
+        var existing_index = (0, basics_1.find_by_name)(cat.name, cats);
         if (!(existing_index === -1)) {
             console.error(new Error("Category with name " + cat.name + " already exists."));
         }
@@ -73,10 +56,39 @@ function save_new_category() {
 }
 exports.save_new_category = save_new_category;
 /**
+ * Saves any amount of new kitchenware to ror_data.json without removing
+ * the file's contents.
+ * @param {...KitchenWare} new_cats - Optional amount of new kitchenware
+ * to save.
+ * @modifies ror_data.json
+ * @returns {SaveData} - The updated save data.
+ */
+function save_new_kitchenware() {
+    var new_kitch = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        new_kitch[_i] = arguments[_i];
+    }
+    var data = load_data();
+    var saved_kw = data.kitchenware;
+    new_kitch.forEach(function (kw) {
+        var existing_index = (0, basics_1.find_by_name)(kw.name, saved_kw);
+        if (!(existing_index === -1)) {
+            console.error(new Error("Kitchenware with name " + kw.name + " already exists."));
+        }
+        else {
+            saved_kw.push(kw);
+        }
+    });
+    save_data(data);
+    return data;
+}
+exports.save_new_kitchenware = save_new_kitchenware;
+/**
  * Saves any amount of new ingredients to ror_data.json without removing
  * the file's contents.
  * @param {...Ingredient} new_ingredients - Optional amount of new ingredients
  * to save.
+ * @modifies ror_data.json
  * @returns {SaveData} - The updated save data.
  */
 function save_new_ingredient() {
@@ -90,7 +102,7 @@ function save_new_ingredient() {
         var ingredient_data = data.ingredients;
         var category_data = data.categories;
         var cat = i.category;
-        var index = find_by_name(cat, category_data);
+        var index = (0, basics_1.find_by_name)(cat, category_data);
         if (index === -1) {
             console.error(new Error("Category with name " + cat + "doesn't exist."));
         }
@@ -106,7 +118,7 @@ function save_new_ingredient() {
         var found = false;
         for (var cat_i = 0; cat_i < cat_amount; cat_i++) {
             var ingredient_arr = ingredient_data[cat_i];
-            var index = find_by_name(i.name, ingredient_arr);
+            var index = (0, basics_1.find_by_name)(i.name, ingredient_arr);
             if (!(index === -1)) {
                 found = true;
                 break;
@@ -132,6 +144,7 @@ exports.save_new_ingredient = save_new_ingredient;
  * Deletes categories with the specified names from ror_data.json and
  * returns the updated save data.
  * @param {...string} names - The sames of the categories to delete.
+ * @modifies ror_data.json
  * @returns {SaveData} - Updated save data.
  */
 function delete_category() {
@@ -155,9 +168,6 @@ function delete_category() {
             var name_index = names.indexOf(cat.name);
             names.splice(name_index, 1);
         }
-        if (names.length === 0) {
-            break;
-        }
     }
     for (var i = 0; i < names.length; i++) {
         var name_1 = names[i];
@@ -170,9 +180,45 @@ function delete_category() {
 }
 exports.delete_category = delete_category;
 /**
+ * Deletes kitchenware with the specified names from ror_data.json and
+ * returns the updated save data.
+ * @param {...string} names - The sames of the kitchenware to delete.
+ * @modifies ror_data.json
+ * @returns {SaveData} - Updated save data.
+ */
+function delete_kitchenware() {
+    var names = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        names[_i] = arguments[_i];
+    }
+    var data = load_data();
+    var saved_kw = data.kitchenware;
+    var updated_kw = [];
+    var l = saved_kw.length;
+    for (var i = 0; i < l; i++) {
+        var kw = saved_kw[i];
+        if (!(names.includes(kw.name))) {
+            updated_kw.push(kw);
+        }
+        else {
+            var name_index = names.indexOf(kw.name);
+            names.splice(name_index, 1);
+        }
+    }
+    for (var i = 0; i < names.length; i++) {
+        var name_2 = names[i];
+        console.error(new Error("There is no saved kitchenware with the name " + name_2 + "."));
+    }
+    data.kitchenware = updated_kw;
+    save_data(data);
+    return data;
+}
+exports.delete_kitchenware = delete_kitchenware;
+/**
  * Deletes ingredients with the specified name from ror_data.json and
  * returns the updated save data.
  * @param {...string} names - The sames of the ingredients to delete.
+ * @modifies ror_data.json
  * @returns {SaveData} - Updated save data.
  */
 function delete_ingredient() {
@@ -185,34 +231,31 @@ function delete_ingredient() {
     var updated_ingredients = [];
     // Returns array without ingredients with names in names array.
     function delete_from_arr(arr) {
-        var updated_arr = [];
-        var l = arr.length;
-        for (var i = 0; i < l; i++) {
-            var ingredient = arr[i];
-            if (!(names.includes(ingredient.name))) {
-                updated_arr.push(ingredient);
-            }
-            else {
-                var name_index = names.indexOf(ingredient.name);
-                names.splice(name_index, 1);
-            }
-            if (names.length === 0) {
-                break;
-            }
-        }
-        return updated_arr;
-    }
-    ingredient_data.forEach(function (arr) {
         if (names.length === 0) {
-            return;
+            return arr;
         }
         else {
-            delete_from_arr(arr);
+            var updated_arr = [];
+            var l = arr.length;
+            for (var i = 0; i < l; i++) {
+                var ingredient = arr[i];
+                if (!(names.includes(ingredient.name))) {
+                    updated_arr.push(ingredient);
+                }
+                else {
+                    var name_index = names.indexOf(ingredient.name);
+                    names.splice(name_index, 1);
+                }
+            }
+            return updated_arr;
         }
+    }
+    ingredient_data.forEach(function (arr) {
+        updated_ingredients.push(delete_from_arr(arr));
     });
     for (var i = 0; i < names.length; i++) {
-        var name_2 = names[i];
-        console.error(new Error("There is no saved ingredient with the name " + name_2 + "."));
+        var name_3 = names[i];
+        console.error(new Error("There is no saved ingredient with the name " + name_3 + "."));
     }
     data.ingredients = updated_ingredients;
     save_data(data);

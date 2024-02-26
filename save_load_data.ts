@@ -4,7 +4,8 @@ import {
 
 export type SaveData = {
     categories: Array<Category>,
-    ingredients: Array<Array<Ingredient>>,
+    kitchenware: Array<KitchenWare>,
+    ingredients: Array<Array<Ingredient>>
 };
 
 const fs = require('fs');
@@ -16,9 +17,13 @@ const filepath = __dirname + "/ror_data.json";
  * kitchenware.
  */
 export function load_data(): SaveData {
-    const json_data = fs.readFileSync(filepath);
-    const data = JSON.parse(json_data);
-    return data;
+    if (fs.existsSync(filepath)) {
+        const json_data = fs.readFileSync(filepath);
+        const data = JSON.parse(json_data);
+        return data;
+    } else {
+        throw new Error("ror_data.json does not exist.");
+    }
 }
 
 /**
@@ -35,7 +40,7 @@ export function save_data(data: SaveData): void {
 /**
  * Saves any amount of new categories to ror_data.json without removing
  * the file's contents.
- * @param {...Category} new_cats - Optional amount of new ingredients
+ * @param {...Category} new_cats - Optional amount of new categories
  * to save.
  * @modifies ror_data.json
  * @returns {SaveData} - The updated save data.
@@ -55,6 +60,35 @@ export function save_new_category(
         } else {
             cats.push(cat);
             data.ingredients.push([]);
+        }
+    })
+    
+    save_data(data);
+    return data;
+}
+
+/**
+ * Saves any amount of new kitchenware to ror_data.json without removing
+ * the file's contents.
+ * @param {...KitchenWare} new_cats - Optional amount of new kitchenware
+ * to save.
+ * @modifies ror_data.json
+ * @returns {SaveData} - The updated save data.
+ */
+export function save_new_kitchenware(
+    ...new_kitch: Array<KitchenWare>
+    ): SaveData {
+    const data = load_data();
+    const saved_kw = data.kitchenware;
+
+    new_kitch.forEach(kw => {
+        const existing_index = find_by_name(kw.name, saved_kw);
+        if (!(existing_index === -1)) {
+            console.error(
+                new Error("Kitchenware with name " + kw.name + " already exists.")
+                );
+        } else {
+            saved_kw.push(kw);
         }
     })
     
@@ -147,10 +181,6 @@ export function delete_category(...names: Array<string>): SaveData {
             const name_index = names.indexOf(cat.name);
             names.splice(name_index, 1);
         }
-
-        if (names.length === 0) {
-            break;
-        }
     }
     
     for (let i = 0; i < names.length; i++) {
@@ -163,6 +193,43 @@ export function delete_category(...names: Array<string>): SaveData {
 
     data.ingredients = updated_ingredients;
     data.categories = updated_cats;
+    save_data(data);
+    return data;
+}
+
+/**
+ * Deletes kitchenware with the specified names from ror_data.json and
+ * returns the updated save data.
+ * @param {...string} names - The sames of the kitchenware to delete.
+ * @modifies ror_data.json
+ * @returns {SaveData} - Updated save data.
+ */
+export function delete_kitchenware(...names: Array<string>): SaveData {
+    const data = load_data();
+    const saved_kw = data.kitchenware;
+    const updated_kw: Array<KitchenWare> = [];
+
+    const l = saved_kw.length;
+    for (let i = 0; i < l; i++) {
+        const kw = saved_kw[i];
+
+        if (!(names.includes(kw.name))) {
+            updated_kw.push(kw);
+        } else {
+            const name_index = names.indexOf(kw.name);
+            names.splice(name_index, 1);
+        }
+    }
+    
+    for (let i = 0; i < names.length; i++) {
+        const name = names[i];
+        console.error(
+            new Error(
+                "There is no saved kitchenware with the name " + name + "."
+                ));
+    }
+
+    data.kitchenware = updated_kw;
     save_data(data);
     return data;
 }
@@ -181,31 +248,27 @@ export function delete_ingredient(...names: Array<string>): SaveData {
 
     // Returns array without ingredients with names in names array.
     function delete_from_arr(arr: Array<Ingredient>): Array<Ingredient> {
-        const updated_arr: Array<Ingredient> = [];
-        const l = arr.length;
-        for (let i = 0; i < l; i++) {
-            const ingredient = arr[i];
-    
-            if (!(names.includes(ingredient.name))) {
-                updated_arr.push(ingredient);
-            } else {
-                const name_index = names.indexOf(ingredient.name);
-                names.splice(name_index, 1);
+        if (names.length === 0) {
+            return arr
+        } else {
+            const updated_arr: Array<Ingredient> = [];
+            const l = arr.length;
+            for (let i = 0; i < l; i++) {
+                const ingredient = arr[i];
+        
+                if (!(names.includes(ingredient.name))) {
+                    updated_arr.push(ingredient);
+                } else {
+                    const name_index = names.indexOf(ingredient.name);
+                    names.splice(name_index, 1);
+                }
             }
-    
-            if (names.length === 0) {
-                break;
-            }
+            return updated_arr;
         }
-        return updated_arr;
     }
 
     ingredient_data.forEach(arr => {
-        if (names.length === 0) {
-            return;
-        } else {
-            delete_from_arr(arr);
-        }
+            updated_ingredients.push(delete_from_arr(arr));
     })
     
     for (let i = 0; i < names.length; i++) {

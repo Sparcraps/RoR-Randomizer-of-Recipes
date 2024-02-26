@@ -60,6 +60,7 @@ describe('testing basic ingredients.ts functions', () => {
     let test_kitchenware: KitchenWare = {
         tag: "kitchenware",
         name: "frying pan",
+        cooking_methods: [],
         inventory: [test_ingredient_meat]
     };
 
@@ -133,14 +134,14 @@ describe('testing basic ingredients.ts functions', () => {
     })
 
     test('function new_category works', () => {
-        const RoR_cat: Category = new_category("The best category ever made", ["qwe"]);
+        const RoR_cat: Category = new_category("The best category ever made", ["qwe"], 5);
         expect(is_category(RoR_cat)).toBe(true);
         expect(get_category_name(RoR_cat)).toEqual("The best category ever made");
         expect(RoR_cat.cooking_methods).toEqual(["qwe"]);
     }) 
 
     test('function new_kitchenware works', () => {
-        const RoR_kit: KitchenWare = new_kitchenware("The best kitchenware ever made");
+        const RoR_kit: KitchenWare = new_kitchenware("The best kitchenware ever made", []);
         expect(is_kitchenware(RoR_kit)).toBe(true);
         expect(get_kitchenware_name(RoR_kit)).toEqual("The best kitchenware ever made");
     })
