@@ -1,4 +1,41 @@
 {
-    "ingredients": [],
-    "categories": []
+    "ingredients": [
+        []
+    ],
+    "categories": [
+        {
+            "tag": "category",
+            "name": "vegetable",
+            "cooking_methods": [
+                [
+                    "chop",
+                    "boil"
+                ],
+                [
+                    "boil"
+                ],
+                [
+                    "chop",
+                    "fry"
+                ],
+                [
+                    "fry"
+                ],
+                [
+                    "chop",
+                    "bake"
+                ],
+                [
+                    "bake"
+                ],
+                [
+                    "grill"
+                ],
+                [
+                    "chop, grill"
+                ]
+            ],
+            "max_ingredients": 10
+        }
+    ]
 }

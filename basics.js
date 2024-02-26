@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.randomize_cooking_instruction = exports.new_ingredient = exports.find_by_name = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.add_to_ingredient_history = exports.new_kitchenware = exports.new_category = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_history = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
+exports.randomize_cooking_instruction = exports.new_ingredient = exports.find_by_name = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.add_to_ingredient_history = exports.new_kitchenware = exports.new_category = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_category_max = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_history = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
 /**
  * Check whether the input is of type Ingredient.
  * @param input - argument to check the type of
@@ -128,6 +128,15 @@ function get_ingredient_cooking_methods(ingredient, category_data) {
 }
 exports.get_ingredient_cooking_methods = get_ingredient_cooking_methods;
 /**
+ * Fetch the maximum number of times a category can be generated.
+ * @param @param category - category to check
+ * @returns Returns an integer symbolising the maximum number of times the category can be generated.
+ */
+function get_category_max(category) {
+    return category.max_ingredients;
+}
+exports.get_category_max = get_category_max;
+/**
  * Fetch the name of a KitchenWare.
  * @param kitchenware - KitchenWare to check
  * @returns Returns a string containing the name of the kitchenware.
@@ -149,10 +158,11 @@ exports.get_kitchenware_inventory = get_kitchenware_inventory;
  * Create an IngredientCategory from a name and an Array of cooking methods.
  * @param name - the name of the IngredientCategory to be created
  * @param cooking_methods - an Array containing the available cooking methods for the created category
+ * @param max_ingredients - maximum number of times the category can be generated.
  * @returns an IngredientCategory with an empty cooking_methods Array.
  */
-function new_category(name, cooking_methods) {
-    return { tag: "category", name: name, cooking_methods: cooking_methods };
+function new_category(name, cooking_methods, max_ingredients) {
+    return { tag: "category", name: name, cooking_methods: cooking_methods, max_ingredients: max_ingredients };
 }
 exports.new_category = new_category;
 /**

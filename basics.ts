@@ -22,7 +22,6 @@ export type Ingredient = {
     name: string,
     category: string, // e.g. vegetable, fruit
     allergies: Array<string>,
-    history: Array<string>,
     measurement: string,
     kcal_per_measurement: number, // to determine portion size
     range: Pair<number, number> // (lower kcal limit, upper kcal limit)
@@ -36,7 +35,7 @@ export type Ingredient = {
 export type Category = {
     tag: "category",
     name: string,
-    cooking_methods: Array<string>
+    cooking_methods: Array<Array<string>>
     max_ingredients: number
 };
 
@@ -93,15 +92,6 @@ export function get_ingredient_name(ingredient: Ingredient): string {
  */
 export function get_ingredient_allergies(ingredient: Ingredient): Array<string> {
     return ingredient.allergies;
-}
-
-/**
- * Fetch the history of an Ingredient.
- * @param ingredient - Ingredient to check
- * @returns Returns an Array containing the processing that ingredient has been through.
- */
-export function get_ingredient_history(ingredient: Ingredient): Array<string> {
-    return ingredient.history;
 }
 
 /**
@@ -173,7 +163,7 @@ export function get_category_name(category: Category): string {
  * @param category_data - An Array that contains all category data
  * @returns Returns an Array containing the cooking methods as strings.
  */
-export function get_ingredient_cooking_methods(ingredient: Ingredient, category_data: Array<Category>): Array<string> {
+export function get_ingredient_cooking_methods(ingredient: Ingredient, category_data: Array<Category>): Array<Array<string>> {
     return get_ingredient_category(ingredient, category_data).cooking_methods;
 }
 
@@ -211,8 +201,8 @@ export function get_kitchenware_inventory(kitchenware: KitchenWare): Array<Ingre
  * @param max_ingredients - maximum number of times the category can be generated.
  * @returns an IngredientCategory with an empty cooking_methods Array.
  */
-export function new_category(name: string, cooking_methods: Array<string>, max_ingredients: number): Category {
-    return { tag: "category", name, cooking_methods, max_ingredients}
+export function new_category(name: string, cooking_methods: Array<Array<string>>, max_ingredients: number): Category {
+    return { tag: "category", name, cooking_methods, max_ingredients};
 }
 
 /**
@@ -230,11 +220,12 @@ export function new_kitchenware(name: string): KitchenWare {
  * @param ingredient - Ingredient whose history is being altered
  * @param str - string to be added to history
  * @returns Returns ingredient with updated history.
- */
+ *
 export function add_to_ingredient_history(ingredient: Ingredient, str: string): Ingredient {
     get_ingredient_history(ingredient).push(str);
     return ingredient;
 }
+*/
 
 /**
  * Add an Ingredient to an existing KitchenWare's inventory, unless the ingredient is already in the inventory.
@@ -329,13 +320,13 @@ export function new_ingredient(
     ): Ingredient {
     return {
         name, category, allergies, measurement, 
-        kcal_per_measurement, range, tag: "ingredient", history: []
+        kcal_per_measurement, range, tag: "ingredient"
     };
 }
 
 
-export function randomize_cooking_instruction(ingredient: Ingredient, category_data: Array<Category>): string {
-    const method_arr: Array<string> = get_ingredient_cooking_methods(ingredient, category_data);
+export function randomize_cooking_instruction(ingredient: Ingredient, category_data: Array<Category>): Array<string> {
+    const method_arr: Array<Array<string>> = get_ingredient_cooking_methods(ingredient, category_data);
     const len: number = method_arr.length;
     const index = Math.floor(Math.random() * len);
     const randomized = method_arr[index];
