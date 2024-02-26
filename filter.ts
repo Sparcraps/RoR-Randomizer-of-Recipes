@@ -36,20 +36,9 @@ const ingredienttest = [[broccoli, celery, onion, red_onion, cucumber], [carrot,
 
 const allergies = ["meat"];
 
+
 function filter_allergies(save_data: Array<Array<Ingredient>>, allergies: Array<string>): Array<Array<Ingredient>>{
     const ingredients = save_data;
-    let is_done: boolean = false;
-    for(let categoryindex = 0; categoryindex < ingredients.length; categoryindex ++)
-    {
-        for(let ingredientindex = ingredients[categoryindex].length - 2; ingredientindex >= 0; ingredientindex = ingredientindex - 1)
-    Ingredient, 
-} from "./basics";
-import { 
-    SaveData 
-} from "./save_load_data";
-
-function filter_allergies(save_data: SaveData, allergies: Array<string>): Array<Array<Ingredient>>{
-    const ingredients = save_data.ingredients
     let is_done: boolean = false;
     for(let categoryindex = 0; categoryindex < ingredients.length; categoryindex ++)
     {
