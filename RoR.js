@@ -6,28 +6,6 @@ var data = (0, save_load_data_1.load_data)();
 function new_recipe(portions) {
     return {
         portions: portions,
-<<<<<<< Updated upstream
-        ingredient_info: [], steps: (0, queue_array_1.empty)(),
-        kitchenware: [], kcal_per_portion: 0
-    };
-}
-function new_cooking_step(cooking_method, ingredients, kitchenware) {
-    return { cooking_method: cooking_method, ingredients: ingredients, kitchenware: kitchenware };
-}
-function print_recipe(recipe) {
-    console.log("Portions: " + recipe.portions);
-    console.log("Around " + recipe.kcal_per_portion + "kcal per portion.");
-    var ingredient_info = recipe.ingredient_info;
-    ingredient_info.forEach(function (i) {
-        console.log(i[1] + " " + i[0].name);
-    });
-    // const kw = get_kitchenware_from_method(method, recipe, kitchenware_data);
-    // kw.inventory.push(ingredient);
-    // if (!recipe.kitchenware.includes(kw)) {
-    //     recipe.kitchenware.push(kw);
-    // } else {}
-    console.log();
-=======
         ingredient_info: [], steps: [], kcal_per_portion: 0
     };
 }
@@ -51,7 +29,6 @@ function stringify_ingredient(ingredient, amount) {
     else {
         return ingredient.name;
     }
->>>>>>> Stashed changes
 }
 function generate_recipe(_a, portions, filters) {
     var min_portion = _a[0], max_portion = _a[1];
@@ -114,10 +91,6 @@ function generate_recipe(_a, portions, filters) {
     // kitchenware, then looks in saved kitchenware, and returns the first one it finds.
     // needs to be updated to choose randomly if multiple kitchenware have the cooking method available
     function get_kitchenware_from_method(cooking_method) {
-<<<<<<< Updated upstream
-        var active_kw = recipe.kitchenware;
-=======
->>>>>>> Stashed changes
         for (var i = 0; i < active_kw.length; i++) {
             var kw = active_kw[i];
             if (kw.cooking_methods.includes(cooking_method)) {
@@ -132,8 +105,6 @@ function generate_recipe(_a, portions, filters) {
         }
         throw new Error("No kitchenware with cooking method " + cooking_method + "exists.");
     }
-<<<<<<< Updated upstream
-=======
     // adds a pair of selected cooking method and [ingredient] to 
     // selected_methods array, or if the method already exists adds ingredient 
     // to corresponding array in selected_methods
@@ -148,7 +119,6 @@ function generate_recipe(_a, portions, filters) {
         }
         selected_methods.push((0, list_1.pair)(method, [ingredient.name]));
     }
->>>>>>> Stashed changes
     // randomizes ingredients and cooking methods for them within kcal range for
     // the recipe.
     function randomize_ingredients_and_methods() {
@@ -156,28 +126,8 @@ function generate_recipe(_a, portions, filters) {
         var max_kcal = max_portion * portions;
         var kcal = 0;
         while (kcal < min_kcal) {
-<<<<<<< Updated upstream
             var _a = randomize_category(), cat = _a[0], ingredient_arr = _a[1]; // get random category with its ingredients
             var ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
-            var kcal_per_measure = ingredient.kcal_per_measurement;
-            var max_measures = Math.floor((max_kcal - kcal) / kcal_per_measure); // calculate maximum amount of measurements of ingredient that fits in recipe
-            var amount = randomize_ingredient_amount(ingredient, max_measures, portions); // randomize ingredient amount
-            if (amount === 0) {
-                continue;
-            }
-            else {
-                var method = randomize_cooking_method(cat);
-                recipe.ingredient_info.push([ingredient, amount, method]);
-            }
-            kcal += amount * kcal_per_measure;
-        }
-        recipe.kcal_per_portion = Math.round((kcal / portions) / 100) * 100; // roughly calculates kcal per portion for recipe
-    }
-=======
-            var _a = randomize_category(category_data), i = _a[0], cat = _a[1]; // get random category with its index
-            var ingredient_arr = ingredient_data[i]; // get ingredient array for category
-            var ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
-            console.log(ingredient);
             var kcal_per_measure = ingredient.kcal_per_measurement;
             var max_measures = Math.floor((max_kcal - kcal) / kcal_per_measure); // calculate maximum amount of measurements of ingredient that fits in recipe
             var amount = randomize_ingredient_amount(ingredient, max_measures, portions); // randomize ingredient amount
@@ -227,21 +177,15 @@ function generate_recipe(_a, portions, filters) {
     // }
     function add_cooking_step(step, steps) {
     }
->>>>>>> Stashed changes
     var recipe = new_recipe(portions);
     var ingredient_data = JSON.parse(JSON.stringify(data.ingredients)); // creates copy of save data
     // ingredient_data = filter_ingredients(ingredient_data, filters); // future function
     var category_data = JSON.parse(JSON.stringify(data.categories));
-<<<<<<< Updated upstream
-    var kitchenware_data = [];
-    randomize_ingredients_and_methods();
-=======
     var kitchenware_data = JSON.parse(JSON.stringify(data.kitchenware));
     var selected_methods = [];
     var active_kw = [];
     randomize_ingredients_and_methods();
     // generate_cooking_steps();
->>>>>>> Stashed changes
     return recipe;
 }
 function start_ror() {

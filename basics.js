@@ -163,7 +163,7 @@ exports.new_kitchenware = new_kitchenware;
  * @returns Returns kitchenware with updated inventory.
  */
 function add_ingredient_to_kitchenware(ingredient, kitchenware) {
-    kitchenware.inventory.push(ingredient);
+    kitchenware.inventory.push(ingredient.name);
     return kitchenware;
 }
 exports.add_ingredient_to_kitchenware = add_ingredient_to_kitchenware;
@@ -224,3 +224,11 @@ function new_ingredient(category, name, allergies, measurement, kcal_per_measure
     };
 }
 exports.new_ingredient = new_ingredient;
+function has_separable_inventory(kw) {
+    if (kw.name === "cutting board" || kw.name === "oven") {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

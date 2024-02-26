@@ -155,15 +155,9 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
         let kcal = 0;
 
         while (kcal < min_kcal) {
-<<<<<<< Updated upstream
             const [cat, ingredient_arr] = randomize_category(); // get random category with its ingredients
 
-=======
-            const [i, cat] = randomize_category(category_data); // get random category with its index
-            const ingredient_arr = ingredient_data[i]; // get ingredient array for category
->>>>>>> Stashed changes
             const ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
-            console.log(ingredient);
             const kcal_per_measure = ingredient.kcal_per_measurement;
             const max_measures = Math.floor((max_kcal - kcal) / kcal_per_measure); // calculate maximum amount of measurements of ingredient that fits in recipe
             let amount = randomize_ingredient_amount(ingredient, max_measures, portions); // randomize ingredient amount
@@ -230,11 +224,6 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
 
     randomize_ingredients_and_methods();
     // generate_cooking_steps();
-
-<<<<<<< Updated upstream
-    randomize_ingredients_and_methods();
-=======
->>>>>>> Stashed changes
     return recipe;
 }
 
