@@ -3,7 +3,12 @@ import {
 } from "./basics"
 
 
-
+/**
+ * Function for filtering out ingredients according to allergies.
+ * @param ingredients - a 2D array of ingredients to be
+ * @param allergies - an array of strings symbolisig allergies
+ * @returns a 2D array of ingredients with the ingredients with the allergies removed
+ */
 export function filter_allergies(ingredients: Array<Array<Ingredient>>, allergies: Array<string>): Array<Array<Ingredient>>{
     for(let categoryindex = 0; categoryindex < ingredients.length; categoryindex ++)
     {
