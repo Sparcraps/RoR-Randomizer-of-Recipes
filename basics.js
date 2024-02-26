@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.randomize_cooking_instruction = exports.new_ingredient = exports.find_by_name = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.add_to_ingredient_history = exports.new_kitchenware = exports.new_category = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_category_max = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_history = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
+exports.randomize_cooking_instruction = exports.new_ingredient = exports.find_by_name = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.new_kitchenware = exports.new_category = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_category_max = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
 /**
  * Check whether the input is of type Ingredient.
  * @param input - argument to check the type of
@@ -46,15 +46,6 @@ function get_ingredient_allergies(ingredient) {
     return ingredient.allergies;
 }
 exports.get_ingredient_allergies = get_ingredient_allergies;
-/**
- * Fetch the history of an Ingredient.
- * @param ingredient - Ingredient to check
- * @returns Returns an Array containing the processing that ingredient has been through.
- */
-function get_ingredient_history(ingredient) {
-    return ingredient.history;
-}
-exports.get_ingredient_history = get_ingredient_history;
 /**
  * Fetch the measurement of an Ingredient.
  * @param ingredient - Ingredient to check
@@ -181,12 +172,12 @@ exports.new_kitchenware = new_kitchenware;
  * @param ingredient - Ingredient whose history is being altered
  * @param str - string to be added to history
  * @returns Returns ingredient with updated history.
- */
-function add_to_ingredient_history(ingredient, str) {
+ *
+export function add_to_ingredient_history(ingredient: Ingredient, str: string): Ingredient {
     get_ingredient_history(ingredient).push(str);
     return ingredient;
 }
-exports.add_to_ingredient_history = add_to_ingredient_history;
+*/
 /**
  * Add an Ingredient to an existing KitchenWare's inventory, unless the ingredient is already in the inventory.
  * @param ingredient - Ingredient that is being added
@@ -279,7 +270,7 @@ function new_ingredient(category, name, allergies, measurement, kcal_per_measure
         measurement: measurement,
         kcal_per_measurement: kcal_per_measurement,
         range: range,
-        tag: "ingredient", history: []
+        tag: "ingredient"
     };
 }
 exports.new_ingredient = new_ingredient;

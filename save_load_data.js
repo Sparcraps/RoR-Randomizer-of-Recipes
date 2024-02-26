@@ -10,9 +10,14 @@ var filepath = __dirname + "/ror_data.json";
  * kitchenware.
  */
 function load_data() {
-    var json_data = fs.readFileSync(filepath);
-    var data = JSON.parse(json_data);
-    return data;
+    if (fs.existsSync(filepath)) {
+        var json_data = fs.readFileSync(filepath);
+        var data = JSON.parse(json_data);
+        return data;
+    }
+    else {
+        throw new Error("ror_data.json does not exist.");
+    }
 }
 exports.load_data = load_data;
 /**

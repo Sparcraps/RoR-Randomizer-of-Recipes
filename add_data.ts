@@ -42,3 +42,12 @@ const chicken_thigh = new_ingredient("meat", "chicken thigh", ["meat"], "", 62, 
 const pork_cutlet = new_ingredient("meat", "pork_cutlet", ["meat"], "", 218, pair(1, 2));
 const minced_meat = new_ingredient("meat", "minced_meat", ["meat"], "g", 2.4, pair(50, 200));
 const steak = new_ingredient("meat", "steak", ["meat"], "g", 160, pair(1, 2));
+
+save_new_category(vegetable, root_vegetable, liquid, meat, spice, carbohydrate);
+
+save_new_ingredient(
+    broccoli, celery, yellow_onion, red_onion, cucumber, avocado, paprika,
+    asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip,
+    sweet_potato, water, stock, chicken_breast, chicken_thigh, pork_cutlet,
+    minced_meat, steak
+    );
