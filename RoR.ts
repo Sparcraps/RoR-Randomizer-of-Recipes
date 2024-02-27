@@ -26,15 +26,18 @@ type CookingStep = {
 };
 
 export type Recipe = {
+    tag: "recipe",
+    name: string,
     portions: number,
     kcal_per_portion: number,
     ingredient_info: Array<Pair<Ingredient, number>>,
     steps: Array<CookingStep>,
 };
 
-function new_recipe(portions: number): Recipe {
+export function new_recipe(portions: number): Recipe {
     return {
-        portions, ingredient_info: [], steps: [], kcal_per_portion: 0
+        tag: "recipe", name: "", portions,
+        ingredient_info: [], steps: [], kcal_per_portion: 0
     }
 }
 
@@ -233,7 +236,6 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
         } else {}
         kw.inventory.push(...ingredient_names);
         const more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
-        console.log("more: ", more_ingredients);
         steps.push(new_cooking_step(current_method, ingredient_names, kw));
         ingredient_names.push(...more_ingredients);
         return add_cooking_step(method, ingredient_names, steps);
@@ -271,8 +273,6 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
                 console.log(copy_method);
                 if (copy_method.toString() === method.toString()) {
                     const names = tail(selected_methods[i])
-                    console.log("names: ", names);
-                    console.log(method);
                     ingredient_names.push(...names); // adds ingredient for matching method to list
                     other_method.splice(j, method.length); // removes part of other method that matches method
                     add_cooking_step(other_method, names, steps);
@@ -298,9 +298,11 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
     return recipe;
 }
 
-function start_ror(): void { // remove when testing is done
+function recipe_randomization(): void { // remove when testing is done
     const recipe = generate_recipe(pair(400, 700), 4, []);
     print_recipe(recipe);
 }
 
-RoR_start();
+if (require.main === module) {
+    recipe_randomization();
+}

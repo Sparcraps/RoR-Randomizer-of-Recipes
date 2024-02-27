@@ -30,8 +30,8 @@ export function load_configuration(): Configuration {
 /**
  * Saves a Configuration object to config.json.
  * Note: overwrites existing save data.
- * @param {SaveData} data - Save data to save.
- * @modifies ror_data.json
+ * @param {Configuration} config - Configuration to save.
+ * @modifies config.json
  */
 export function save_configuration(data: Configuration): void {
     const json_data = JSON.stringify(data, null, 4);
