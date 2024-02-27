@@ -14,6 +14,7 @@ var basics_1 = require("./basics");
 var input_loop_1 = require("./input_loop");
 var list_1 = require("./lib/list");
 var save_load_data_1 = require("./save_load_data");
+var filter_1 = require("./filter");
 var data = (0, save_load_data_1.load_data)();
 function new_recipe(portions) {
     return {
@@ -33,6 +34,7 @@ function print_recipe(recipe) {
         var ingredient = p[0], amount = p[1];
         console.log(stringify_ingredient_info(ingredient, amount));
     });
+    console.log("-----------------------------------");
     var steps = recipe.steps;
     steps.forEach(function (step) {
         console.log(step.ingredient_names, ": " + step.cooking_method + in_or_on(step.kitchenware));
@@ -45,7 +47,7 @@ function stringify_ingredient_info(ingredient, amount) {
         return amount + " " + ingredient.name + "s";
     }
     else {
-        return amount + " " + ingredient.measurement + ingredient.name;
+        return amount + " " + ingredient.measurement + " " + ingredient.name;
     }
 }
 function in_or_on(kw) {
@@ -182,6 +184,8 @@ function generate_recipe(_a, portions, filters) {
         var cooking_steps = [];
         for (var i = 0; i < selected_methods.length; i++) {
             var _a = selected_methods[i], method = _a[0], ingredients = _a[1];
+            var more_ingredients = do_similar_methods(method, cooking_steps);
+            ingredients.push.apply(ingredients, more_ingredients);
             add_cooking_step(method, ingredients, cooking_steps);
         }
         return cooking_steps;
@@ -208,9 +212,9 @@ function generate_recipe(_a, portions, filters) {
         else { }
         (_b = kw.inventory).push.apply(_b, ingredient_names);
         var more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
-        ingredient_names.push.apply(// finds ingredients that use the same method as the rest of method from some point.
-        ingredient_names, more_ingredients);
+        console.log("more: ", more_ingredients);
         steps.push(new_cooking_step(current_method, ingredient_names, kw));
+        ingredient_names.push.apply(ingredient_names, more_ingredients);
         return add_cooking_step(method, ingredient_names, steps);
     }
     function do_separable_method(method, kw, steps) {
@@ -222,7 +226,7 @@ function generate_recipe(_a, portions, filters) {
                 if (m === method) {
                     var names = (0, list_1.tail)(selected_methods[i]);
                     ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
-                    var rest_of_method = other_method.splice(0, j + 1); // removes methots up to found method from other method array and saves these in another method
+                    var rest_of_method = other_method.splice(0, j + 1); // removes methods up to found method from other method array and saves these in another method
                     rest_of_method.pop(); // removes found method
                     add_cooking_step(rest_of_method, names, steps);
                 }
@@ -236,24 +240,32 @@ function generate_recipe(_a, portions, filters) {
         var ingredient_names = [];
         for (var i = 0; i < selected_methods.length; i++) {
             var other_method = (0, list_1.head)(selected_methods[i]);
+            if (other_method === method) {
+                continue;
+            }
+            else { }
             var copy_method = __spreadArray([], other_method, true);
-            for (var j = 0; j < other_method.length - 1; j++) {
-                copy_method.shift();
-                if (copy_method === method) {
+            for (var j = 0; j < other_method.length; j++) {
+                console.log(copy_method);
+                if (copy_method.toString() === method.toString()) {
                     var names = (0, list_1.tail)(selected_methods[i]);
+                    console.log("names: ", names);
+                    console.log(method);
                     ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
                     other_method.splice(j, method.length); // removes part of other method that matches method
                     add_cooking_step(other_method, names, steps);
                     break;
                 }
-                else { }
+                else {
+                    copy_method.shift();
+                }
             }
         }
         return ingredient_names;
     }
     var recipe = new_recipe(portions);
     var ingredient_data = JSON.parse(JSON.stringify(data.ingredients)); // creates copy of save data
-    // filter_ingredients(ingredient_data, filters); // future function
+    (0, filter_1.filter_ingredients)(ingredient_data, filters);
     var category_data = JSON.parse(JSON.stringify(data.categories));
     var kitchenware_data = JSON.parse(JSON.stringify(data.kitchenware));
     var selected_methods = [];
