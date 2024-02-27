@@ -9,6 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.new_recipe = void 0;
 var basics_1 = require("./basics");
 var list_1 = require("./lib/list");
 var save_load_data_1 = require("./save_load_data");
@@ -16,10 +17,12 @@ var filter_1 = require("./filter");
 var data = (0, save_load_data_1.load_data)();
 function new_recipe(portions) {
     return {
+        tag: "recipe", name: "",
         portions: portions,
         ingredient_info: [], steps: [], kcal_per_portion: 0
     };
 }
+exports.new_recipe = new_recipe;
 function new_cooking_step(cooking_method, ingredient_names, kitchenware) {
     return { cooking_method: cooking_method, ingredient_names: ingredient_names, kitchenware: kitchenware };
 }
@@ -209,7 +212,6 @@ function generate_recipe(_a, portions, filters) {
         else { }
         (_b = kw.inventory).push.apply(_b, ingredient_names);
         var more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
-        console.log("more: ", more_ingredients);
         steps.push(new_cooking_step(current_method, ingredient_names, kw));
         ingredient_names.push.apply(ingredient_names, more_ingredients);
         return add_cooking_step(method, ingredient_names, steps);
@@ -246,8 +248,6 @@ function generate_recipe(_a, portions, filters) {
                 console.log(copy_method);
                 if (copy_method.toString() === method.toString()) {
                     var names = (0, list_1.tail)(selected_methods[i]);
-                    console.log("names: ", names);
-                    console.log(method);
                     ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
                     other_method.splice(j, method.length); // removes part of other method that matches method
                     add_cooking_step(other_method, names, steps);
@@ -271,8 +271,10 @@ function generate_recipe(_a, portions, filters) {
     recipe.steps = steps;
     return recipe;
 }
-function start_ror() {
+function recipe_randomization() {
     var recipe = generate_recipe((0, list_1.pair)(400, 700), 4, []);
     print_recipe(recipe);
 }
-start_ror();
+if (require.main === module) {
+    recipe_randomization();
+}
