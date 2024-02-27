@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RoR_start = void 0;
+exports.print_bold = exports.RoR_start = void 0;
 var PromptSync = require("prompt-sync");
 var stack_1 = require("./lib/stack");
 var RoR_1 = require("./RoR");
+var save_recipe_1 = require("./save_recipe");
 function RoR_start() {
     console.log("----------------------------------------");
     console.log("Welcome to Randomizer of Recipes, aka");
@@ -64,7 +65,7 @@ function recipimize() {
         return;
     }
     else if (user_input === "s") {
-        // save_recipe(recipe);
+        (0, save_recipe_1.save_new_recipe)(recipe);
     }
     else if (user_input === "b") {
         oblivion();
@@ -195,6 +196,7 @@ function print_bold(print_str) {
     }
     return;
 }
+exports.print_bold = print_bold;
 function oblivion() {
     if (!(0, stack_1.is_empty)(menu_memory)) {
         menu_memory = (0, stack_1.pop)(menu_memory);

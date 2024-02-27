@@ -9,23 +9,27 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generate_recipe = exports.print_recipe = void 0;
+exports.generate_recipe = exports.print_recipe = exports.new_recipe = void 0;
 var basics_1 = require("./basics");
 var input_loop_1 = require("./input_loop");
 var list_1 = require("./lib/list");
 var save_load_data_1 = require("./save_load_data");
 var filter_1 = require("./filter");
+var generate_name_1 = require("./generate_name");
 var data = (0, save_load_data_1.load_data)();
 function new_recipe(portions) {
     return {
+        tag: "recipe", name: "",
         portions: portions,
         ingredient_info: [], steps: [], kcal_per_portion: 0
     };
 }
+exports.new_recipe = new_recipe;
 function new_cooking_step(cooking_method, ingredient_names, kitchenware) {
     return { cooking_method: cooking_method, ingredient_names: ingredient_names, kitchenware: kitchenware };
 }
 function print_recipe(recipe) {
+    (0, input_loop_1.print_bold)(recipe.name);
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
     console.log("-----------------------------------");
@@ -212,7 +216,6 @@ function generate_recipe(_a, portions, filters) {
         else { }
         (_b = kw.inventory).push.apply(_b, ingredient_names);
         var more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
-        console.log("more: ", more_ingredients);
         steps.push(new_cooking_step(current_method, ingredient_names, kw));
         ingredient_names.push.apply(ingredient_names, more_ingredients);
         return add_cooking_step(method, ingredient_names, steps);
@@ -249,8 +252,6 @@ function generate_recipe(_a, portions, filters) {
                 console.log(copy_method);
                 if (copy_method.toString() === method.toString()) {
                     var names = (0, list_1.tail)(selected_methods[i]);
-                    console.log("names: ", names);
-                    console.log(method);
                     ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
                     other_method.splice(j, method.length); // removes part of other method that matches method
                     add_cooking_step(other_method, names, steps);
@@ -272,11 +273,23 @@ function generate_recipe(_a, portions, filters) {
     randomize_ingredients_and_methods();
     var steps = generate_cooking_steps();
     recipe.steps = steps;
+    try {
+        recipe.name = (0, generate_name_1.generate_name)(recipe);
+    }
+    catch (err) {
+        console.error(err);
+    }
     return recipe;
 }
 exports.generate_recipe = generate_recipe;
-function start_ror() {
+/**
+ * Calls generate_recipe, and then print_recipe with the generated recipe.
+ */
+function recipe_randomization() {
+    // for testing purposes
     var recipe = generate_recipe((0, list_1.pair)(400, 700), 4, []);
     print_recipe(recipe);
 }
-(0, input_loop_1.RoR_start)();
+if (require.main === module) {
+    recipe_randomization();
+}

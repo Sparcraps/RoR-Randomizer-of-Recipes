@@ -67,7 +67,7 @@ function find_last_cooking_step(cooking_steps: Array<CookingStep>,
             return cooking_steps[i];
         }
     }
-    return cooking_steps[cooking_steps.length];
+    return cooking_steps[cooking_steps.length - 1];
 }
 
 /**

@@ -6,6 +6,7 @@ import {
 import { type Recipe, generate_recipe, print_recipe } from "./RoR";
 import { Pair } from "./lib/list";
 import { save_configuration } from "./save_options";
+import { save_new_recipe } from "./save_recipe";
 
 export function RoR_start(): void {
     console.log("----------------------------------------");
@@ -207,7 +208,7 @@ function print_alternatives(alternatives: Array<string>): void {
     }
 }
 
-function print_bold(print_str: string): void {
+export function print_bold(print_str: string): void {
     if (print_bold_text) {
         console.log('\x1b[1m' + print_str + '\x1b[0m');
     } else {

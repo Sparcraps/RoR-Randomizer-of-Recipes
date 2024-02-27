@@ -2,7 +2,7 @@ import {
     type Ingredient, type Category, type KitchenWare, new_category, 
     new_ingredient, new_kitchenware, has_separable_inventory
 } from "./basics";
-import { RoR_start } from "./input_loop";
+import { RoR_start, print_bold } from "./input_loop";
 import { Pair, head, pair, tail } from "./lib/list";
 
 import {
@@ -16,6 +16,7 @@ import {
 import {
     filter_ingredients
 } from "./filter";
+import { generate_name } from "./generate_name";
 
 let data = load_data();
 
@@ -46,6 +47,7 @@ function new_cooking_step(cooking_method: string, ingredient_names: Array<string
 }
 
 export function print_recipe(recipe: Recipe): void {
+    print_bold(recipe.name);
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
     console.log("-----------------------------------");
@@ -295,10 +297,19 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
     randomize_ingredients_and_methods();
     const steps = generate_cooking_steps();
     recipe.steps = steps;
+    try{
+        recipe.name = generate_name(recipe);
+    } catch (err) {
+        console.error(err);
+    }
     return recipe;
 }
 
-function recipe_randomization(): void { // remove when testing is done
+/**
+ * Calls generate_recipe, and then print_recipe with the generated recipe.
+ */
+function recipe_randomization(): void {
+    // for testing purposes
     const recipe = generate_recipe(pair(400, 700), 4, []);
     print_recipe(recipe);
 }

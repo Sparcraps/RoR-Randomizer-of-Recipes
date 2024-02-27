@@ -8,12 +8,12 @@ exports.filter_ingredients = void 0;
  * @returns a 2D array of ingredients with the ingredients with the allergies removed
  */
 function filter_ingredients(ingredients, allergies) {
-    for (var categoryindex = 0; categoryindex < ingredients.length; categoryindex++) {
-        for (var ingredientindex = ingredients[categoryindex].length - 1; ingredientindex >= 0; ingredientindex = ingredientindex - 1) {
-            var ingredientallergy = ingredients[categoryindex][ingredientindex].allergies;
-            for (var userallergyindex = 0; userallergyindex < allergies.length; userallergyindex++) {
-                if (ingredientallergy.includes(allergies[userallergyindex])) {
-                    ingredients[categoryindex].splice(ingredientindex, 1);
+    for (var category_index = 0; category_index < ingredients.length; category_index++) {
+        for (var ingredient_index = ingredients[category_index].length - 1; ingredient_index >= 0; ingredient_index = ingredient_index - 1) {
+            var ingredient_allergy = ingredients[category_index][ingredient_index].allergies;
+            for (var user_allergy_index = 0; user_allergy_index < allergies.length; user_allergy_index++) {
+                if (ingredient_allergy.includes(allergies[user_allergy_index])) {
+                    ingredients[category_index].splice(ingredient_index, 1);
                 }
             }
         }
