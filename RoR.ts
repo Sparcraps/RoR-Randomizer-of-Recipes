@@ -2,8 +2,14 @@ import {
     type Ingredient, type Category, type KitchenWare, new_category, 
     new_ingredient, new_kitchenware, has_separable_inventory
 } from "./basics";
-import { RoR_start } from "./input_loop";
-import { Pair, head, pair, tail } from "./lib/list";
+
+import {
+    RoR_start
+} from "./input_loop";
+
+import {
+    type Pair, head, pair, tail
+} from "./lib/list";
 
 import {
     type Queue, empty as qempty, enqueue, head as qhead, dequeue, display_queue
@@ -296,11 +302,6 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
     const steps = generate_cooking_steps();
     recipe.steps = steps;
     return recipe;
-}
-
-function start_ror(): void { // remove when testing is done
-    const recipe = generate_recipe(pair(400, 700), 4, []);
-    print_recipe(recipe);
 }
 
 RoR_start();

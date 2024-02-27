@@ -1,7 +1,7 @@
 import * as PromptSync from "prompt-sync";
 
 import { 
-    Stack, empty, is_empty, push, top, pop, display_stack
+    Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop
 } from "./lib/stack";
 
 import {
@@ -13,8 +13,14 @@ import {
 } from "./lib/list";
 
 import {
+    Configuration,
+    load_configuration,
     save_configuration
-} from "./save_options";
+} from "./save_config";
+
+import {
+    save_new_recipe
+} from "./save_recipe";
 
 export function RoR_start(): void {
     function kill_RoR(): void {
@@ -28,17 +34,17 @@ export function RoR_start(): void {
     console.log("| |_) / _ \\| |_) |");
     console.log("|  _ < (_) |  _ < ");
     console.log("|_| \\_\\___/|_| \\_\\");
-    console.log("----------------------------------------");
-    console.log();
+    console.log("----------------------------------------\n");
     
     menu_memory = push(main_menu, menu_memory);
-    while (!is_empty(menu_memory)) {
+    while (!is_stack_empty(menu_memory)) {
         top(menu_memory)();
     }
     kill_RoR();
 }
 
 function main_menu(): void {
+    //prints the menu alternatives
     function print_alternatives(alternatives: Array<string>): void {
         if (alternatives.length === 0) { // to not print empty space
             return;
@@ -49,14 +55,18 @@ function main_menu(): void {
         }
     }
     
-    function oblivion<Function>(): undefined {
-        if (!is_empty(menu_memory)) {
-            menu_memory = pop(menu_memory);
-        } else {
-            throw new Error("Error removing function from memory stack")
+    //removes the last menu function from memory
+    function oblivion(repeat: number = 1): undefined {
+        for (repeat; repeat < 1; repeat--) {
+            if (!is_stack_empty(menu_memory)) {
+                menu_memory = pop(menu_memory);
+            } else {
+                throw new Error("Error removing function from memory stack")
+            }
         }
     }
     
+    //checks if the user input is valid and otherwise prompts the user again
     function check_input(valid: Array<string>, question: string): string {
         console.log();
         let user_input: string | null = prompt(question);
@@ -76,12 +86,29 @@ function main_menu(): void {
         return user_input;
     }
 
+    //submenu for randomizing recipes
     function recipimize(): void {
-        let user_input: string | null;
-        let print_menu: Array<string> = ['"r" = randomize new recipe',
-                                           '"s" = save recipe',
-                                           '"b" = back to main menu"'];
-        let valid_inputs: Array<string> = ["r", "s", "b"];
+        //in case a recipe is saved, the menu alternatives need to be adjusted
+        function recipimize_saved(): void {
+            print_menu = ['"r" = randomize new recipe',
+                          '"b" = back to main menu'];
+            valid_inputs = ["r", "b"];
+
+            print_alternatives(print_menu);
+            user_input = check_input(valid_inputs, "Choose an alternative: ");
+
+            if (user_input === "r") {
+                oblivion();
+                menu_memory = push(recipimize_saved, menu_memory);
+            } else if (user_input === "b") {
+                oblivion();
+            }
+        }
+
+        print_menu = ['"r" = randomize new recipe',
+                      '"s" = save recipe',
+                      '"b" = back to main menu'];
+        valid_inputs = ["r", "s", "b"];
     
         const recipe: Recipe = generate_recipe(portion_size, portion_amount, restrictions);
         print_recipe(recipe);
@@ -94,12 +121,16 @@ function main_menu(): void {
         if (user_input === "r") {
             return;
         } else if (user_input === "s") {
-            // save_new_recipe(recipe);
+            save_new_recipe(recipe);
+            console.log("Recipe " + recipe.name + " saved!\n");
+            oblivion();
+            menu_memory = push(recipimize_saved, menu_memory);
         } else if (user_input === "b") {
             oblivion();
         }
     }
 
+    //prints an explanation of all alternatives in the main menu
     function print_help(): void {
         print_bold("randomize recipe: ");
         console.log("The main feature of RoR.");
@@ -117,16 +148,16 @@ function main_menu(): void {
     
         print_bold("configure: ");
         console.log("View a menu of recipe generation configurations.");
-        console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.");
+        console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.\n");
     }
 
+    //submenu for configurations
     function configure(): void {
-        let user_input: string | null;
-        let print_menu: Array<string> = ['"p" = portion amount',
-                                           '"d" = dietary restrictions',
-                                           '"i" = ingredient data"',
-                                           '"b" = back to main menu'];
-        let valid_inputs: Array<string> = ["p", "d", "i", "b"];
+        print_menu = ['"p" = portion amount',
+                      '"d" = dietary restrictions',
+                      '"i" = ingredient data',
+                      '"b" = back to main menu'];
+        valid_inputs = ["p", "d", "i", "b"];
     
         print_alternatives(print_menu);
         user_input = check_input(valid_inputs, "Choose what you want to configure: ");
@@ -140,9 +171,11 @@ function main_menu(): void {
         } else if (user_input === "b") {
             oblivion();
         }
-    
+
+        //submenu for changing portion size
         function configure_portion(): void {
-            function integer_prompt(prompt_text: string, success_text = "", fun: Function) {
+            //helper function that checks if input is an integer, and otherwise prompts the user again
+            function integer_prompt(prompt_text: string): number {
                 let new_portion_amount: string | null = prompt(prompt_text);
                 let parsed: number = parseInt(new_portion_amount);
             
@@ -151,29 +184,30 @@ function main_menu(): void {
                     new_portion_amount = prompt(prompt_text);
                     parsed = parseInt(new_portion_amount);
                 }
-                fun(parsed);
-                if (success_text !== "") {
-                    console.log(success_text);
-                } else {}
+                return parsed;
             }
             
             valid_inputs = ["y", "n"];
     
-            // print current portion amount from Settings object
+            console.log("Current portion amount: " + config.portion_amount.toString);
             user_input = check_input(valid_inputs, "Do you wish to change the portion amount? (y/n): ");
     
             if (user_input === "y") {
-                // integer_prompt("Enter new portion amount: ", "New amount registered.", save_configuration(config)); // uncomment and add parameter to save_configuration
+                const input_int = integer_prompt("Enter new portion amount: ")
+                config.portion_amount = input_int;
+                console.log("New amount registered.")
+                save_configuration(config);
             } else if (user_input === "n") {
                 oblivion();
             }
         }
     
-        function dietary_prompt(): void {
+        //submenu for dietary restrictions where active restrictions can be viewed
+        function dietary_prompt(): void {            
             valid_inputs = ["y", "n"];
     
             console.log("Active dietary restrictions: ")
-            // print active dietary restrictions from Settings object using print_alternatives
+            print_alternatives(config.dietary_restrictions);
             user_input = check_input(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
     
             if (user_input === "y") {
@@ -181,10 +215,11 @@ function main_menu(): void {
             } else if (user_input === "n") {
                 oblivion();
             }
-    
+            
+            //subsubmenu for dietary restrictions where active restrictions can be changed
             function configure_dietary(): void {
                 valid_inputs = ["a", "r", "b"];
-                print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction"', '"b" = back to configurations menu'];
+                print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction', '"b" = back to configurations menu'];
         
                 print_alternatives(print_menu);
                 user_input = check_input(valid_inputs, "Choose an alternative: ");
@@ -194,14 +229,15 @@ function main_menu(): void {
                 } else if (user_input === "r") {
         
                 } else if (user_input === "b") {
-                    oblivion();
+                    oblivion(2);
                 }
             }
         }
     
+        //submenu for configuring ingredients
         function configure_ingredients(): void {
             valid_inputs = ["a", "r", "b"];
-            print_menu = ['"a" = add ingredient', '"r" = remove ingredient"', '"b" = back to configurations menu'];
+            print_menu = ['"a" = add ingredient', '"r" = remove ingredient', '"b" = back to configurations menu'];
     
             print_alternatives(print_menu);
             user_input = check_input(valid_inputs, "Choose an alternative: ");
@@ -217,10 +253,10 @@ function main_menu(): void {
     }
 
     let user_input: string | null;
-    const print_menu: Array<string> = ['"h" = help', '"r" = randomize recipe',
-                                       '"q" = quit"', '"s" = saved recipes',
-                                       '"c" = configure"'];
-    const valid_inputs: Array<string> = ["h", "r", "q", "s", "c"];
+    let print_menu: Array<string> = ['"h" = help', '"r" = randomize recipe',
+                                       '"q" = quit', '"s" = saved recipes',
+                                       '"c" = configure'];
+    let valid_inputs: Array<string> = ["h", "r", "q", "s", "c"];
     
     print_alternatives(print_menu);
     user_input = check_input(valid_inputs, "Choose an alternative: ");
@@ -242,7 +278,7 @@ function main_menu(): void {
     else {}
 }
 
-function print_bold(print_str: string): void {
+export function print_bold(print_str: string): void {
     if (print_bold_text) {
         console.log('\x1b[1m' + print_str + '\x1b[0m');
     } else {
@@ -252,8 +288,10 @@ function print_bold(print_str: string): void {
 }
 
 const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
-let menu_memory: Stack<Function> = empty();
+let menu_memory: Stack<Function> = empty_stack();
 const print_bold_text: boolean = true;
 const portion_size: Pair<number, number> = [400, 700];
-const portion_amount: number = 4; //remove
-const restrictions: Array<string> = []; //remove
+
+let config = load_configuration();
+const portion_amount: number = config.portion_amount;
+const restrictions: Array<string> = config.dietary_restrictions;
