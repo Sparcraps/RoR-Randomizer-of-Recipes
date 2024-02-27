@@ -9,8 +9,12 @@ import {
 } from "./lib/queue_array";
 
 import {
-    save_data, load_data, save_new_category, save_new_ingredient
+    save_data, load_data, save_new_category, save_new_ingredient, delete_category
 } from "./save_load_data";
+
+import {
+    filter_ingredients
+} from "./filter";
 
 let data = load_data();
 
@@ -46,7 +50,7 @@ function print_recipe(recipe: Recipe): void {
         const [ingredient, amount] = p
         console.log(stringify_ingredient_info(ingredient, amount));
     })
-
+    console.log("-----------------------------------");
     const steps = recipe.steps;
     steps.forEach(step => {
         console.log(step.ingredient_names, ": " + step.cooking_method + in_or_on(step.kitchenware));
@@ -58,7 +62,7 @@ function stringify_ingredient_info(ingredient: Ingredient, amount: number): stri
     if (ingredient.measurement === "" && amount > 1) {
         return amount + " " + ingredient.name + "s";
     } else {
-        return amount + " " + ingredient.measurement + ingredient.name;
+        return amount + " " + ingredient.measurement + " " + ingredient.name;
     }
 }
 
@@ -149,7 +153,8 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
             }
         }
 
-        throw new Error("No kitchenware with cooking method " + cooking_method + "exists.");
+        throw new Error(
+            "No kitchenware with cooking method " + cooking_method + "exists.");
     }
 
     // adds a pair of selected cooking method and [ingredient] to 
@@ -199,6 +204,8 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
         const cooking_steps: Array<CookingStep> = [];
         for (let i = 0; i < selected_methods.length; i++) {
             const [method, ingredients] = selected_methods[i];
+            const more_ingredients = do_similar_methods(method, cooking_steps);
+            ingredients.push(...more_ingredients);
             add_cooking_step(method, ingredients, cooking_steps);
         }
         return cooking_steps;
@@ -206,7 +213,10 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
 
     // adds cooking step to steps array, removes first element in method, calls
     // recursively until method is empty.
-    function add_cooking_step(method: Array<string>, ingredient_names: Array<string>, steps: Array<CookingStep>, kw: KitchenWare | undefined = undefined): void {
+    function add_cooking_step(
+        method: Array<string>, ingredient_names: Array<string>, 
+        steps: Array<CookingStep>, kw: KitchenWare | undefined = undefined
+        ): void {
         if (method.length === 0) {
             return;
         } else {}
@@ -222,8 +232,9 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
         } else {}
         kw.inventory.push(...ingredient_names);
         const more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
-        ingredient_names.push(...more_ingredients);
+        console.log("more: ", more_ingredients);
         steps.push(new_cooking_step(current_method, ingredient_names, kw));
+        ingredient_names.push(...more_ingredients);
         return add_cooking_step(method, ingredient_names, steps);
     }
 
@@ -236,7 +247,7 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
                 if (m === method) {
                     const names = tail(selected_methods[i]);
                     ingredient_names.push(...names); // adds ingredient for matching method to list
-                    const rest_of_method = other_method.splice(0, j + 1); // removes methots up to found method from other method array and saves these in another method
+                    const rest_of_method = other_method.splice(0, j + 1); // removes methods up to found method from other method array and saves these in another method
                     rest_of_method.pop(); // removes found method
                     add_cooking_step(rest_of_method, names, steps);
                 }
@@ -251,16 +262,23 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
         const ingredient_names: Array<string> = [];
         for (let i = 0; i < selected_methods.length; i++) {
             const other_method = head(selected_methods[i]);
+            if (other_method === method) {
+                continue;
+            } else {}
             const copy_method = [...other_method];
-            for (let j = 0; j < other_method.length - 1; j++) {
-                copy_method.shift();
-                if (copy_method === method) {
+            for (let j = 0; j < other_method.length; j++) {
+                console.log(copy_method);
+                if (copy_method.toString() === method.toString()) {
                     const names = tail(selected_methods[i])
+                    console.log("names: ", names);
+                    console.log(method);
                     ingredient_names.push(...names); // adds ingredient for matching method to list
                     other_method.splice(j, method.length); // removes part of other method that matches method
                     add_cooking_step(other_method, names, steps);
                     break;
-                } else {}
+                } else {
+                    copy_method.shift();
+                }
             }
         }
         return ingredient_names;
@@ -268,7 +286,7 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
 
     const recipe = new_recipe(portions);
     const ingredient_data = JSON.parse(JSON.stringify(data.ingredients)); // creates copy of save data
-    // filter_ingredients(ingredient_data, filters); // future function
+    filter_ingredients(ingredient_data, filters);
     const category_data = JSON.parse(JSON.stringify(data.categories));
     const kitchenware_data = JSON.parse(JSON.stringify(data.kitchenware));
     const selected_methods: Array<Pair<Array<string>, Array<string>>> = [];
@@ -279,7 +297,7 @@ function generate_recipe([min_portion, max_portion]: Pair<number, number>, porti
     return recipe;
 }
 
-function start_ror(): void {
+function start_ror(): void { // remove when testing is done
     const recipe = generate_recipe(pair(400, 700), 4, []);
     print_recipe(recipe);
 }

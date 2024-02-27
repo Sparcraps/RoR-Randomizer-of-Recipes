@@ -106,7 +106,8 @@ describe('testing basic ingredients.ts functions', () => {
     })
 
     test('function get_ingredient_kcal_range works', () => {
-        expect(get_ingredient_kcal_range(test_ingredient_meat)).toStrictEqual(pair(250, 2500));
+        expect(get_ingredient_kcal_range(test_ingredient_meat))
+        .toStrictEqual(pair(250, 2500));
     })
 
     test('function get_ingredient_category_name works', () => {
@@ -114,7 +115,8 @@ describe('testing basic ingredients.ts functions', () => {
     })
 
     test('function get_ingredient_category works', () => {
-        expect(get_ingredient_category(test_ingredient_meat, category_data)).toStrictEqual(test_category);
+        expect(get_ingredient_category(test_ingredient_meat, category_data))
+        .toStrictEqual(test_category);
     })
 
     test('function get_category_name works', () => {
@@ -122,7 +124,9 @@ describe('testing basic ingredients.ts functions', () => {
     })
 
     test('function get_ingredient_cooking_methods works', () => {
-        expect(get_ingredient_cooking_methods(test_ingredient_meat, category_data)).toStrictEqual(["fry"]);
+        expect(get_ingredient_cooking_methods(
+            test_ingredient_meat, category_data
+            )).toStrictEqual(["fry"]);
     })
 
     test('function get_category_max works', ()=> {
