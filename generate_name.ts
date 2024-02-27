@@ -59,7 +59,7 @@ export function generate_name(recipe: Recipe): string {
     const main_ingr = find_highest_amount(ingredient_info);
     const main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
     if (ingredient_info.length === 0) {
-        return main_ingr.name + main_cooking_method;
+        return main_ingr.name + main_cooking_method.cooking_method;
     } else {
         const secondary_ingr = find_highest_amount(ingredient_info);
         return main_ingr.name + " and " + 
