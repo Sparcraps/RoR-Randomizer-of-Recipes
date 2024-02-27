@@ -9,13 +9,14 @@ exports.generate_name = void 0;
 function find_highest_amount(ingredients) {
     var largest = ingredients[0];
     var current = ingredients[0][1];
-    var i = 0;
-    for (; i < ingredients.length; i = i + 1) {
+    for (var i = 0; i < ingredients.length; i = i + 1) {
         current = ingredients[i][1];
         if (largest[1] <= current) {
             largest = ingredients[i];
         }
     }
+    var index = ingredients.indexOf(largest);
+    ingredients.splice(index, 1);
     return largest[0];
 }
 /**
@@ -27,8 +28,7 @@ function find_second_highest_amount(ingredients) {
     var largest = ingredients[0];
     var second_largest = ingredients[0];
     var current = ingredients[0][1];
-    var i = 0;
-    for (; i < ingredients.length; i = i + 1) {
+    for (var i = 0; i < ingredients.length; i = i + 1) {
         current = ingredients[i][1];
         if (largest[1] < current) {
             second_largest = largest;
@@ -60,11 +60,17 @@ function find_last_cooking_step(cooking_steps, ingredient) {
  * @returns the name generated as a string.
  */
 function generate_name(recipe) {
-    var main_ingr = find_highest_amount(recipe.ingredient_info);
-    var secondary_ingr = find_second_highest_amount(recipe.ingredient_info);
+    var ingredient_info = JSON.parse(JSON.stringify(recipe.ingredient_info)); // copies recipe ingredient info
+    var main_ingr = find_highest_amount(ingredient_info);
     var main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
-    return main_ingr.name + " and " +
-        secondary_ingr.name + " " +
-        main_cooking_method.cooking_method;
+    if (ingredient_info.length === 0) {
+        return main_ingr.name + main_cooking_method;
+    }
+    else {
+        var secondary_ingr = find_highest_amount(ingredient_info);
+        return main_ingr.name + " and " +
+            secondary_ingr.name + " " +
+            main_cooking_method.cooking_method;
+    }
 }
 exports.generate_name = generate_name;
