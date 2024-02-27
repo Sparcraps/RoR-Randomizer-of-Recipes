@@ -64,7 +64,7 @@ function recipimize() {
         return;
     }
     else if (user_input === "s") {
-        // save_recipe(recipe);
+        // save_new_recipe(recipe);
     }
     else if (user_input === "b") {
         oblivion();
