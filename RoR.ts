@@ -2,6 +2,7 @@ import {
     type Ingredient, type Category, type KitchenWare, new_category, 
     new_ingredient, new_kitchenware, has_separable_inventory
 } from "./basics";
+import { RoR_start } from "./input_loop";
 import { Pair, head, pair, tail } from "./lib/list";
 
 import {
@@ -20,7 +21,7 @@ type CookingStep = {
     kitchenware: KitchenWare
 };
 
-type Recipe = {
+export type Recipe = {
     portions: number,
     kcal_per_portion: number,
     ingredient_info: Array<Pair<Ingredient, number>>,
@@ -37,7 +38,7 @@ function new_cooking_step(cooking_method: string, ingredient_names: Array<string
     return {cooking_method, ingredient_names, kitchenware};
 }
 
-function print_recipe(recipe: Recipe): void {
+export function print_recipe(recipe: Recipe): void {
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
     console.log("-----------------------------------");
@@ -70,7 +71,7 @@ function in_or_on(kw: KitchenWare): string {
     }
 }
 
-function generate_recipe([min_portion, max_portion]: Pair<number, number>, portions: number, filters: Array<string>): Recipe {
+export function generate_recipe([min_portion, max_portion]: Pair<number, number>, portions: number, filters: Array<string>): Recipe {
     // returns ingredient name with s if it should be referred to in plural
     function name_with_s(ingredient: Ingredient, amount: number): string {
         if (ingredient.measurement === "" && amount > 1) {
@@ -284,4 +285,4 @@ function start_ror(): void {
     print_recipe(recipe);
 }
 
-start_ror();
+RoR_start();

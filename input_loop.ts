@@ -1,7 +1,13 @@
 import * as PromptSync from "prompt-sync";
-import { Stack, empty, is_empty, push, top, pop, display_stack } from "./lib/stack";
+import { 
+    Stack, empty, is_empty, push, top, pop, display_stack
+} from "./lib/stack";
 
-function RoR_start(): void {
+import { type Recipe, generate_recipe, print_recipe } from "./RoR";
+import { Pair } from "./lib/list";
+import { save_configuration } from "./save_options";
+
+export function RoR_start(): void {
     console.log("----------------------------------------");
     console.log("Welcome to Randomizer of Recipes, aka");
     console.log("____       ____   ");
@@ -35,7 +41,7 @@ function main_menu(): void {
     if (user_input === "h") {
         print_help();
     } else if (user_input === "r") {
-        // generate_recipe();
+        menu_memory = push(recipimize, menu_memory);
     } else if (user_input === "q") {
         oblivion();
     } else if (user_input === "s") {
@@ -44,6 +50,30 @@ function main_menu(): void {
         menu_memory = push(configure, menu_memory);
     }
     else {}
+}
+
+function recipimize(): void {
+    let user_input: string | null;
+    let print_menu: Array<string> = ['"r" = randomize new recipe',
+                                       '"s" = save recipe',
+                                       '"b" = back to main menu"'];
+    let valid_inputs: Array<string> = ["r", "s", "b"];
+
+    const recipe: Recipe = generate_recipe(portion_size, portion_amount, restrictions);
+    print_recipe(recipe);
+
+    //wait for keypress?
+
+    print_alternatives(print_menu);
+    user_input = check_input(valid_inputs, "Choose an alternative: ");
+    
+    if (user_input === "r") {
+        return;
+    } else if (user_input === "s") {
+        // save_recipe(recipe);
+    } else if (user_input === "b") {
+        oblivion();
+    }
 }
 
 function print_help(): void {
@@ -98,7 +128,7 @@ function configure(): void {
         user_input = check_input(valid_inputs, "Do you wish to change the portion amount? (y/n): ");
 
         if (user_input === "y") {
-            // integer_prompt("Enter new portion amount: ", "New amount registered.", save_configuration()); // future function: save new portion amount in Settings object
+            // integer_prompt("Enter new portion amount: ", "New amount registered.", save_configuration(config)); // uncomment and add parameter to save_configuration
 
         } else if (user_input === "n") {
             oblivion();
@@ -120,11 +150,18 @@ function configure(): void {
 
         function configure_dietary(): void {
             valid_inputs = ["a", "r", "b"];
-            print_menu = ['"a" = add ingredient', '"r" = remove ingredient"', '"b" = back to configurations menu'];
+            print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction"', '"b" = back to configurations menu'];
     
             print_alternatives(print_menu);
-            user_input = check_input(valid_inputs, "Do you want to add or remove an ingredient: ");
-            //add
+            user_input = check_input(valid_inputs, "Choose an alternative: ");
+            
+            if (user_input === "a") {
+
+            } else if (user_input === "r") {
+    
+            } else if (user_input === "b") {
+                oblivion();
+            }
         }
     }
 
@@ -133,11 +170,13 @@ function configure(): void {
         print_menu = ['"a" = add ingredient', '"r" = remove ingredient"', '"b" = back to configurations menu'];
 
         print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Do you want to add or remove an ingredient: ");
+        user_input = check_input(valid_inputs, "Choose an alternative: ");
         if (user_input === "a") {
 
         } else if (user_input === "r") {
 
+        } else if (user_input === "b") {
+            oblivion();
         }
         //add
     }
@@ -207,4 +246,6 @@ function check_input(valid: Array<string>, question: string): string {
 const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
 let menu_memory: Stack<Function> = empty();
 const print_bold_text: boolean = true;
-RoR_start();
+const portion_size: Pair<number, number> = [400, 700];
+const portion_amount: number = 4; //remove
+const restrictions: Array<string> = []; //remove

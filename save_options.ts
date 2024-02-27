@@ -1,19 +1,20 @@
 const fs = require('fs');
 const filepath = __dirname + "/config.json";
 
-type Configuration = { // placeholder
-    arr: Array<string>
+type Configuration = {
+    portion_amount: number,
+    dietary_restrictions: Array<string>
 }
 
 function new_configuration() { // configuration object with default settings (in case the file gets deleted...)
-    return { arr: [] }
+    return { portion_amount: 4, dietary_restrictions: [] }
 }
 
 /**
  * Reads and returns saved configurations.
  * @returns {Configuration} - Configuration object.
  */
-export function load_data(): Configuration {
+export function load_configuration(): Configuration {
     if (fs.existsSync(filepath)) {
         const json_data = fs.readFileSync(filepath);
         const config = JSON.parse(json_data);
@@ -32,7 +33,7 @@ export function load_data(): Configuration {
  * @param {SaveData} data - Save data to save.
  * @modifies ror_data.json
  */
-export function save_data(data: Configuration): void {
+export function save_configuration(data: Configuration): void {
     const json_data = JSON.stringify(data, null, 4);
     fs.writeFileSync(filepath, json_data);
 }

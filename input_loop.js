@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RoR_start = void 0;
 var PromptSync = require("prompt-sync");
 var stack_1 = require("./lib/stack");
+var RoR_1 = require("./RoR");
 function RoR_start() {
     console.log("----------------------------------------");
     console.log("Welcome to Randomizer of Recipes, aka");
@@ -18,6 +20,7 @@ function RoR_start() {
     }
     kill_RoR();
 }
+exports.RoR_start = RoR_start;
 function main_menu() {
     var user_input;
     var print_menu = ['"h" = help', '"r" = randomize recipe',
@@ -33,7 +36,7 @@ function main_menu() {
         print_help();
     }
     else if (user_input === "r") {
-        // generate_recipe();
+        menu_memory = (0, stack_1.push)(recipimize, menu_memory);
     }
     else if (user_input === "q") {
         oblivion();
@@ -45,6 +48,27 @@ function main_menu() {
         menu_memory = (0, stack_1.push)(configure, menu_memory);
     }
     else { }
+}
+function recipimize() {
+    var user_input;
+    var print_menu = ['"r" = randomize new recipe',
+        '"s" = save recipe',
+        '"b" = back to main menu"'];
+    var valid_inputs = ["r", "s", "b"];
+    var recipe = (0, RoR_1.generate_recipe)(portion_size, portion_amount, restrictions);
+    (0, RoR_1.print_recipe)(recipe);
+    //wait for keypress?
+    print_alternatives(print_menu);
+    user_input = check_input(valid_inputs, "Choose an alternative: ");
+    if (user_input === "r") {
+        return;
+    }
+    else if (user_input === "s") {
+        // save_recipe(recipe);
+    }
+    else if (user_input === "b") {
+        oblivion();
+    }
 }
 function print_help() {
     print_bold("randomize recipe: ");
@@ -91,7 +115,7 @@ function configure() {
         // print current portion amount from Settings object
         user_input = check_input(valid_inputs, "Do you wish to change the portion amount? (y/n): ");
         if (user_input === "y") {
-            // integer_prompt("Enter new portion amount: ", "New amount registered.", save_configuration()); // future function: save new portion amount in Settings object
+            // integer_prompt("Enter new portion amount: ", "New amount registered.", save_configuration(config)); // uncomment and add parameter to save_configuration
         }
         else if (user_input === "n") {
             oblivion();
@@ -110,20 +134,31 @@ function configure() {
         }
         function configure_dietary() {
             valid_inputs = ["a", "r", "b"];
-            print_menu = ['"a" = add ingredient', '"r" = remove ingredient"', '"b" = back to configurations menu'];
+            print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction"', '"b" = back to configurations menu'];
             print_alternatives(print_menu);
-            user_input = check_input(valid_inputs, "Do you want to add or remove an ingredient: ");
+            user_input = check_input(valid_inputs, "Choose an alternative: ");
+            if (user_input === "a") {
+            }
+            else if (user_input === "r") {
+            }
+            else if (user_input === "b") {
+                oblivion();
+            }
         }
     }
     function configure_ingredients() {
         valid_inputs = ["a", "r", "b"];
         print_menu = ['"a" = add ingredient', '"r" = remove ingredient"', '"b" = back to configurations menu'];
         print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Do you want to add or remove an ingredient: ");
+        user_input = check_input(valid_inputs, "Choose an alternative: ");
         if (user_input === "a") {
         }
         else if (user_input === "r") {
         }
+        else if (user_input === "b") {
+            oblivion();
+        }
+        //add
     }
 }
 function integer_prompt(prompt_text, success_text, fun) {
@@ -190,4 +225,6 @@ function check_input(valid, question) {
 var prompt = PromptSync({ sigint: true });
 var menu_memory = (0, stack_1.empty)();
 var print_bold_text = true;
-RoR_start();
+var portion_size = [400, 700];
+var portion_amount = 4; //remove
+var restrictions = []; //remove

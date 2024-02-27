@@ -9,7 +9,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generate_recipe = exports.print_recipe = void 0;
 var basics_1 = require("./basics");
+var input_loop_1 = require("./input_loop");
 var list_1 = require("./lib/list");
 var save_load_data_1 = require("./save_load_data");
 var data = (0, save_load_data_1.load_data)();
@@ -37,6 +39,7 @@ function print_recipe(recipe) {
     });
     console.log();
 }
+exports.print_recipe = print_recipe;
 function stringify_ingredient_info(ingredient, amount) {
     if (ingredient.measurement === "" && amount > 1) {
         return amount + " " + ingredient.name + "s";
@@ -259,8 +262,9 @@ function generate_recipe(_a, portions, filters) {
     recipe.steps = steps;
     return recipe;
 }
+exports.generate_recipe = generate_recipe;
 function start_ror() {
     var recipe = generate_recipe((0, list_1.pair)(400, 700), 4, []);
     print_recipe(recipe);
 }
-start_ror();
+(0, input_loop_1.RoR_start)();
