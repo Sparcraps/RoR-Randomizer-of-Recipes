@@ -47,10 +47,12 @@ function new_cooking_step(cooking_method: string, ingredient_names: Array<string
 }
 
 export function print_recipe(recipe: Recipe): void {
+    console.log("-----------------------------------");
     print_bold(recipe.name);
+    console.log("-----------------------------------");
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
-    console.log("-----------------------------------");
+    console.log();
     const ingredient_info = recipe.ingredient_info;
     ingredient_info.forEach(p => {
         const [ingredient, amount] = p
@@ -61,14 +63,15 @@ export function print_recipe(recipe: Recipe): void {
     steps.forEach(step => {
         console.log(step.ingredient_names, ": " + step.cooking_method + in_or_on(step.kitchenware));
     })
-    console.log();
+    console.log("Add salt and pepper to taste.");
+    console.log("-----------------------------------");
 }
 
 function stringify_ingredient_info(ingredient: Ingredient, amount: number): string {
     if (ingredient.measurement === "" && amount > 1) {
-        return amount + " " + ingredient.name + "s";
+        return amount + " " + refer_to_ingredient(ingredient, amount);
     } else {
-        return amount + " " + ingredient.measurement + " " + ingredient.name;
+        return amount + ingredient.measurement + " of " + ingredient.name;
     }
 }
 
@@ -80,16 +83,32 @@ function in_or_on(kw: KitchenWare): string {
     }
 }
 
-export function generate_recipe([min_portion, max_portion]: Pair<number, number>, portions: number, filters: Array<string>): Recipe {
-    // returns ingredient name with s if it should be referred to in plural
-    function name_with_s(ingredient: Ingredient, amount: number): string {
-        if (ingredient.measurement === "" && amount > 1) {
-            return ingredient.name + "s";
-        } else {
-            return ingredient.name;
-        }
-    }
 
+/**
+ * returns ingredient name with correct(ish) conjugation depending on if it
+ *  should be referred to in plural or not
+ * @param ingredient - ingredient to name.
+ * @param amount - amount of the ingredient.
+ * @returns A string with conjugated ingredient name
+ */
+function refer_to_ingredient(ingredient: Ingredient, amount: number): string {
+    const name = ingredient.name;
+    const u_i_o = ["u", "i", "o"];
+    if (ingredient.measurement === "" && amount > 1) {
+        const last_char = name[name.length - 1]
+        if (last_char === "s" || u_i_o.includes(last_char)) {
+            return name + "es";
+        } else if (last_char === "y") {
+            return name.slice(0, -1) + "ies";
+        } else {
+            return name + "s";
+        }
+    } else {
+        return name;
+    }
+}
+
+export function generate_recipe([min_portion, max_portion]: Pair<number, number>, portions: number, filters: Array<string>): Recipe {
     // Selects a random category from an array of categories and 
     // returns the category and its ingredient array. Removes both and retries
     // if the ingredient array is empty.
@@ -196,7 +215,7 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
             if (amount === 0) { // amount can be 0 if max_measures is lower than minimum measures for the ingredient and portion amount.
                 continue;
             } else {
-                add_method(randomize_cooking_method(cat), name_with_s(ingredient, amount));
+                add_method(randomize_cooking_method(cat), refer_to_ingredient(ingredient, amount));
                 recipe.ingredient_info.push(pair(ingredient, amount));
                 kcal += amount * kcal_per_measure;
             }
