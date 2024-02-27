@@ -9,7 +9,7 @@ import {
  * @param allergies - an array of strings symbolisig allergies
  * @returns a 2D array of ingredients with the ingredients with the allergies removed
  */
-export function filter_allergies(
+export function filter_ingredients(
                                  ingredients: Array<Array<Ingredient>>, 
                                  allergies: Array<string>
                                  ): Array<Array<Ingredient>>{
