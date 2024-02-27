@@ -42,10 +42,14 @@ function print_recipe(recipe) {
     });
     console.log("-----------------------------------");
     var steps = recipe.steps;
+    var step_nr = 1;
     steps.forEach(function (step) {
-        console.log(step.ingredient_names, ": " + step.cooking_method + in_or_on(step.kitchenware));
+        console.log(step_nr + ". " + step.cooking_method + " the " +
+            ingredient_and_ingredients(step.ingredient_names) +
+            " " + stringify_kitchenware(step.kitchenware));
+        step_nr += 1;
     });
-    console.log("Add salt and pepper to taste.");
+    console.log(step_nr + ". " + "Finally, add salt and pepper to taste! :-)");
     console.log("-----------------------------------");
 }
 exports.print_recipe = print_recipe;
@@ -57,13 +61,35 @@ function stringify_ingredient_info(ingredient, amount) {
         return amount + ingredient.measurement + " of " + ingredient.name;
     }
 }
-function in_or_on(kw) {
-    if (kw.name === "cutting board") {
-        return " on " + kw.name;
+function stringify_kitchenware(kw) {
+    var str = kw.name;
+    var vowels = ["e", "u", "i", "o", "a"];
+    if (vowels.includes(str[0])) {
+        str = "an " + str;
     }
     else {
-        return " in " + kw.name;
+        str = "a " + str;
     }
+    if (kw.name === "cutting board") {
+        str = "on " + str;
+    }
+    else {
+        str = "in " + str;
+    }
+    return str;
+}
+function ingredient_and_ingredients(ingredients) {
+    var ingredient_str = ingredients[0];
+    var i_amount = ingredients.length;
+    if (i_amount > 1) {
+        var i = 1;
+        for (i; i < ingredients.length - 1; i++) {
+            ingredient_str += ", " + ingredients[i];
+        }
+        ingredient_str += " and " + ingredients[i];
+    }
+    else { }
+    return ingredient_str;
 }
 /**
  * returns ingredient name with correct(ish) conjugation depending on if it
