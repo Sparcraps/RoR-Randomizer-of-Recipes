@@ -51,6 +51,27 @@ export type KitchenWare = {
 };
 
 /**
+ * Recipe data type.
+ * contains an array of ingredients and their calorie amounts and the cooking steps.
+ */
+
+export type Recipe = {
+    portions: number,
+    kcal_per_portion: number,
+    ingredient_info: Array<Pair<Ingredient, number>>,
+    steps: Array<CookingStep>,
+};
+
+/**
+ * CookingStep data type.
+ * contains the name of one cooking method, the ingredients it's applied to and the kitchenware used.
+ */
+export type CookingStep = {
+    ingredient_names: Array<string>, // array of ingredient names
+    cooking_method: string,
+};
+
+/**
  * Check whether the input is of type Ingredient.
  * @param input - argument to check the type of
  * @returns Returns true if the type of the input is Ingredient, and false otherwise.
