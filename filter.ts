@@ -9,17 +9,27 @@ import {
  * @param allergies - an array of strings symbolisig allergies
  * @returns a 2D array of ingredients with the ingredients with the allergies removed
  */
-export function filter_allergies(ingredients: Array<Array<Ingredient>>, allergies: Array<string>): Array<Array<Ingredient>>{
-    for(let categoryindex = 0; categoryindex < ingredients.length; categoryindex ++)
+export function filter_allergies(
+                                 ingredients: Array<Array<Ingredient>>, 
+                                 allergies: Array<string>
+                                 ): Array<Array<Ingredient>>{
+    for(let category_index = 0; 
+        category_index < ingredients.length; 
+        category_index ++)
     {
-        for(let ingredientindex = ingredients[categoryindex].length - 1; ingredientindex >= 0; ingredientindex = ingredientindex - 1)
+        for(let ingredient_index = ingredients[category_index].length - 1;
+            ingredient_index >= 0;
+            ingredient_index = ingredient_index - 1)
         {
-            const ingredientallergy = ingredients[categoryindex][ingredientindex].allergies;
-            for(let userallergyindex = 0; userallergyindex < allergies.length; userallergyindex++)
+            const ingredient_allergy = ingredients[category_index]
+                                                  [ingredient_index].allergies;
+            for(let user_allergy_index = 0;
+                user_allergy_index < allergies.length; 
+                user_allergy_index++)
             {
-                if(ingredientallergy.includes(allergies[userallergyindex]))
+                if(ingredient_allergy.includes(allergies[user_allergy_index]))
                 {
-                    ingredients[categoryindex].splice(ingredientindex, 1);
+                    ingredients[category_index].splice(ingredient_index, 1);
                 }
             }
         }
