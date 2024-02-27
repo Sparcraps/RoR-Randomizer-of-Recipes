@@ -272,7 +272,6 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
             } else {}
             const copy_method = [...other_method];
             for (let j = 0; j < other_method.length; j++) {
-                console.log(copy_method);
                 if (copy_method.toString() === method.toString()) {
                     const names = tail(selected_methods[i])
                     ingredient_names.push(...names); // adds ingredient for matching method to list

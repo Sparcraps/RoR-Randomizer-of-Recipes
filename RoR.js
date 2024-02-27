@@ -249,7 +249,6 @@ function generate_recipe(_a, portions, filters) {
             else { }
             var copy_method = __spreadArray([], other_method, true);
             for (var j = 0; j < other_method.length; j++) {
-                console.log(copy_method);
                 if (copy_method.toString() === method.toString()) {
                     var names = (0, list_1.tail)(selected_methods[i]);
                     ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
