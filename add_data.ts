@@ -54,17 +54,6 @@ const shrimp = new_ingredient("meat", "cod filet", ["meat"], "50g", 100, pair(1,
 const cucumber = new_ingredient("fruit", "cucumber", [], "0.5", 17, pair(1, 2));
 const avocado = new_ingredient("fruit", "avocado", [], "0.5", 120, pair(1, 2));
 
-/*
-const dill = new_ingredient("spice", "dill", [], "tbsp", 6, pair(1, 2));
-const basil = new_ingredient("spice", "basil", [], "tbsp", 1, pair(1, 2));
-const paprika_powder = new_ingredient("spice", "paprika powder", [], "tbsp", 22, pair(1, 2));
-const ginger_powder = new_ingredient("spice", "ginger powder", [], "tsp", 20, pair(1, 2));
-const thyme = new_ingredient("spice", "thyme", [], "tsp", 14, pair(1, 2));
-const rosemary = new_ingredient("spice", "rosemary", [], "tbsp", 17, pair(1, 2));
-const cayenne = new_ingredient("spice", "cayenne", [], "tbsp", 37, pair(1, 2));
-const cumin = new_ingredient("spice", "cumin", [], "tbsp", 22, pair(1, 2));
-const garlic_powder = new_ingredient("spice", "garlic powder", [], "tbsp", 22, pair(1, 2));
-*/
 const tarragon = new_ingredient("spice", "tarragon", [], "tsp", 10, pair(1, 2));
 const oregano = new_ingredient("spice", "oregano", [], "tsp", 6, pair(1, 2));
 const sage = new_ingredient("spice", "sage", [], "tsp", 2, pair(1, 2));
@@ -96,7 +85,11 @@ save_new_ingredient(
     broccoli, celery, yellow_onion, red_onion, cucumber, avocado, paprika,
     asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip,
     sweet_potato, water, stock, chicken_breast, chicken_thigh, pork_cutlet,
-    minced_meat, steak
+    minced_meat, steak, cabbage, aubergine, garlic_clove, tomato, pork_belly, 
+    chorizo, salmon_filet, cod_filet, shrimp, tarragon, oregano, sage, basil,
+    rosemary, mint, ginger_powder, thyme, paprika_powder, cardamom, coriander,
+    anise_powder, cinnamon, cloves, onion_powder, garlic_powder, turmeric, 
+    chili_flakes
     );
 
 save_new_kitchenware(pot, cutting_board, frying_pan, oven, bowl);
