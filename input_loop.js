@@ -10,13 +10,14 @@ var save_recipe_1 = require("./save_recipe");
  * is pressed.
  */
 function wait_for_keypress() {
-    // if (process.platform === "win32") {
-    //     const { spawnSync } = require('node:child_process');
-    //     let pause_str = "pause";
-    //     spawnSync("pause", {shell: true, stdio: [0, 1, 2]}); 
-    // } else {
-    prompt("Press enter to continue.");
-    // }
+    if (process.platform === "win32") {
+        var spawnSync = require('node:child_process').spawnSync;
+        var pause_str = "pause";
+        spawnSync("pause", { shell: true, stdio: [0, 1, 2] });
+    }
+    else {
+        prompt("Press enter to continue.");
+    }
     console.log();
 }
 function RoR_start() {
@@ -244,4 +245,6 @@ var print_bold_text = true;
 var portion_size = [400, 700];
 var portion_amount = 4; //remove
 var restrictions = []; //remove
-RoR_start();
+if (require.main === module) {
+    RoR_start();
+}

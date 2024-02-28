@@ -67,7 +67,7 @@ export function print_recipe(recipe: Recipe): void {
     let step_nr = 1;
     steps.forEach(step => {
         console.log(
-            step_nr + ". " + step.cooking_method + " the " +
+            step_nr + ". " + up_first(step.cooking_method) + " the " +
             ingredient_and_ingredients(step.ingredient_names) +
             " " + stringify_kitchenware(step.kitchenware)
             );
@@ -75,6 +75,10 @@ export function print_recipe(recipe: Recipe): void {
     })
     console.log( step_nr + ". " + "Finally, add salt and pepper to taste! :-)");
     console.log("-----------------------------------");
+}
+
+function up_first(str: string): string {
+    return str[0].toUpperCase() + str.slice(1);
 }
 
 function stringify_ingredient_info(
@@ -110,7 +114,7 @@ function ingredient_and_ingredients(ingredients: Array<string>): string {
     const i_amount = ingredients.length;
     if (i_amount > 1) {
         let i = 1;
-        for (i; i < ingredients.length - 1; i++) {
+        for (i; i < i_amount - 1; i++) {
             ingredient_str += ", " + ingredients[i];
         }
         ingredient_str += " and " + ingredients[i];

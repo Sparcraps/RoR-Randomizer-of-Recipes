@@ -44,7 +44,7 @@ function print_recipe(recipe) {
     var steps = recipe.steps;
     var step_nr = 1;
     steps.forEach(function (step) {
-        console.log(step_nr + ". " + step.cooking_method + " the " +
+        console.log(step_nr + ". " + up_first(step.cooking_method) + " the " +
             ingredient_and_ingredients(step.ingredient_names) +
             " " + stringify_kitchenware(step.kitchenware));
         step_nr += 1;
@@ -53,6 +53,9 @@ function print_recipe(recipe) {
     console.log("-----------------------------------");
 }
 exports.print_recipe = print_recipe;
+function up_first(str) {
+    return str[0].toUpperCase() + str.slice(1);
+}
 function stringify_ingredient_info(ingredient, amount) {
     if (ingredient.measurement === "" && amount > 1) {
         return amount + " " + refer_to_ingredient(ingredient, amount);
@@ -83,7 +86,7 @@ function ingredient_and_ingredients(ingredients) {
     var i_amount = ingredients.length;
     if (i_amount > 1) {
         var i = 1;
-        for (i; i < ingredients.length - 1; i++) {
+        for (i; i < i_amount - 1; i++) {
             ingredient_str += ", " + ingredients[i];
         }
         ingredient_str += " and " + ingredients[i];

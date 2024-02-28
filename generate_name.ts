@@ -55,15 +55,34 @@ function find_last_cooking_step(cooking_steps: Array<CookingStep>,
  * @returns the name generated as a string.
  */
 export function generate_name(recipe: Recipe): string {
+    // capitalizes first letter of each word in a string
+    function up_first_all(str: string): string {
+        const words = str.split(" ");
+        let new_str = up_first(words[0]);
+        if (words.length > 1) {
+            let i = 1;
+            for (i; i < words.length; i++) {
+                new_str += " " + up_first(words[i]);
+            }
+        } else {}
+        return new_str;
+    }
+
+    // capitalizes first letter of string
+    function up_first(str: string): string {
+        return str[0].toUpperCase() + str.slice(1);
+    }
+
     const ingredient_info = JSON.parse(JSON.stringify(recipe.ingredient_info)); // copies recipe ingredient info
     const main_ingr = find_highest_amount(ingredient_info);
     const main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
     if (ingredient_info.length === 0) {
-        return main_ingr.name + " " + main_cooking_method.cooking_method;
+        return up_first_all(main_ingr.name) + " " +
+        up_first_all(main_cooking_method.cooking_method);
     } else {
         const secondary_ingr = find_highest_amount(ingredient_info);
-        return main_ingr.name + " and " + 
-            secondary_ingr.name + " " + 
-            main_cooking_method.cooking_method;
+        return up_first_all(main_ingr.name) + " and " +
+            up_first_all(secondary_ingr.name) + " " + 
+            up_first_all(main_cooking_method.cooking_method);
     }
 }
