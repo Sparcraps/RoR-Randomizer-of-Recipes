@@ -13,7 +13,7 @@ const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop",
 const root_vegetable = new_category("root vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["chop", "grill"], ["boil", "mash"]], 2);
 const liquid = new_category("liquid", [["add"], ["reduce"]], 1)
 const meat = new_category("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 3);
-const spice = new_category("spice", [["add"], ["toast", "add"]], 5);
+const spice = new_category("spice", [["add"]], 5);
 const carbohydrate = new_category("carbohydrate", [["boil"], ["boil", "fry"]], 1)
 const fruit = new_category("fruit", [["chop", "add"]], 3);
 

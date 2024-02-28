@@ -132,10 +132,6 @@
             "cooking_methods": [
                 [
                     "add"
-                ],
-                [
-                    "toast",
-                    "add"
                 ]
             ],
             "max_ingredients": 5

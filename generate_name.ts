@@ -14,12 +14,12 @@ import {
 function find_highest_amount(ingredients: Array<Pair<Ingredient, 
                                                      number>>): Ingredient {
     let largest = ingredients[0];
-    let current: number = ingredients[0][1];
+    let current: number = ingredients[0][1]*ingredients[0][0].kcal_per_measurement;
 
     for(let i = 0; i < ingredients.length ; i = i + 1)
     {
-        current = ingredients[i][1];
-        if(largest[1] <= current)
+        current = ingredients[i][1]*ingredients[i][0].kcal_per_measurement;
+        if(largest[1]*largest[0].kcal_per_measurement <= current)
         {
             largest = ingredients[i];
         }
