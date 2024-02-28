@@ -38,6 +38,12 @@ export function save_configuration(data: Configuration): void {
     fs.writeFileSync(filepath, json_data);
 }
 
+export function change_portion_amount(new_amount: number, config: Configuration): Configuration {
+    config.portion_amount = new_amount;
+    save_configuration(config);
+    return config;
+}
+
 /**
  * Add a dietary restriction to a Configuration object
  * and saves the resulting Array to config.json.
@@ -53,7 +59,7 @@ export function add_to_dietary_restrictions(diet_input: string, config: Configur
     if (!rest.includes(diet_input)) {
         rest.push(diet_input);
         save_configuration(config);
-        console.log("Dietary restriction successfully added!")
+        // console.log("Dietary restriction successfully added!")
     } else {
         console.log("Dietary restriction not added; it is already active.")
     }

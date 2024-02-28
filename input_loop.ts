@@ -22,10 +22,16 @@ import {
 } from "./save_config";
 
 import {
-    save_new_recipe
+    save_new_recipe, load_recipes, delete_recipe
 } from "./save_recipe";
-import { delete_ingredient, load_data, save_new_ingredient, SaveData } from "./save_load_data";
-import { empty_ingredient, Ingredient } from "./basics";
+
+import {
+    delete_ingredient, load_data, save_new_ingredient, SaveData
+} from "./save_load_data";
+
+import {
+    empty_ingredient, Ingredient
+} from "./basics";
 
 export function RoR_start(): void {
     function kill_RoR(): void {
@@ -66,7 +72,7 @@ function main_menu(): void {
             if (!is_stack_empty(menu_memory)) {
                 menu_memory = pop(menu_memory);
             } else {
-                throw new Error("Error removing function from memory stack")
+                throw new Error("Error removing function from memory stack");
             }
         }
     }
@@ -104,14 +110,11 @@ function main_menu(): void {
         return parsed;
     }
 
-    /**
-     * Pauses program until any key is pressed on Windows OS,
-     * otherwise until enter is pressed.
-     */
+     //Pauses program until any key is pressed on Windows OS,
+     //otherwise until enter is pressed.
     function wait_for_keypress(): void {
         if (process.platform === "win32") {
             const { spawnSync } = require('node:child_process');
-            let pause_str = "pause";
             spawnSync("pause", {shell: true, stdio: [0, 1, 2]}); 
         } else {
             prompt("Press enter to continue.");
@@ -132,7 +135,7 @@ function main_menu(): void {
 
             if (user_input === "r") {
                 oblivion();
-                menu_memory = push(recipimize_saved, menu_memory);
+                menu_memory = push(recipimize, menu_memory);
             } else if (user_input === "b") {
                 oblivion();
             }
@@ -153,7 +156,7 @@ function main_menu(): void {
         if (user_input === "r") {
             return;
         } else if (user_input === "s") {
-            save_new_recipe(recipe);
+            recipes = save_new_recipe(recipe);
             console.log("Recipe " + recipe.name + " saved!\n");
             oblivion();
             menu_memory = push(recipimize_saved, menu_memory);
@@ -184,59 +187,41 @@ function main_menu(): void {
     }
 
     function saved_recipes(): void {
-        function choose_recipe(): number {
+        function choose_recipe(): Recipe {
             print_bold("Your saved recipes:");
-            for (let i = 0; i < recipe_arr.length; i++) {
-                let current_name: string = recipe_arr[i].name;
+            for (let i = 0; i < recipes.length; i++) {
+                let current_name: string = recipes[i].name;
                 console.log(i, current_name);
             }
 
-            const input_int = integer_prompt("Enter the number corresponding to the recipe you want to choose: ");
-            return input_int;
+            const int = integer_prompt("Enter the number corresponding to the recipe you want to choose: ");
+            return recipes[int];
         }
 
-        const recipe_arr: Array<Recipe> = load_recipes();
         print_menu = ['"v" = view saved recipe', '"d = delete saved recipe"', '"b" = back to main menu'];
         valid_inputs = ["v", "d", "b"];
 
         print_alternatives(print_menu);
         user_input = check_input(valid_inputs, "Choose an alternative: ");
-        
+
         if (user_input === "v") {
-            const i = choose_recipe();
-            print_recipe(recipe_arr[i]);
+            const selected_recipe = choose_recipe();
+            print_recipe(selected_recipe);
             wait_for_keypress();
         } else if (user_input === "d") {
-            const i = choose_recipe();
-            const name = recipe_arr[i].name;
-            delete_recipe(name);
-            print_bold("Recipe " + name + " deleted!")
+            const selected_recipe = choose_recipe();
+            const name = selected_recipe.name;
+            recipes = delete_recipe(name);
+            console.log("Recipe " + name + " deleted!");
         } else if (user_input === "b") {
             oblivion();
+        } else {
+            throw new Error("Error: invalid user_input has escaped.");
         }
     }
 
     //submenu for configurations
     function configure(): void {
-        print_menu = ['"p" = portion amount',
-                      '"d" = dietary restrictions',
-                      '"i" = ingredient data',
-                      '"b" = back to main menu'];
-        valid_inputs = ["p", "d", "i", "b"];
-    
-        print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Choose what you want to configure: ");
-        
-        if (user_input === "p") {
-            menu_memory = push(configure_portion, menu_memory);
-        } else if (user_input === "d") {
-            menu_memory = push(dietary_prompt, menu_memory);
-        } else if (user_input === "i") {
-            menu_memory = push(configure_ingredients, menu_memory)
-        } else if (user_input === "b") {
-            oblivion();
-        }
-
         //submenu for changing portion size
         function configure_portion(): void {            
             valid_inputs = ["y", "n"];
@@ -253,7 +238,7 @@ function main_menu(): void {
                 oblivion();
             }
         }
-    
+
         //submenu for dietary restrictions where active restrictions can be viewed
         function dietary_prompt(): void {            
             valid_inputs = ["y", "n"];
@@ -266,6 +251,8 @@ function main_menu(): void {
                 menu_memory = push(configure_dietary, menu_memory);
             } else if (user_input === "n") {
                 oblivion();
+            } else {
+                throw new Error("Error: invalid user_input has escaped.");
             }
             
             //subsubmenu for dietary restrictions where active restrictions can be changed
@@ -283,6 +270,27 @@ function main_menu(): void {
                         return pair(false, input);
                     }
                 }
+
+        print_menu = ['"p" = portion amount',
+                      '"d" = dietary restrictions',
+                      '"i" = ingredient data',
+                      '"b" = back to main menu'];
+        valid_inputs = ["p", "d", "i", "b"];
+    
+        print_alternatives(print_menu);
+        user_input = check_input(valid_inputs, "Choose what you want to configure: ");
+        
+        if (user_input === "p") {
+            menu_memory = push(configure_portion, menu_memory);
+        } else if (user_input === "d") {
+            menu_memory = push(dietary_prompt, menu_memory);
+        } else if (user_input === "i") {
+            menu_memory = push(configure_ingredients, menu_memory);
+        } else if (user_input === "b") {
+            oblivion();
+        } else {
+            throw new Error("Error: invalid user_input has escaped.");
+        }
 
                 print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction',
                               '"v" = view active dietary restrictions','"b" = back to configurations menu'];
@@ -312,6 +320,8 @@ function main_menu(): void {
                     print_alternatives(config.dietary_restrictions);
                 } else if (user_input === "b") {
                     oblivion(2);
+                } else {
+                    throw new Error("Error: invalid user_input has escaped.");
                 }
             }
         }
@@ -417,13 +427,16 @@ function main_menu(): void {
                         console.log(values[i]);
                     }
 
-                    valid_inputs = ["y", "n"]
-                    user_input = check_input(valid_inputs, "Are you happy with the ingredient data?")
+                    valid_inputs = ["y", "n"];
+                    user_input = check_input(valid_inputs, "Are you happy with the ingredient data? (y/n): ");
+
                     if (user_input === "y") {
                         save_new_ingredient(new_ingredient);
                         oblivion();
                     } else if (user_input === "n") {
                         menu_memory = push(ingredient_adjustments, menu_memory);                        
+                    } else {
+                        throw new Error("Error: invalid user_input has escaped.");
                     }
                     
                     function ingredient_adjustments(): void {
@@ -456,6 +469,8 @@ function main_menu(): void {
                         } else if (user_input === "b") {
                             save_new_ingredient(new_ingredient);
                             oblivion(2);
+                        } else {
+                            throw new Error("Error: invalid user_input has escaped.");
                         }
                     }
                 }
@@ -495,38 +510,40 @@ function main_menu(): void {
                         } else {}
                     } else if (user_input === "b") {
                         oblivion();
+                    } else {
+                        throw new Error("Error: invalid user_input has escaped.");
                     }
                 }
             } else if (user_input === "b") {
                 oblivion();
+            } else {
+                throw new Error("Error: invalid user_input has escaped.");
             }
         }
     }
 
     let user_input: string | null;
     let print_menu: Array<string> = ['"h" = help', '"r" = randomize recipe',
-                                       '"q" = quit', '"s" = saved recipes',
-                                       '"c" = configure'];
+                                     '"s" = saved recipes', '"c" = configure',
+                                     '"q" = quit'];
     let valid_inputs: Array<string> = ["h", "r", "q", "s", "c"];
     
     print_alternatives(print_menu);
     user_input = check_input(valid_inputs, "Choose an alternative: ");
 
-    while (!valid_inputs.includes(user_input)) {
-        print_bold("Invalid input. Try again");
-    }
     if (user_input === "h") {
         print_help();
     } else if (user_input === "r") {
         menu_memory = push(recipimize, menu_memory);
-    } else if (user_input === "q") {
-        oblivion();
     } else if (user_input === "s") {
         menu_memory = push(saved_recipes, menu_memory);
     } else if (user_input === "c") {
         menu_memory = push(configure, menu_memory);
+    } else if (user_input === "q") {
+        oblivion();
+    } else {
+        throw new Error("Error: invalid user_input has escaped.");
     }
-    else {}
 }
 
 export function print_bold(print_str: string): void {
