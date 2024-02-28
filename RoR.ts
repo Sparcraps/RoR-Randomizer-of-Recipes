@@ -121,10 +121,10 @@ function ingredient_and_ingredients(ingredients: Array<string>): string {
  */
 function refer_to_ingredient(ingredient: Ingredient, amount: number): string {
     const name = ingredient.name;
-    const u_i_o = ["u", "i", "o"];
+    const s_u_i_o = ["s", "u", "i", "o"];
     if (ingredient.measurement === "" && amount > 1) {
         const last_char = name[name.length - 1]
-        if (last_char === "s" || u_i_o.includes(last_char)) {
+        if (s_u_i_o.includes(last_char)) {
             return name + "es";
         } else if (last_char === "y") {
             return name.slice(0, -1) + "ies";

@@ -100,10 +100,10 @@ function ingredient_and_ingredients(ingredients) {
  */
 function refer_to_ingredient(ingredient, amount) {
     var name = ingredient.name;
-    var u_i_o = ["u", "i", "o"];
+    var s_u_i_o = ["s", "u", "i", "o"];
     if (ingredient.measurement === "" && amount > 1) {
         var last_char = name[name.length - 1];
-        if (last_char === "s" || u_i_o.includes(last_char)) {
+        if (s_u_i_o.includes(last_char)) {
             return name + "es";
         }
         else if (last_char === "y") {
