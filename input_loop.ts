@@ -243,20 +243,6 @@ function main_menu(): void {
 
         //submenu for dietary restrictions where active restrictions can be viewed
         function dietary_prompt(): void {
-            valid_inputs = ["y", "n"];
-    
-            print_bold("Active dietary restrictions: ");
-            print_alternatives(config.dietary_restrictions);
-            user_input = check_input(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
-    
-            if (user_input === "y") {
-                menu_memory = push(configure_dietary, menu_memory);
-            } else if (user_input === "n") {
-                oblivion();
-            } else {
-                throw new Error("Error: invalid user_input has escaped.");
-            }
-            
             //subsubmenu for dietary restrictions where active restrictions can be changed
             function configure_dietary(): void {
                 //prompts the user to enter a valid dietary restriction and returns the
@@ -267,22 +253,12 @@ function main_menu(): void {
                     print_bold("Valid alternatives: ");
                     print_alternatives(valid);
                     
-                    const input = check_input(valid, "Choose dietary restriction of the above: ")
-                    if (config.dietary_restrictions.includes(input)) {
-                        return pair(true, input);
-                    } else {
-                        return pair(false, input);
-                    }
+                    const input = check_input(valid, "Choose dietary restriction of the above: ");
+                    const is_already_in_arr = config.dietary_restrictions.includes(input);
+                    return pair(is_already_in_arr, input);
                 }
 
-                print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction',
-                              '"v" = view active dietary restrictions','"b" = back to configurations menu'];
-                valid_inputs = ["a", "r", "v", "b"];
-        
-                print_alternatives(print_menu);
-                user_input = check_input(valid_inputs, "Choose an alternative: ");
-                
-                if (user_input === "a") {
+                function add_diet(): void {
                     const diet_pair = select_valid_dietary();
                     if (!diet_pair[0]) {
                         config = add_to_dietary_restrictions(diet_pair[1], config);
@@ -290,7 +266,9 @@ function main_menu(): void {
                     } else {
                         console.log("Dietary restriction not added; it is already active.")
                     }
-                } else if (user_input === "r") {
+                }
+
+                function remove_diet(): void {
                     const diet_pair = select_valid_dietary();
                     if (diet_pair[0]) {
                         config = remove_from_dietary_restrictions(diet_pair[1], config);
@@ -298,38 +276,47 @@ function main_menu(): void {
                     } else {
                         console.log("Dietary restriction not removed; it is not active.")
                     }
+                }
+
+                print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction',
+                              '"v" = view active dietary restrictions', '"b" = back to configurations menu'];
+                valid_inputs = ["a", "r", "v", "b"];
+        
+                print_alternatives(print_menu);
+                user_input = check_input(valid_inputs, "Choose an alternative: ");
+                
+                if (user_input === "a") {
+                    add_diet();
+                } else if (user_input === "r") {
+                    remove_diet();
                 } else if (user_input === "v") {
-                    print_bold("Active dietary restrictions: ");
-                    print_alternatives(config.dietary_restrictions);
+                    view_active_diet();
                 } else if (user_input === "b") {
                     oblivion(2);
                 } else {
                     throw new Error("Error: invalid user_input has escaped.");
                 }
             }
-        }
-        
-        print_menu = ['"p" = portion amount',
-                      '"d" = dietary restrictions',
-                      '"i" = ingredient data',
-                      '"b" = back to main menu'];
-        valid_inputs = ["p", "d", "i", "b"];
+
+            function view_active_diet(): void {
+                print_bold("Active dietary restrictions: ");
+                print_alternatives(config.dietary_restrictions);
+            }
+
+            valid_inputs = ["y", "n"];
     
-        print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Choose what you want to configure: ");
-        
-        if (user_input === "p") {
-            menu_memory = push(configure_portion, menu_memory);
-        } else if (user_input === "d") {
-            menu_memory = push(dietary_prompt, menu_memory);
-        } else if (user_input === "i") {
-            menu_memory = push(configure_ingredients, menu_memory);
-        } else if (user_input === "b") {
-            oblivion();
-        } else {
-            throw new Error("Error: invalid user_input has escaped.");
-        }
+            view_active_diet();
+            user_input = check_input(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
     
+            if (user_input === "y") {
+                menu_memory = push(configure_dietary, menu_memory);
+            } else if (user_input === "n") {
+                oblivion();
+            } else {
+                throw new Error("Error: invalid user_input has escaped.");
+            }
+        }
+
         //submenu for configuring ingredients
         function configure_ingredients(): void {
             function select_name(ingredient: Ingredient): Ingredient {
@@ -523,6 +510,27 @@ function main_menu(): void {
             } else {
                 throw new Error("Error: invalid user_input has escaped.");
             }
+        }
+
+        print_menu = ['"p" = portion amount',
+                      '"d" = dietary restrictions',
+                      '"i" = ingredient data',
+                      '"b" = back to main menu'];
+        valid_inputs = ["p", "d", "i", "b"];
+    
+        print_alternatives(print_menu);
+        user_input = check_input(valid_inputs, "Choose what you want to configure: ");
+        
+        if (user_input === "p") {
+            menu_memory = push(configure_portion, menu_memory);
+        } else if (user_input === "d") {
+            menu_memory = push(dietary_prompt, menu_memory);
+        } else if (user_input === "i") {
+            menu_memory = push(configure_ingredients, menu_memory);
+        } else if (user_input === "b") {
+            oblivion();
+        } else {
+            throw new Error("Error: invalid user_input has escaped.");
         }
     }
 
