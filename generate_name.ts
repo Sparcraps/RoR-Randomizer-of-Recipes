@@ -57,11 +57,15 @@ function find_last_cooking_step(cooking_steps: Array<CookingStep>,
 export function generate_name(recipe: Recipe): string {
     const ingredient_info = JSON.parse(JSON.stringify(recipe.ingredient_info)); // copies recipe ingredient info
     const main_ingr = find_highest_amount(ingredient_info);
-    const main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
+    let main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
     if (ingredient_info.length === 0) {
         return main_ingr.name + main_cooking_method.cooking_method;
     } else {
         const secondary_ingr = find_highest_amount(ingredient_info);
+        if(main_cooking_method.cooking_method == "boil"){
+            main_cooking_method = find_last_cooking_step(recipe.steps, 
+                                                         secondary_ingr);
+        }
         return main_ingr.name + " and " + 
             secondary_ingr.name + " " + 
             main_cooking_method.cooking_method;
