@@ -10,7 +10,8 @@ import {
 } from "./lib/queue_array";
 
 import {
-    save_data, load_data, save_new_category, save_new_ingredient, delete_category
+    save_data, load_data, save_new_category, save_new_ingredient,
+    delete_category
 } from "./save_load_data";
 
 import {
@@ -42,7 +43,10 @@ export function new_recipe(portions: number): Recipe {
     }
 }
 
-function new_cooking_step(cooking_method: string, ingredient_names: Array<string>, kitchenware: KitchenWare): CookingStep {
+function new_cooking_step(
+    cooking_method: string, ingredient_names: Array<string>,
+    kitchenware: KitchenWare
+    ): CookingStep {
     return {cooking_method, ingredient_names, kitchenware};
 }
 
@@ -73,7 +77,9 @@ export function print_recipe(recipe: Recipe): void {
     console.log("-----------------------------------");
 }
 
-function stringify_ingredient_info(ingredient: Ingredient, amount: number): string {
+function stringify_ingredient_info(
+    ingredient: Ingredient, amount: number
+    ): string {
     if (ingredient.measurement === "" && amount > 1) {
         return amount + " " + refer_to_ingredient(ingredient, amount);
     } else {
@@ -136,7 +142,10 @@ function refer_to_ingredient(ingredient: Ingredient, amount: number): string {
     }
 }
 
-export function generate_recipe([min_portion, max_portion]: Pair<number, number>, portions: number, filters: Array<string>): Recipe {
+export function generate_recipe(
+    [min_portion, max_portion]: Pair<number, number>,
+    portions: number, filters: Array<string>
+    ): Recipe {
     // Selects a random category from an array of categories and 
     // returns the category and its ingredient array. Removes both and retries
     // if the ingredient array is empty.
@@ -154,7 +163,9 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
             ingredient_data.splice(cat_i, 1);
             if (ingredient_data.length === 0) { // if all ingredients have already been selected:
                 category_data.push(...data.categories); //reloads data by creating a copies fron saved data
-                ingredient_data.push(...JSON.parse(JSON.stringify(data.ingredients))); 
+                ingredient_data.push(
+                    ...JSON.parse(JSON.stringify(data.ingredients))
+                    ); 
             }
             return randomize_category();
         } else {
@@ -173,7 +184,9 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
 
     // Randomizes amount of an ingredient based on its range attribute, 
     // maximum space left in recipe and the portion amount.
-    function randomize_ingredient_amount(ingredient: Ingredient, max_for_recipe: number, portions: number): number {
+    function randomize_ingredient_amount(
+        ingredient: Ingredient, max_for_recipe: number, portions: number
+        ): number {
         let [min, max] = ingredient.range;
         [min, max] = [min * portions, max * portions];
         max = Math.min(max, max_for_recipe);
@@ -237,13 +250,18 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
 
             const ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
             const kcal_per_measure = ingredient.kcal_per_measurement;
-            const max_measures = Math.floor((max_kcal - kcal) / kcal_per_measure); // calculate maximum amount of measurements of ingredient that fits in recipe
-            let amount = randomize_ingredient_amount(ingredient, max_measures, portions); // randomize ingredient amount
+            const max_measures = Math.floor(  // calculate maximum amount of measurements of ingredient that fits in recipe
+                (max_kcal - kcal) / kcal_per_measure
+                );
+            let amount = randomize_ingredient_amount(
+                ingredient,max_measures, portions
+                );
 
             if (amount === 0) { // amount can be 0 if max_measures is lower than minimum measures for the ingredient and portion amount.
                 continue;
             } else {
-                add_method(randomize_cooking_method(cat), refer_to_ingredient(ingredient, amount));
+                const method = randomize_cooking_method(cat);
+                add_method(method, refer_to_ingredient(ingredient, amount));
                 recipe.ingredient_info.push(pair(ingredient, amount));
                 kcal += amount * kcal_per_measure;
             }
@@ -280,8 +298,8 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
         } else {}
         method.shift(); // removes current method from method
         if (has_separable_inventory(kw)) {
-            const extra_ingredients = do_separable_method(current_method, kw, steps);
-            kw.inventory.push(...extra_ingredients);
+            const extra_i = do_separable_method(current_method, kw, steps);
+            kw.inventory.push(...extra_i);
         } else {}
         kw.inventory.push(...ingredient_names);
         const more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
@@ -290,7 +308,12 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
         return add_cooking_step(method, ingredient_names, steps);
     }
 
-    function do_separable_method(method: string, kw: KitchenWare, steps): Array<string> {
+    // for separable kitchenware, finds all ingredients with same cooking method
+    // somewhere in method array. Executes the methods earlier in method array
+    // and returns ingredient names for method step.
+    function do_separable_method(
+        method: string, kw: KitchenWare, steps: Array<CookingStep>
+        ): Array<string> {
         const ingredient_names: Array<string> = []
         for (let i = 0; i < selected_methods.length; i++) {
             const other_method = head(selected_methods[i]);
@@ -310,7 +333,9 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
 
     // finds methods that contain the input method at the end and adds cooking
     // steps for them. Returns their ingredient names.
-    function do_similar_methods(method: Array<string>, steps: Array<CookingStep>): Array<string> {
+    function do_similar_methods(
+        method: Array<string>, steps: Array<CookingStep>
+        ): Array<string> {
         const ingredient_names: Array<string> = [];
         for (let i = 0; i < selected_methods.length; i++) {
             const other_method = head(selected_methods[i]);
