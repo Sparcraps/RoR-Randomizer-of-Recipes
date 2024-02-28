@@ -1,7 +1,7 @@
 import * as PromptSync from "prompt-sync";
 
 import { 
-    Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop
+    type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop
 } from "./lib/stack";
 
 import {
@@ -9,13 +9,16 @@ import {
 } from "./RoR";
 
 import {
+    pair,
     type Pair
 } from "./lib/list";
 
 import {
-    Configuration,
+    type Configuration,
+    add_to_dietary_restrictions,
     load_configuration,
-    save_configuration
+    save_configuration,
+    remove_from_dietary_restrictions
 } from "./save_config";
 
 import {
@@ -86,6 +89,19 @@ function main_menu(): void {
         return user_input;
     }
 
+    //helper function that checks if input is an integer, and otherwise prompts the user again
+    function integer_prompt(prompt_text: string): number {
+        let new_portion_amount: string | null = prompt(prompt_text);
+        let parsed: number = parseInt(new_portion_amount);
+    
+        while (isNaN(parsed)) {
+            console.log("Invalid input. Please enter a valid number.");
+            new_portion_amount = prompt(prompt_text);
+            parsed = parseInt(new_portion_amount);
+        }
+        return parsed;
+    }
+
     //submenu for randomizing recipes
     function recipimize(): void {
         //in case a recipe is saved, the menu alternatives need to be adjusted
@@ -151,6 +167,39 @@ function main_menu(): void {
         console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.\n");
     }
 
+    function saved_recipes(): void {
+        function choose_recipe(): number {
+            print_bold("Your saved recipes:");
+            for (let i = 0; i < recipe_arr.length; i++) {
+                let current_name: string = recipe_arr[i].name;
+                console.log(i, current_name);
+            }
+
+            const input_int = integer_prompt("Enter the number corresponding to the recipe you want to choose");
+            return input_int;
+        }
+
+        const recipe_arr: Array<Recipe> = load_recipes();
+        print_menu = ['"v" = view saved recipe', '"d = delete saved recipe"', '"b" = back to main menu'];
+        valid_inputs = ["v", "d", "b"];
+
+        print_alternatives(print_menu);
+        user_input = check_input(valid_inputs, "Choose an alternative: ");
+        
+        if (user_input === "v") {
+            const i = choose_recipe();
+            print_recipe(recipe_arr[i]);
+            // wait for keypress
+        } else if (user_input === "d") {
+            const i = choose_recipe();
+            const name = recipe_arr[i].name;
+            delete_recipe(name);
+            print_bold("Recipe " + name + " deleted!")
+        } else if (user_input === "b") {
+            oblivion();
+        }
+    }
+
     //submenu for configurations
     function configure(): void {
         print_menu = ['"p" = portion amount',
@@ -173,20 +222,7 @@ function main_menu(): void {
         }
 
         //submenu for changing portion size
-        function configure_portion(): void {
-            //helper function that checks if input is an integer, and otherwise prompts the user again
-            function integer_prompt(prompt_text: string): number {
-                let new_portion_amount: string | null = prompt(prompt_text);
-                let parsed: number = parseInt(new_portion_amount);
-            
-                while (isNaN(parsed)) {
-                    console.log("Invalid input. Please enter a valid number.");
-                    new_portion_amount = prompt(prompt_text);
-                    parsed = parseInt(new_portion_amount);
-                }
-                return parsed;
-            }
-            
+        function configure_portion(): void {            
             valid_inputs = ["y", "n"];
     
             console.log("Current portion amount: " + config.portion_amount.toString);
@@ -206,7 +242,7 @@ function main_menu(): void {
         function dietary_prompt(): void {            
             valid_inputs = ["y", "n"];
     
-            console.log("Active dietary restrictions: ")
+            print_bold("Active dietary restrictions: ");
             print_alternatives(config.dietary_restrictions);
             user_input = check_input(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
     
@@ -218,16 +254,46 @@ function main_menu(): void {
             
             //subsubmenu for dietary restrictions where active restrictions can be changed
             function configure_dietary(): void {
-                valid_inputs = ["a", "r", "b"];
-                print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction', '"b" = back to configurations menu'];
+                //prompts the user to enter a valid dietary restriction and returns the
+                //input as well as information of its existance in currently active dietary restrictions
+                function select_valid_dietary(): Pair<boolean, string> {
+                    const valid = valid_dietary_restrictions;
+                    console.log("Valid alternatives: ")
+                    print_alternatives(valid);
+                    const input = check_input(valid, "Choose dietary restriction of the above: ")
+                    if (config.dietary_restrictions.includes(input)) {
+                        return pair(true, input);
+                    } else {
+                        return pair(false, input);
+                    }
+                }
+
+                print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction',
+                              '"v" = view active dietary restrictions','"b" = back to configurations menu'];
+                valid_inputs = ["a", "r", "v", "b"];
         
                 print_alternatives(print_menu);
                 user_input = check_input(valid_inputs, "Choose an alternative: ");
                 
                 if (user_input === "a") {
-    
+                    const diet_pair = select_valid_dietary();
+                    if (!diet_pair[0]) {
+                        add_to_dietary_restrictions(diet_pair[1], config);
+                        console.log("Dietary restriction successfully added!")
+                    } else {
+                        console.log("Dietary restriction not added; it is already active.")
+                    }
                 } else if (user_input === "r") {
-        
+                    const diet_pair = select_valid_dietary();
+                    if (diet_pair[0]) {
+                        remove_from_dietary_restrictions(diet_pair[1], config);
+                        console.log("Dietary restriction successfully removed!")
+                    } else {
+                        console.log("Dietary restriction not removed; it is not active.")
+                    }
+                } else if (user_input === "v") {
+                    print_bold("Active dietary restrictions: ");
+                    print_alternatives(config.dietary_restrictions);
                 } else if (user_input === "b") {
                     oblivion(2);
                 }
@@ -242,13 +308,12 @@ function main_menu(): void {
             print_alternatives(print_menu);
             user_input = check_input(valid_inputs, "Choose an alternative: ");
             if (user_input === "a") {
-    
+                //make submenu
             } else if (user_input === "r") {
-    
+                //make submenu
             } else if (user_input === "b") {
                 oblivion();
             }
-            //add
         }
     }
 
@@ -271,7 +336,7 @@ function main_menu(): void {
     } else if (user_input === "q") {
         oblivion();
     } else if (user_input === "s") {
-        // saved_recipes();
+        menu_memory = push(saved_recipes, menu_memory);
     } else if (user_input === "c") {
         menu_memory = push(configure, menu_memory);
     }
@@ -291,6 +356,7 @@ const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
 let menu_memory: Stack<Function> = empty_stack();
 const print_bold_text: boolean = true;
 const portion_size: Pair<number, number> = [400, 700];
+const valid_dietary_restrictions: Array<string> = ["meat", "gluten", "dairy", "eggs", "nuts", "fish"];
 
 let config = load_configuration();
 const portion_amount: number = config.portion_amount;
