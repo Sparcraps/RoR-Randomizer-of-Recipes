@@ -17,7 +17,7 @@ const spice = new_category("spice", [["add"]], 10);
 const carbohydrate = new_category("carbohydrate", [["boil"], ["boil", "fry"]], 1)
 const fruit = new_category("fruit", [["chop", "add"]], 3);
 
-const broccoli = new_ingredient("vegetable", "broccoli", [], "50g", 17, pair(50, 300));
+const broccoli = new_ingredient("vegetable", "broccoli", [], "50g", 17, pair(1, 4));
 const celery = new_ingredient("vegetable", "celery", [], "", 7, pair(1, 2));
 const yellow_onion = new_ingredient("vegetable", "yellow onion", [], "", 46, pair(1, 2));
 const red_onion = new_ingredient("vegetable", "red onion", [], "", 46, pair(1, 2));
@@ -52,18 +52,18 @@ const frying_pan = new_kitchenware("frying pan", ["fry", "simmer", "add"]);
 const oven  = new_kitchenware("oven", ["bake", "grill", "add"]);
 const bowl = new_kitchenware("bowl", ["marinate"]);
 
-// save_new_category(vegetable, root_vegetable, liquid, meat, spice, carbohydrate, fruit);
+save_new_category(vegetable, root_vegetable, liquid, meat, spice, carbohydrate, fruit);
 
-// save_new_ingredient(
-//     broccoli, celery, yellow_onion, red_onion, cucumber, avocado, paprika,
-//     asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip,
-//     sweet_potato, water, stock, chicken_breast, chicken_thigh, pork_cutlet,
-//     minced_meat, steak
-//     );
+save_new_ingredient(
+    broccoli, celery, yellow_onion, red_onion, cucumber, avocado, paprika,
+    asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip,
+    sweet_potato, water, stock, chicken_breast, chicken_thigh, pork_cutlet,
+    minced_meat, steak
+    );
 
-// save_new_kitchenware(pot, cutting_board, frying_pan, oven, bowl);
+save_new_kitchenware(pot, cutting_board, frying_pan, oven, bowl);
 
-// delete_category("liquid");
+delete_category("liquid");
 
 // const data = load_data();
 // const cats = data.categories;

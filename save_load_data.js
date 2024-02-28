@@ -54,6 +54,7 @@ function save_new_category() {
     var data = load_data();
     var cats = data.categories;
     new_cats.forEach(function (cat) {
+        cat.name = cat.name.toLowerCase().trim();
         var existing_index = (0, basics_1.find_by_name)(cat.name, cats);
         if (!(existing_index === -1)) {
             console.error(new Error("Category with name " + cat.name + " already exists."));
@@ -83,6 +84,7 @@ function save_new_kitchenware() {
     var data = load_data();
     var saved_kw = data.kitchenware;
     new_kitch.forEach(function (kw) {
+        kw.name = kw.name.toLowerCase().trim();
         var existing_index = (0, basics_1.find_by_name)(kw.name, saved_kw);
         if (!(existing_index === -1)) {
             console.error(new Error("Kitchenware with name " + kw.name + " already exists."));
@@ -140,6 +142,7 @@ function save_new_ingredient() {
         return found;
     }
     new_ingredients.forEach(function (i) {
+        i.name = i.name.toLowerCase().trim();
         var is_existing_name = is_ingredient_in_data(i);
         if (is_existing_name) {
             console.error(new Error("Ingredient with name " + i.name + " already exists."));

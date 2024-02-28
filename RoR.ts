@@ -81,24 +81,29 @@ function up_first(str: string): string {
     return str[0].toUpperCase() + str.slice(1);
 }
 
-function stringify_amount(ingredient: Ingredient, amount: number): string {
-    const measurement = ingredient.measurement.trim()
-        .toLowerCase().replace("e", "ε"); // replaces e since parseFloat interprets e as exponent (assumes no measurement includes ε)
-    const measurement_num = parseFloat(measurement);
-    const length_of_num = measurement_num.toString().length;
-    const rest_of_measurement = measurement.slice(length_of_num);
-    amount = measurement_num * amount;
-    return amount + rest_of_measurement.replace("ε", "e");
+function num_rest_of_measurement(measurement: string): Pair<number, string> {
+    measurement = measurement.trim().toLowerCase().replace("e", "ε"); // replaces e since parseFloat interprets e as exponent (assumes no measurement includes ε)
+    const num = parseFloat(measurement);
+    if (isNaN(num)) {
+        return [1, measurement];
+    } else {
+        const length_of_num = num.toString().length;
+        const rest = measurement.slice(length_of_num);
+        return pair(num, rest.replace("ε", "e"));
+    }
 }
 
 function stringify_ingredient_info(
     ingredient: Ingredient, amount: number
     ): string {
-    if (ingredient.measurement === "" && amount > 1) {
-        return stringify_amount(ingredient, amount) + " " +
-            refer_to_ingredient(ingredient, amount);
+    const measurement = ingredient.measurement;
+    const [num, rest] = num_rest_of_measurement(measurement);
+    amount = num * amount;
+    if (rest === "" && amount > 1) {
+        return amount + " " +
+            refer_to_ingredient(ingredient, amount, true);
     } else {
-        return amount + ingredient.measurement + " of " + ingredient.name;
+        return amount + rest + " of " + ingredient.name;
     }
 }
 
@@ -135,15 +140,30 @@ function ingredient_and_ingredients(ingredients: Array<string>): string {
 
 /**
  * returns ingredient name with correct(ish) conjugation depending on if it
- *  should be referred to in plural or not
- * @param ingredient - ingredient to name.
- * @param amount - amount of the ingredient.
+ * should be referred to in plural or not
+ * @param {Ingredient} ingredient - ingredient to name.
+ * @param {number} amount - amount of the ingredient.
+ * @param {boolean} [is_pcs = false] - true if it is already known that 
+ * the ingredient is measured in pcs, false as default.
  * @returns A string with conjugated ingredient name
  */
-function refer_to_ingredient(ingredient: Ingredient, amount: number): string {
+function refer_to_ingredient(
+    ingredient: Ingredient, amount: number, is_pcs: boolean = false
+    ): string {
+    // returns true if ingredient should be referred to in plural,
+    // false otherwise.
+    function is_plural(): boolean {
+        const [num, rest] = num_rest_of_measurement(ingredient.measurement);
+        if (rest === "") {
+            return true;
+        } else {
+            return false;
+        }
+    }
     const name = ingredient.name;
     const s_u_i_o = ["s", "u", "i", "o"];
-    if (ingredient.measurement === "" && amount > 1) {
+    
+    if (is_pcs || is_plural()) {
         const last_char = name[name.length - 1]
         if (s_u_i_o.includes(last_char)) {
             return name + "es";

@@ -65,6 +65,9 @@ function generate_name(recipe) {
     }
     else {
         var secondary_ingr = find_highest_amount(ingredient_info);
+        if (main_cooking_method.cooking_method == "boil") {
+            main_cooking_method = find_last_cooking_step(recipe.steps, secondary_ingr);
+        }
         return up_first_all(main_ingr.name) + " and " +
             up_first_all(secondary_ingr.name) + " " +
             up_first_all(main_cooking_method.cooking_method);
