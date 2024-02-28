@@ -5,6 +5,20 @@ var PromptSync = require("prompt-sync");
 var stack_1 = require("./lib/stack");
 var RoR_1 = require("./RoR");
 var save_recipe_1 = require("./save_recipe");
+/**
+ * Pauses program until any key is pressed on windows, otherwise until enter
+ * is pressed.
+ */
+function wait_for_keypress() {
+    // if (process.platform === "win32") {
+    //     const { spawnSync } = require('node:child_process');
+    //     let pause_str = "pause";
+    //     spawnSync("pause", {shell: true, stdio: [0, 1, 2]}); 
+    // } else {
+    prompt("Press enter to continue.");
+    // }
+    console.log();
+}
 function RoR_start() {
     console.log("----------------------------------------");
     console.log("Welcome to Randomizer of Recipes, aka");
@@ -58,7 +72,7 @@ function recipimize() {
     var valid_inputs = ["r", "s", "b"];
     var recipe = (0, RoR_1.generate_recipe)(portion_size, portion_amount, restrictions);
     (0, RoR_1.print_recipe)(recipe);
-    //wait for keypress?
+    wait_for_keypress();
     print_alternatives(print_menu);
     user_input = check_input(valid_inputs, "Choose an alternative: ");
     if (user_input === "r") {
@@ -230,3 +244,4 @@ var print_bold_text = true;
 var portion_size = [400, 700];
 var portion_amount = 4; //remove
 var restrictions = []; //remove
+RoR_start();

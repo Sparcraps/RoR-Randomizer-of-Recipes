@@ -149,10 +149,10 @@ function generate_recipe(_a, portions, filters) {
     }
     // Returns a random ingredient from an array of ingredients and 
     // removes the ingredient from the array.
-    function randomize_ingredient(ingredient_arr) {
-        var ingredient_i = Math.floor(Math.random() * ingredient_arr.length);
-        var ingredient = ingredient_arr[ingredient_i];
-        ingredient_arr.splice(ingredient_i, 1);
+    function randomize_ingredient(arr) {
+        var ingredient_i = Math.floor(Math.random() * arr.length);
+        var ingredient = arr[ingredient_i];
+        arr.splice(ingredient_i, 1);
         return ingredient;
     }
     // Randomizes amount of an ingredient based on its range attribute, 
@@ -216,13 +216,15 @@ function generate_recipe(_a, portions, filters) {
             var _a = randomize_category(), cat = _a[0], ingredient_arr = _a[1]; // get random category with its ingredients
             var ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
             var kcal_per_measure = ingredient.kcal_per_measurement;
-            var max_measures = Math.floor((max_kcal - kcal) / kcal_per_measure); // calculate maximum amount of measurements of ingredient that fits in recipe
-            var amount = randomize_ingredient_amount(ingredient, max_measures, portions); // randomize ingredient amount
+            var max_measures = Math.floor(// calculate maximum amount of measurements of ingredient that fits in recipe
+            (max_kcal - kcal) / kcal_per_measure);
+            var amount = randomize_ingredient_amount(ingredient, max_measures, portions);
             if (amount === 0) { // amount can be 0 if max_measures is lower than minimum measures for the ingredient and portion amount.
                 continue;
             }
             else {
-                add_method(randomize_cooking_method(cat), refer_to_ingredient(ingredient, amount));
+                var method = randomize_cooking_method(cat);
+                add_method(method, refer_to_ingredient(ingredient, amount));
                 recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
                 kcal += amount * kcal_per_measure;
             }
@@ -256,8 +258,8 @@ function generate_recipe(_a, portions, filters) {
         else { }
         method.shift(); // removes current method from method
         if ((0, basics_1.has_separable_inventory)(kw)) {
-            var extra_ingredients = do_separable_method(current_method, kw, steps);
-            (_a = kw.inventory).push.apply(_a, extra_ingredients);
+            var extra_i = do_separable_method(current_method, kw, steps);
+            (_a = kw.inventory).push.apply(_a, extra_i);
         }
         else { }
         (_b = kw.inventory).push.apply(_b, ingredient_names);
@@ -266,6 +268,9 @@ function generate_recipe(_a, portions, filters) {
         ingredient_names.push.apply(ingredient_names, more_ingredients);
         return add_cooking_step(method, ingredient_names, steps);
     }
+    // for separable kitchenware, finds all ingredients with same cooking method
+    // somewhere in method array. Executes the methods earlier in method array
+    // and returns ingredient names for method step.
     function do_separable_method(method, kw, steps) {
         var ingredient_names = [];
         for (var i = 0; i < selected_methods.length; i++) {
