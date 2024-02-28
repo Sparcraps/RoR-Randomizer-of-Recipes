@@ -319,17 +319,26 @@ function main_menu(): void {
 
         //submenu for configuring ingredients
         function configure_ingredients(): void {
-            function select_name(ingredient: Ingredient): Ingredient {
+            //submenu for adding an ingredient
+            function select_name(ingredient: Ingredient, print_contents = false): Ingredient {
+                if (print_contents) {
+                    console.log("Current ingredient name: " + ingredient.name);
+                } else {}
+                
                 let name = prompt("Enter new ingredient name: ").trim().toLowerCase();
                 while (name === "") {
-                    console.log("Ingredient name cannot be empty.")
+                    console.log("Ingredient name cannot be empty / only contain whitespace.")
                     name = prompt("Enter new ingredient name: ").trim().toLowerCase();
                 }
                 ingredient.name = name;
                 return ingredient;
             }
 
-            function select_category(ingredient: Ingredient): Ingredient {
+            function select_category(ingredient: Ingredient, print_contents = false): Ingredient {
+                if (print_contents) {
+                    console.log("Current ingredient category: " + ingredient.category);
+                } else {}
+
                 print_bold("Valid ingredient categories: ");
                 const category_names: Array<string> = [];
                 const cats = data.categories;
@@ -345,7 +354,12 @@ function main_menu(): void {
                 return ingredient;
             }
 
-            function select_allergies(ingredient: Ingredient): Ingredient {
+            function select_allergies(ingredient: Ingredient, print_contents = false): Ingredient {
+                if (print_contents) {
+                    console.log("Current ingredient dietary restrictions: ");
+                    print_alternatives(ingredient.allergies);
+                } else {}
+
                 print_bold("Valid dietary restrictions");
                 print_alternatives(valid_dietary_restrictions);
                 const allergy_array: Array<string> = [];
@@ -365,17 +379,29 @@ function main_menu(): void {
                 return ingredient;
             }
 
-            function select_measurement(ingredient: Ingredient): Ingredient {
+            function select_measurement(ingredient: Ingredient, print_contents = false): Ingredient {
+                if (print_contents) {
+                    console.log("Current ingredient measurement: " + ingredient.measurement);
+                } else {}
+
                 ingredient.measurement = prompt('Enter unit of measurement either as amount in the format of a float number, or as a float followed by a string, e.g. "0.5dl": ').trim().toLowerCase();
                 return ingredient;
             }
 
-            function select_kcal_per_measurement(ingredient: Ingredient): Ingredient {
+            function select_kcal_per_measurement(ingredient: Ingredient, print_contents = false): Ingredient {
+                if (print_contents) {
+                    console.log("Current ingredient kcal per measurement: " + ingredient.kcal_per_measurement.toString());
+                } else {}
+
                 ingredient.kcal_per_measurement = integer_prompt("Enter the amount of kcal per measurement (rounded to nearest integer) for the new ingredient: ");
                 return ingredient;
             }
 
-            function select_range(ingredient: Ingredient): Ingredient {
+            function select_range(ingredient: Ingredient, print_contents = false): Ingredient {
+                if (print_contents) {
+                    console.log("Current ingredient amount range: " + ingredient.range[0].toString() + " - " + ingredient.range[1].toString());
+                } else {}
+
                 let lower_range = integer_prompt("Enter the lower limit for the amount able to be randomized of the new ingredient, measured in the ingredients measurement: ");
                 while (lower_range < 0) {
                     console.log("the lower limit cannot be negative");
@@ -390,13 +416,7 @@ function main_menu(): void {
                 return ingredient;
             }
 
-            valid_inputs = ["a", "r", "b"];
-            print_menu = ['"a" = add ingredient', '"r" = remove ingredient', '"b" = back to configurations menu'];
-    
-            print_alternatives(print_menu);
-            user_input = check_input(valid_inputs, "Choose an alternative: ");
-
-            if (user_input === "a") {
+            function add_ingredient_menu(): void {
                 let new_ingredient: Ingredient = empty_ingredient();
                 new_ingredient = select_name(new_ingredient);
                 new_ingredient = select_category(new_ingredient);
@@ -405,106 +425,118 @@ function main_menu(): void {
                 new_ingredient = select_kcal_per_measurement(new_ingredient);
                 new_ingredient = select_range(new_ingredient);
 
-                menu_memory = push(ingredient_added, menu_memory);
+                const keys = Object.keys(new_ingredient);
+                const values = Object.values(new_ingredient);
 
-                //submenu for when an ingredient has been added
-                function ingredient_added(): void {
-                    const keys = Object.keys(new_ingredient);
-                    const values = Object.values(new_ingredient);
-
-                    print_bold("Data for the new ingredient: ")
-                    print_alternatives(keys);
-                    for (let i = 0; i < values.length; i++) {
-                        console.log(values[i]);
-                    }
-
-                    valid_inputs = ["y", "n"];
-                    user_input = check_input(valid_inputs, "Are you happy with the ingredient data? (y/n): ");
-
-                    if (user_input === "y") {
-                        save_new_ingredient(new_ingredient);
-                        oblivion();
-                    } else if (user_input === "n") {
-                        menu_memory = push(ingredient_adjustments, menu_memory);                        
-                    } else {
-                        throw new Error("Error: invalid user_input has escaped.");
-                    }
-                    
-                    function ingredient_adjustments(): void {
-                        print_menu = [
-                            '"n" = change ingredient name',
-                            '"c" = change ingredient categories',
-                            '"d" = change ingredient dietary restrictions',
-                            '"m" = change ingredient measurement',
-                            '"k" = change ingredient kcal per measurement',
-                            '"r" = change ingredient amount range',
-                            '"b" = save ingredient and go back to ingredient menu'
-                        ];
-                        valid_inputs = ["n", "c", "d", "m", "k", "r", "b"]
-
-                        print_alternatives(print_menu)
-                        user_input = check_input(valid_inputs, "Choose what ingredient data you want to adjust: ")
-
-                        if (user_input === "n") {
-                            new_ingredient = select_name(new_ingredient);
-                        } else if (user_input === "c") {
-                            new_ingredient = select_category(new_ingredient);
-                        } else if (user_input === "d") {
-                            new_ingredient = select_allergies(new_ingredient);
-                        } else if (user_input === "m") {
-                            new_ingredient = select_measurement(new_ingredient);
-                        }  else if (user_input === "k") {
-                            new_ingredient = select_kcal_per_measurement(new_ingredient);
-                        } else if (user_input === "r") {
-                            new_ingredient = select_range(new_ingredient);
-                        } else if (user_input === "b") {
-                            save_new_ingredient(new_ingredient);
-                            oblivion(2);
-                        } else {
-                            throw new Error("Error: invalid user_input has escaped.");
-                        }
-                    }
+                print_bold("Data for the new ingredient: ")
+                print_alternatives(keys);
+                for (let i = 0; i < values.length; i++) {
+                    console.log(values[i]);
                 }
-            } else if (user_input === "r") {
-                menu_memory = push(remove_ingredient, menu_memory)
 
-                function remove_ingredient(): void {
+                valid_inputs = ["y", "n"];
+                user_input = check_input(valid_inputs, "Are you happy with the ingredient data? (y/n): ");
+
+                if (user_input === "y") {
+                    save_new_ingredient(new_ingredient);
+                    oblivion();
+                } else if (user_input === "n") {
+                    menu_memory = push(ingredient_adjustments, menu_memory);                        
+                } else {
+                    throw new Error("Error: invalid user_input has escaped.");
+                }
+                
+                //submenu for when adjusting a newly registered ingredient
+                function ingredient_adjustments(): void {
                     print_menu = [
-                        '"s" = search for ingredient by name',
-                        '"l" = select ingredient from a list of all ingredient names',
-                        '"b" = back to ingredient menu'];
-                    valid_inputs = ["s", "l", "b"];
-                    user_input = check_input(valid_inputs, "Choose an alternative: ");
+                        '"n" = change ingredient name',
+                        '"c" = change ingredient categories',
+                        '"d" = change ingredient dietary restrictions',
+                        '"m" = change ingredient measurement',
+                        '"k" = change ingredient kcal per measurement',
+                        '"r" = change ingredient amount range',
+                        '"b" = save ingredient and go back to ingredient menu'
+                    ];
+                    valid_inputs = ["n", "c", "d", "m", "k", "r", "b"]
 
-                    if (user_input === "s") {
-                        const input = prompt("Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
-                        if (input !== "") {
-                            data = delete_ingredient(input);
-                        } else {}
-                    } else if (user_input === "l") {
-                        const ingr = data.ingredients;
+                    print_alternatives(print_menu)
+                    user_input = check_input(valid_inputs, "Choose what ingredient data you want to adjust: ")
 
-                        print_bold("Currently registered ingredients: ")
-                        for (let i = 0; i < ingr.length; i++) {
-                            for (let j = 0; j < ingr[i].length; j++) {
-                                console.log("- " + ingr[i][j].name);
-                            }
-                        }
-
-                        let input = check_input(valid_inputs, 'Enter the number corresponding to the ingredient you want to remove, or press enter to go back without removing an ingredient');
-                        if (input !== "") {
-                            try {
-                                data = delete_ingredient(input);
-                            } catch { //might have to handle error
-                                console.log("There is no ingredient with that name.")
-                            }
-                        } else {}
+                    if (user_input === "n") {
+                        new_ingredient = select_name(new_ingredient);
+                    } else if (user_input === "c") {
+                        new_ingredient = select_category(new_ingredient);
+                    } else if (user_input === "d") {
+                        new_ingredient = select_allergies(new_ingredient);
+                    } else if (user_input === "m") {
+                        new_ingredient = select_measurement(new_ingredient);
+                    }  else if (user_input === "k") {
+                        new_ingredient = select_kcal_per_measurement(new_ingredient);
+                    } else if (user_input === "r") {
+                        new_ingredient = select_range(new_ingredient);
                     } else if (user_input === "b") {
-                        oblivion();
+                        save_new_ingredient(new_ingredient);
+                        oblivion(2);
                     } else {
                         throw new Error("Error: invalid user_input has escaped.");
                     }
                 }
+            }
+
+            function remove_ingredient_menu(): void {
+                function search_and_delete(): void {
+                    let input = check_input(valid_inputs, "Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
+                    if (input !== "") {
+                        try {
+                            data = delete_ingredient(input);
+                        } catch { //might have to handle error
+                            console.log("There is no ingredient with that name.")
+                        }
+                    } else {}
+                }
+
+                function print_all_ingredients(): void {
+                    const ingr = data.ingredients;
+
+                    print_bold("Currently registered ingredients: ")
+                    for (let i = 0; i < ingr.length; i++) {
+                        for (let j = 0; j < ingr[i].length; j++) {
+                            console.log("- " + ingr[i][j].name);
+                        }
+                    }
+                }
+
+                print_menu = [
+                    '"s" = search for ingredient by name',
+                    '"l" = display a list of existing ingredients before searching for ingredient by name',
+                    '"b" = back to ingredient menu'];
+                valid_inputs = ["s", "l", "b"];
+                
+                print_alternatives(print_menu);
+                user_input = check_input(valid_inputs, "Choose an alternative: ");
+
+                if (user_input === "s") {
+                    search_and_delete();
+                } else if (user_input === "l") {
+                    print_all_ingredients();
+                    search_and_delete();
+                } else if (user_input === "b") {
+                    oblivion();
+                } else {
+                    throw new Error("Error: invalid user_input has escaped.");
+                }
+            }
+
+            valid_inputs = ["a", "r", "b"];
+            print_menu = ['"a" = add ingredient', '"r" = remove ingredient', '"b" = back to configurations menu'];
+    
+            print_alternatives(print_menu);
+            user_input = check_input(valid_inputs, "Choose an alternative: ");
+
+            if (user_input === "a") {
+                menu_memory = push(add_ingredient_menu, menu_memory);
+            } else if (user_input === "r") {
+                menu_memory = push(remove_ingredient_menu, menu_memory);
             } else if (user_input === "b") {
                 oblivion();
             } else {
