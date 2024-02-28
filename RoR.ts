@@ -2,8 +2,14 @@ import {
     type Ingredient, type Category, type KitchenWare, new_category, 
     new_ingredient, new_kitchenware, has_separable_inventory
 } from "./basics";
-import { RoR_start, print_bold } from "./input_loop";
-import { Pair, head, pair, tail } from "./lib/list";
+
+import {
+    RoR_start, print_bold
+} from "./input_loop";
+
+import {
+    type Pair, head, pair, tail
+} from "./lib/list";
 
 import {
     type Queue, empty as qempty, enqueue, head as qhead, dequeue, display_queue
