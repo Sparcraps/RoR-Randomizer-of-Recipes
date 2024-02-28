@@ -69,7 +69,7 @@ function main_menu(): void {
     
     //removes the last menu function from memory
     function oblivion(repeat: number = 1): undefined {
-        for (repeat; repeat < 1; repeat--) {
+        for (repeat; repeat > 0; repeat--) {
             if (!is_stack_empty(menu_memory)) {
                 menu_memory = pop(menu_memory);
             } else {
@@ -199,21 +199,29 @@ function main_menu(): void {
             return recipes[int];
         }
 
-        print_menu = ['"v" = view saved recipe', '"d = delete saved recipe"', '"b" = back to main menu'];
+        print_menu = ['"v" = view saved recipe', '"d" = delete saved recipe', '"b" = back to main menu'];
         valid_inputs = ["v", "d", "b"];
 
         print_alternatives(print_menu);
         user_input = check_input(valid_inputs, "Choose an alternative: ");
 
         if (user_input === "v") {
-            const selected_recipe = choose_recipe();
-            print_recipe(selected_recipe);
-            wait_for_keypress();
+            if (recipes.length === 0) {
+                console.log("You have no saved recipes.")
+            } else {
+                const selected_recipe = choose_recipe();
+                print_recipe(selected_recipe);
+                wait_for_keypress();
+            }
         } else if (user_input === "d") {
-            const selected_recipe = choose_recipe();
-            const name = selected_recipe.name;
-            recipes = delete_recipe(name);
-            console.log("Recipe " + name + " deleted!");
+            if (recipes.length === 0) {
+                console.log("You have no saved recipes.")
+            } else {
+                const selected_recipe = choose_recipe();
+                const name = selected_recipe.name;
+                recipes = delete_recipe(name);
+                console.log("Recipe " + name + " deleted!");
+            }
         } else if (user_input === "b") {
             oblivion();
         } else {
@@ -227,7 +235,7 @@ function main_menu(): void {
         function configure_portion(): void {            
             valid_inputs = ["y", "n"];
     
-            console.log("Current portion amount: " + config.portion_amount.toString);
+            console.log("Current portion amount: " + config.portion_amount.toString());
             user_input = check_input(valid_inputs, "Do you wish to change the portion amount? (y/n): ");
     
             if (user_input === "y") {
@@ -326,6 +334,7 @@ function main_menu(): void {
                 } else {}
                 
                 let name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+                console.log();
                 while (name === "") {
                     console.log("Ingredient name cannot be empty / only contain whitespace.")
                     name = prompt("Enter new ingredient name: ").trim().toLowerCase();
@@ -360,18 +369,29 @@ function main_menu(): void {
                     print_alternatives(ingredient.allergies);
                 } else {}
 
-                print_bold("Valid dietary restrictions");
-                print_alternatives(valid_dietary_restrictions);
                 const allergy_array: Array<string> = [];
+                const valid_dietary_not_active = [...valid_dietary_restrictions];
+                valid_dietary_not_active.push("");
 
+                print_bold("Valid dietary restrictions: ");
+                print_alternatives(valid_dietary_restrictions);
                 user_input = check_input(
-                    valid_dietary_restrictions,
+                    valid_dietary_not_active,
                     "Enter a dietary restriction of the above that applies to the new ingredient, " +
                     "or press enter if no dietary restrictions apply: ");
                 while (user_input !== "") {
                     allergy_array.push(user_input);
+                    const index = valid_dietary_not_active.indexOf(user_input);
+                    if (index !== -1) {
+                        valid_dietary_not_active.splice(index, 1);
+                    } else {
+                        throw new Error("Error: could not find active dietary restriction");
+                    }
+
+                    print_bold("Valid dietary restrictions that have not yet been added: ");
+                    print_alternatives(valid_dietary_not_active);
                     user_input = check_input(
-                        valid_dietary_restrictions,
+                        valid_dietary_not_active,
                         "Enter another dietary restriction that applies to the new ingredient, " +
                         "or press enter if no more dietary restrictions apply: ");
                 }
@@ -485,7 +505,7 @@ function main_menu(): void {
 
             function remove_ingredient_menu(): void {
                 function search_and_delete(): void {
-                    let input = check_input(valid_inputs, "Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
+                    let input = prompt("Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
                     if (input !== "") {
                         try {
                             data = delete_ingredient(input);

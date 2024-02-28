@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.has_separable_inventory = exports.new_ingredient = exports.find_by_name = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.new_kitchenware = exports.new_category = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_category_max = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
+exports.has_separable_inventory = exports.empty_ingredient = exports.new_ingredient = exports.find_by_name = exports.is_lactose_friendly = exports.is_vegan = exports.is_vegetarian = exports.add_ingredient_to_kitchenware = exports.new_kitchenware = exports.new_category = exports.get_kitchenware_inventory = exports.get_kitchenware_name = exports.get_category_max = exports.get_ingredient_cooking_methods = exports.get_category_name = exports.get_ingredient_category = exports.get_ingredient_category_name = exports.get_ingredient_kcal_range = exports.get_ingredient_kcal = exports.get_ingredient_measurement = exports.get_ingredient_allergies = exports.get_ingredient_name = exports.is_kitchenware = exports.is_category = exports.is_ingredient = void 0;
+var list_1 = require("./lib/list");
 /**
  * Check whether the input is of type Ingredient.
  * @param input - argument to check the type of
@@ -273,6 +274,13 @@ function new_ingredient(category, name, allergies, measurement, kcal_per_measure
     };
 }
 exports.new_ingredient = new_ingredient;
+function empty_ingredient() {
+    return {
+        name: "", category: "", allergies: [], measurement: "",
+        kcal_per_measurement: 0, range: (0, list_1.pair)(0, 0), tag: "ingredient"
+    };
+}
+exports.empty_ingredient = empty_ingredient;
 function has_separable_inventory(kw) {
     if (kw.name === "cutting board" || kw.name === "oven") {
         return true;

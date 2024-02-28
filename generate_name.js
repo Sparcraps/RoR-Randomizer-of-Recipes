@@ -8,10 +8,10 @@ exports.generate_name = void 0;
  */
 function find_highest_amount(ingredients) {
     var largest = ingredients[0];
-    var current = ingredients[0][1];
+    var current = ingredients[0][1] * ingredients[0][0].kcal_per_measurement;
     for (var i = 0; i < ingredients.length; i = i + 1) {
-        current = ingredients[i][1];
-        if (largest[1] <= current) {
+        current = ingredients[i][1] * ingredients[i][0].kcal_per_measurement;
+        if (largest[1] * largest[0].kcal_per_measurement <= current) {
             largest = ingredients[i];
         }
     }
