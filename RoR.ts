@@ -81,11 +81,22 @@ function up_first(str: string): string {
     return str[0].toUpperCase() + str.slice(1);
 }
 
+function stringify_amount(ingredient: Ingredient, amount: number): string {
+    const measurement = ingredient.measurement.trim()
+        .toLowerCase().replace("e", "ε"); // replaces e since parseFloat interprets e as exponent (assumes no measurement includes ε)
+    const measurement_num = parseFloat(measurement);
+    const length_of_num = measurement_num.toString().length;
+    const rest_of_measurement = measurement.slice(length_of_num);
+    amount = measurement_num * amount;
+    return amount + rest_of_measurement.replace("ε", "e");
+}
+
 function stringify_ingredient_info(
     ingredient: Ingredient, amount: number
     ): string {
     if (ingredient.measurement === "" && amount > 1) {
-        return amount + " " + refer_to_ingredient(ingredient, amount);
+        return stringify_amount(ingredient, amount) + " " +
+            refer_to_ingredient(ingredient, amount);
     } else {
         return amount + ingredient.measurement + " of " + ingredient.name;
     }
