@@ -33,7 +33,7 @@
                     "grill"
                 ]
             ],
-            "max_ingredients": 10
+            "max_ingredients": 5
         },
         {
             "tag": "category",
@@ -48,6 +48,16 @@
                 ],
                 [
                     "chop",
+                    "fry"
+                ],
+                [
+                    "marinate",
+                    "chop",
+                    "fry"
+                ],
+                [
+                    "chop",
+                    "marinate",
                     "fry"
                 ],
                 [
@@ -68,7 +78,7 @@
                     "mash"
                 ]
             ],
-            "max_ingredients": 3
+            "max_ingredients": 2
         },
         {
             "tag": "category",
@@ -86,6 +96,20 @@
                     "fry"
                 ],
                 [
+                    "marinate",
+                    "fry"
+                ],
+                [
+                    "marinate",
+                    "slice",
+                    "fry"
+                ],
+                [
+                    "slice",
+                    "marinate",
+                    "fry"
+                ],
+                [
                     "fry"
                 ],
                 [
@@ -100,7 +124,7 @@
                     "boil"
                 ]
             ],
-            "max_ingredients": 4
+            "max_ingredients": 3
         },
         {
             "tag": "category",
@@ -108,9 +132,13 @@
             "cooking_methods": [
                 [
                     "add"
+                ],
+                [
+                    "toast",
+                    "add"
                 ]
             ],
-            "max_ingredients": 10
+            "max_ingredients": 5
         },
         {
             "tag": "category",
@@ -263,6 +291,54 @@
                     6
                 ],
                 "tag": "ingredient"
+            },
+            {
+                "name": "cabbage",
+                "category": "vegetable",
+                "allergies": [],
+                "measurement": "g",
+                "kcal_per_measurement": 0.24,
+                "range": [
+                    50,
+                    150
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "aubergine",
+                "category": "vegetable",
+                "allergies": [],
+                "measurement": "0.5",
+                "kcal_per_measurement": 61,
+                "range": [
+                    1,
+                    1
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "garlic clove",
+                "category": "vegetable",
+                "allergies": [],
+                "measurement": "",
+                "kcal_per_measurement": 4,
+                "range": [
+                    1,
+                    3
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "tomato",
+                "category": "vegetable",
+                "allergies": [],
+                "measurement": "",
+                "kcal_per_measurement": 22,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
             }
         ],
         [
@@ -385,9 +461,282 @@
                     2
                 ],
                 "tag": "ingredient"
+            },
+            {
+                "name": "pork belly",
+                "category": "meat",
+                "allergies": [
+                    "meat"
+                ],
+                "measurement": "50g",
+                "kcal_per_measurement": 177,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "chorizo",
+                "category": "meat",
+                "allergies": [
+                    "meat"
+                ],
+                "measurement": "",
+                "kcal_per_measurement": 200,
+                "range": [
+                    1,
+                    1
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "salmon filet",
+                "category": "meat",
+                "allergies": [
+                    "meat"
+                ],
+                "measurement": "",
+                "kcal_per_measurement": 83,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "cod filet",
+                "category": "meat",
+                "allergies": [
+                    "meat"
+                ],
+                "measurement": "",
+                "kcal_per_measurement": 50,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
             }
         ],
-        [],
+        [
+            {
+                "name": "tarragon",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 10,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "oregano",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 6,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "sage",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 2,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "basil",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 1,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "rosemary",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 4,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "mint",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 4,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "ginger powder",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 6,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "thyme",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 6,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "paprika powder",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 7,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "cardamom",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 7,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "coriander",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 8,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "anise powder",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 10,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "cinnamon",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 6,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "cloves",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 7,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "onion powder",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 9,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "garlic powder",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 9,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "turmeric",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 9,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "chili flakes",
+                "category": "spice",
+                "allergies": [],
+                "measurement": "tsp",
+                "kcal_per_measurement": 15,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            }
+        ],
         [
             {
                 "name": "spaghetti",
@@ -395,11 +744,11 @@
                 "allergies": [
                     "gluten"
                 ],
-                "measurement": "g",
-                "kcal_per_measurement": 0.3,
+                "measurement": "50g",
+                "kcal_per_measurement": 78,
                 "range": [
-                    50,
-                    150
+                    1,
+                    3
                 ],
                 "tag": "ingredient"
             },
@@ -407,11 +756,11 @@
                 "name": "white rice",
                 "category": "carbohydrate",
                 "allergies": [],
-                "measurement": "g",
-                "kcal_per_measurement": 1.3,
+                "measurement": "50g",
+                "kcal_per_measurement": 65,
                 "range": [
-                    50,
-                    150
+                    1,
+                    3
                 ],
                 "tag": "ingredient"
             },
@@ -419,11 +768,11 @@
                 "name": "brown rice",
                 "category": "carbohydrate",
                 "allergies": [],
-                "measurement": "g",
-                "kcal_per_measurement": 1.1,
+                "measurement": "50g",
+                "kcal_per_measurement": 55,
                 "range": [
-                    50,
-                    150
+                    1,
+                    3
                 ],
                 "tag": "ingredient"
             }
