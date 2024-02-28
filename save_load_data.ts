@@ -60,6 +60,7 @@ export function save_new_category(
     const cats = data.categories;
 
     new_cats.forEach(cat => {
+        cat.name = cat.name.toLowerCase().trim();
         const existing_index = find_by_name(cat.name, cats);
         if (!(existing_index === -1)) {
             console.error(
@@ -90,6 +91,7 @@ export function save_new_kitchenware(
     const saved_kw = data.kitchenware;
 
     new_kitch.forEach(kw => {
+        kw.name = kw.name.toLowerCase().trim();
         const existing_index = find_by_name(kw.name, saved_kw);
         if (!(existing_index === -1)) {
             console.error(
@@ -151,6 +153,7 @@ export function save_new_ingredient(
     }
 
     new_ingredients.forEach(i => {
+        i.name = i.name.toLowerCase().trim();
         const is_existing_name = is_ingredient_in_data(i);
         if (is_existing_name) {
             console.error(
@@ -180,6 +183,7 @@ export function delete_category(...names: Array<string>): SaveData {
     const updated_ingredients: Array<Array<Ingredient>> = [];
 
     const l = cats.length;
+
     for (let i = 0; i < l; i++) {
         const cat = cats[i];
 
