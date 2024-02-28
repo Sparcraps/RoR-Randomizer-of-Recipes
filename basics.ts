@@ -1,4 +1,5 @@
 import {
+    pair,
     type Pair
 } from "./lib/list";
 
@@ -322,6 +323,13 @@ export function new_ingredient(
     return {
         name, category, allergies, measurement, 
         kcal_per_measurement, range, tag: "ingredient"
+    };
+}
+
+export function empty_ingredient(): Ingredient {
+    return {
+        name: "", category: "", allergies: [], measurement: "", 
+        kcal_per_measurement: 0, range: pair(0, 0), tag: "ingredient"
     };
 }
 

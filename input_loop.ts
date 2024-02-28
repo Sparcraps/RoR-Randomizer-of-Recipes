@@ -24,6 +24,8 @@ import {
 import {
     save_new_recipe
 } from "./save_recipe";
+import { load_data, save_new_ingredient, SaveData } from "./save_load_data";
+import { empty_ingredient, Ingredient } from "./basics";
 
 export function RoR_start(): void {
     function kill_RoR(): void {
@@ -72,7 +74,7 @@ function main_menu(): void {
     //checks if the user input is valid and otherwise prompts the user again
     function check_input(valid: Array<string>, question: string): string {
         console.log();
-        let user_input: string | null = prompt(question);
+        let user_input: string | null = prompt(question).trim();
         if (user_input !== null) {
             user_input = user_input.toLowerCase();
         } else {}
@@ -80,7 +82,7 @@ function main_menu(): void {
     
         while (!valid.includes(user_input)) {
             print_bold("Invalid input. Try again");
-            user_input = prompt(question);
+            user_input = prompt(question).trim();
             if (user_input !== null) {
                 user_input = user_input.toLowerCase();
             } else {}
@@ -91,15 +93,30 @@ function main_menu(): void {
 
     //helper function that checks if input is an integer, and otherwise prompts the user again
     function integer_prompt(prompt_text: string): number {
-        let new_portion_amount: string | null = prompt(prompt_text);
+        let new_portion_amount: string | null = prompt(prompt_text).trim();
         let parsed: number = parseInt(new_portion_amount);
     
         while (isNaN(parsed)) {
             console.log("Invalid input. Please enter a valid number.");
-            new_portion_amount = prompt(prompt_text);
+            new_portion_amount = prompt(prompt_text).trim();
             parsed = parseInt(new_portion_amount);
         }
         return parsed;
+    }
+
+    /**
+     * Pauses program until any key is pressed on Windows OS,
+     * otherwise until enter is pressed.
+     */
+    function wait_for_keypress(): void {
+        if (process.platform === "win32") {
+            const { spawnSync } = require('node:child_process');
+            let pause_str = "pause";
+            spawnSync("pause", {shell: true, stdio: [0, 1, 2]}); 
+        } else {
+            prompt("Press enter to continue.");
+        }
+        console.log();
     }
 
     //submenu for randomizing recipes
@@ -128,8 +145,7 @@ function main_menu(): void {
     
         const recipe: Recipe = generate_recipe(portion_size, portion_amount, restrictions);
         print_recipe(recipe);
-    
-        //wait for keypress?
+        wait_for_keypress();
     
         print_alternatives(print_menu);
         user_input = check_input(valid_inputs, "Choose an alternative: ");
@@ -175,7 +191,7 @@ function main_menu(): void {
                 console.log(i, current_name);
             }
 
-            const input_int = integer_prompt("Enter the number corresponding to the recipe you want to choose");
+            const input_int = integer_prompt("Enter the number corresponding to the recipe you want to choose: ");
             return input_int;
         }
 
@@ -189,7 +205,7 @@ function main_menu(): void {
         if (user_input === "v") {
             const i = choose_recipe();
             print_recipe(recipe_arr[i]);
-            // wait for keypress
+            wait_for_keypress();
         } else if (user_input === "d") {
             const i = choose_recipe();
             const name = recipe_arr[i].name;
@@ -278,7 +294,7 @@ function main_menu(): void {
                 if (user_input === "a") {
                     const diet_pair = select_valid_dietary();
                     if (!diet_pair[0]) {
-                        add_to_dietary_restrictions(diet_pair[1], config);
+                        config = add_to_dietary_restrictions(diet_pair[1], config);
                         console.log("Dietary restriction successfully added!")
                     } else {
                         console.log("Dietary restriction not added; it is already active.")
@@ -286,7 +302,7 @@ function main_menu(): void {
                 } else if (user_input === "r") {
                     const diet_pair = select_valid_dietary();
                     if (diet_pair[0]) {
-                        remove_from_dietary_restrictions(diet_pair[1], config);
+                        config = remove_from_dietary_restrictions(diet_pair[1], config);
                         console.log("Dietary restriction successfully removed!")
                     } else {
                         console.log("Dietary restriction not removed; it is not active.")
@@ -302,13 +318,141 @@ function main_menu(): void {
     
         //submenu for configuring ingredients
         function configure_ingredients(): void {
+            function select_name(ingredient: Ingredient): Ingredient {
+                ingredient.name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+                return ingredient;
+            }
+
+            function select_category(ingredient: Ingredient): Ingredient {
+                print_bold("Valid ingredient categories: ");
+                const category_names: Array<string> = [];
+                const cats = data.categories;
+                for (let i = 0; i < cats.length; i++) {
+                    category_names[i] = cats[i].name;
+                }
+                print_alternatives(category_names);
+                user_input = check_input(
+                    category_names,
+                    "Choose which category the new ingredient belongs to: "
+                    );
+                ingredient.category = user_input;
+                return ingredient;
+            }
+
+            function select_allergies(ingredient: Ingredient): Ingredient {
+                print_bold("Valid dietary restrictions");
+                print_alternatives(valid_dietary_restrictions);
+                const allergy_array: Array<string> = [];
+
+                user_input = check_input(
+                    valid_dietary_restrictions,
+                    "Enter a dietary restriction of the above that applies to the new ingredient, " +
+                    "or press enter if no dietary restrictions apply: ");
+                while (user_input !== "") {
+                    allergy_array.push(user_input);
+                    user_input = check_input(
+                        valid_dietary_restrictions,
+                        "Enter another dietary restriction that applies to the new ingredient, " +
+                        "or press enter if no more dietary restrictions apply: ");
+                }
+                ingredient.allergies = allergy_array;
+                return ingredient;
+            }
+
+            function select_measurement(ingredient: Ingredient): Ingredient {
+                ingredient.measurement = prompt("Enter unit of measurement for the new ingredient: ").trim().toLowerCase();
+                return ingredient;
+            }
+
+            function select_kcal_per_measurement(ingredient: Ingredient): Ingredient {
+                ingredient.kcal_per_measurement = integer_prompt("Enter the amount of kcal per measurement (rounded to nearest integer) for the new ingredient: ");
+                return ingredient;
+            }
+
+            function select_range(ingredient: Ingredient): Ingredient {
+                let lower_range = integer_prompt("Enter the lower limit for the amount able to be randomized of the new ingredient, measured in the ingredients measurement: ");
+                while (lower_range < 0) {
+                    console.log("the lower limit cannot be negative");
+                    lower_range = integer_prompt("Please choose a new lower limit: ");
+                }
+                let upper_range = integer_prompt("Enter the upper limit for the amount able to be randomized of the new ingredient, measured in the ingredients measurement: ");
+                while (upper_range < lower_range) {
+                    console.log("the upper limit cannot be lower than the lower limit");
+                    upper_range = integer_prompt("Please choose a new upper limit: ");
+                }
+                ingredient.range = pair(lower_range, upper_range);
+                return ingredient;
+            }
+
             valid_inputs = ["a", "r", "b"];
             print_menu = ['"a" = add ingredient', '"r" = remove ingredient', '"b" = back to configurations menu'];
     
             print_alternatives(print_menu);
             user_input = check_input(valid_inputs, "Choose an alternative: ");
+
             if (user_input === "a") {
-                //make submenu
+                let new_ingredient: Ingredient = empty_ingredient();
+                new_ingredient = select_name(new_ingredient);
+                new_ingredient = select_category(new_ingredient);
+                new_ingredient = select_allergies(new_ingredient);
+                new_ingredient = select_measurement(new_ingredient);
+                new_ingredient = select_kcal_per_measurement(new_ingredient);
+                new_ingredient = select_range(new_ingredient);
+
+                menu_memory = push(ingredient_added, menu_memory);
+
+                //submenu for when an ingredient has been added
+                function ingredient_added(): void {
+                    print_bold("Data for the new ingredient: ")
+                    const keys = Object.keys(new_ingredient);
+                    const values = Object.values(new_ingredient);
+                    print_alternatives(keys);
+                    for (let i = 0; i < values.length; i++) {
+                        console.log(values[i]);
+                    }
+
+                    valid_inputs = ["y", "n"]
+                    user_input = check_input(valid_inputs, "Are you happy with the ingredient data?")
+                    if (user_input === "y") {
+                        save_new_ingredient(new_ingredient);
+                        oblivion();
+                    } else if (user_input === "n") {
+                        menu_memory = push(ingredient_adjustments, menu_memory);                        
+                    }
+                    
+                    function ingredient_adjustments(): void {
+                        print_menu = [
+                            '"n" = change ingredient name',
+                            '"c" = change ingredient categories',
+                            '"d" = change ingredient dietary restrictions',
+                            '"m" = change ingredient measurement',
+                            '"k" = change ingredient kcal per measurement',
+                            '"r" = change ingredient amount range',
+                            '"b" = save ingredient and go back to ingredient menu'
+                        ];
+                        valid_inputs = ["n", "c", "d", "m", "k", "r", "b"]
+
+                        print_alternatives(print_menu)
+                        user_input = check_input(valid_inputs, "Choose what ingredient data you want to adjust: ")
+
+                        if (user_input === "n") {
+                            new_ingredient = select_name(new_ingredient);
+                        } else if (user_input === "c") {
+                            new_ingredient = select_category(new_ingredient);
+                        } else if (user_input === "d") {
+                            new_ingredient = select_allergies(new_ingredient);
+                        } else if (user_input === "m") {
+                            new_ingredient = select_measurement(new_ingredient);
+                        }  else if (user_input === "k") {
+                            new_ingredient = select_kcal_per_measurement(new_ingredient);
+                        } else if (user_input === "r") {
+                            new_ingredient = select_range(new_ingredient);
+                        } else if (user_input === "b") {
+                            save_new_ingredient(new_ingredient);
+                            oblivion(2);
+                        }
+                    }
+                }
             } else if (user_input === "r") {
                 //make submenu
             } else if (user_input === "b") {
@@ -358,6 +502,8 @@ const print_bold_text: boolean = true;
 const portion_size: Pair<number, number> = [400, 700];
 const valid_dietary_restrictions: Array<string> = ["meat", "gluten", "dairy", "eggs", "nuts", "fish"];
 
-let config = load_configuration();
+let config: Configuration = load_configuration();
+let data: SaveData = load_data();
+let recipes: Array<Recipe> = load_recipes();
 const portion_amount: number = config.portion_amount;
 const restrictions: Array<string> = config.dietary_restrictions;
