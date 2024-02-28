@@ -84,7 +84,7 @@ export function remove_from_dietary_restrictions(diet_input: string, config: Con
     if (i !== -1) {
         rest.splice(i, 1);
         save_configuration(config);
-        console.log("Dietary restriction successfully removed!")
+        // console.log("Dietary restriction successfully removed!")
     } else {
         console.log("Dietary restriction not removed; it is currently not active.")
     }

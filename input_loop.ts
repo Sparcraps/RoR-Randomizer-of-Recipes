@@ -18,7 +18,8 @@ import {
     add_to_dietary_restrictions,
     load_configuration,
     save_configuration,
-    remove_from_dietary_restrictions
+    remove_from_dietary_restrictions,
+    change_portion_amount
 } from "./save_config";
 
 import {
@@ -231,16 +232,17 @@ function main_menu(): void {
     
             if (user_input === "y") {
                 const input_int = integer_prompt("Enter new portion amount: ")
-                config.portion_amount = input_int;
+                config = change_portion_amount(input_int, config);
                 console.log("New amount registered.")
-                save_configuration(config);
             } else if (user_input === "n") {
                 oblivion();
+            } else {
+                throw new Error("Error: invalid user_input has escaped.");
             }
         }
 
         //submenu for dietary restrictions where active restrictions can be viewed
-        function dietary_prompt(): void {            
+        function dietary_prompt(): void {
             valid_inputs = ["y", "n"];
     
             print_bold("Active dietary restrictions: ");
@@ -261,8 +263,10 @@ function main_menu(): void {
                 //input as well as information of its existance in currently active dietary restrictions
                 function select_valid_dietary(): Pair<boolean, string> {
                     const valid = valid_dietary_restrictions;
-                    console.log("Valid alternatives: ")
+
+                    print_bold("Valid alternatives: ");
                     print_alternatives(valid);
+                    
                     const input = check_input(valid, "Choose dietary restriction of the above: ")
                     if (config.dietary_restrictions.includes(input)) {
                         return pair(true, input);
@@ -270,27 +274,6 @@ function main_menu(): void {
                         return pair(false, input);
                     }
                 }
-
-        print_menu = ['"p" = portion amount',
-                      '"d" = dietary restrictions',
-                      '"i" = ingredient data',
-                      '"b" = back to main menu'];
-        valid_inputs = ["p", "d", "i", "b"];
-    
-        print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Choose what you want to configure: ");
-        
-        if (user_input === "p") {
-            menu_memory = push(configure_portion, menu_memory);
-        } else if (user_input === "d") {
-            menu_memory = push(dietary_prompt, menu_memory);
-        } else if (user_input === "i") {
-            menu_memory = push(configure_ingredients, menu_memory);
-        } else if (user_input === "b") {
-            oblivion();
-        } else {
-            throw new Error("Error: invalid user_input has escaped.");
-        }
 
                 print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction',
                               '"v" = view active dietary restrictions','"b" = back to configurations menu'];
@@ -324,6 +307,27 @@ function main_menu(): void {
                     throw new Error("Error: invalid user_input has escaped.");
                 }
             }
+        }
+        
+        print_menu = ['"p" = portion amount',
+                      '"d" = dietary restrictions',
+                      '"i" = ingredient data',
+                      '"b" = back to main menu'];
+        valid_inputs = ["p", "d", "i", "b"];
+    
+        print_alternatives(print_menu);
+        user_input = check_input(valid_inputs, "Choose what you want to configure: ");
+        
+        if (user_input === "p") {
+            menu_memory = push(configure_portion, menu_memory);
+        } else if (user_input === "d") {
+            menu_memory = push(dietary_prompt, menu_memory);
+        } else if (user_input === "i") {
+            menu_memory = push(configure_ingredients, menu_memory);
+        } else if (user_input === "b") {
+            oblivion();
+        } else {
+            throw new Error("Error: invalid user_input has escaped.");
         }
     
         //submenu for configuring ingredients
