@@ -266,4 +266,6 @@ const portion_size: Pair<number, number> = [400, 700];
 const portion_amount: number = 4; //remove
 const restrictions: Array<string> = []; //remove
 
-RoR_start();
+if (require.main === module) {
+    RoR_start();
+}
