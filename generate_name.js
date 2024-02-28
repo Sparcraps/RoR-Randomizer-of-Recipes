@@ -20,27 +20,6 @@ function find_highest_amount(ingredients) {
     return largest[0];
 }
 /**
- * A function to find the ingredient a recipe has the second most of in calories.
- * @param ingredients - an array containing pairs of the ingredients and their amounts in calories.
- * @returns the ingredient the recipe has the second most of in calories.
- */
-function find_second_highest_amount(ingredients) {
-    var largest = ingredients[0];
-    var second_largest = ingredients[0];
-    var current = ingredients[0][1];
-    for (var i = 0; i < ingredients.length; i = i + 1) {
-        current = ingredients[i][1];
-        if (largest[1] < current) {
-            second_largest = largest;
-            largest = ingredients[i];
-        }
-        if (largest[1] > current && second_largest[1] < current) {
-            second_largest = ingredients[i];
-        }
-    }
-    return second_largest[0];
-}
-/**
  * a function to find the last cooking step applied to a ingredient.
  * @param cooking_steps - an array of the cookingsteps in the recipe.
  * @param ingredient - an ingredient to the cookingstep must be applied to.
@@ -60,17 +39,35 @@ function find_last_cooking_step(cooking_steps, ingredient) {
  * @returns the name generated as a string.
  */
 function generate_name(recipe) {
+    // capitalizes first letter of each word in a string
+    function up_first_all(str) {
+        var words = str.split(" ");
+        var new_str = up_first(words[0]);
+        if (words.length > 1) {
+            var i = 1;
+            for (i; i < words.length; i++) {
+                new_str += " " + up_first(words[i]);
+            }
+        }
+        else { }
+        return new_str;
+    }
+    // capitalizes first letter of string
+    function up_first(str) {
+        return str[0].toUpperCase() + str.slice(1);
+    }
     var ingredient_info = JSON.parse(JSON.stringify(recipe.ingredient_info)); // copies recipe ingredient info
     var main_ingr = find_highest_amount(ingredient_info);
     var main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
     if (ingredient_info.length === 0) {
-        return main_ingr.name + main_cooking_method;
+        return up_first_all(main_ingr.name) + " " +
+            up_first_all(main_cooking_method.cooking_method);
     }
     else {
         var secondary_ingr = find_highest_amount(ingredient_info);
-        return main_ingr.name + " and " +
-            secondary_ingr.name + " " +
-            main_cooking_method.cooking_method;
+        return up_first_all(main_ingr.name) + " and " +
+            up_first_all(secondary_ingr.name) + " " +
+            up_first_all(main_cooking_method.cooking_method);
     }
 }
 exports.generate_name = generate_name;

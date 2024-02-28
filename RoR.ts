@@ -10,7 +10,8 @@ import {
 } from "./lib/queue_array";
 
 import {
-    save_data, load_data, save_new_category, save_new_ingredient, delete_category
+    save_data, load_data, save_new_category, save_new_ingredient,
+    delete_category
 } from "./save_load_data";
 
 import {
@@ -42,15 +43,20 @@ export function new_recipe(portions: number): Recipe {
     }
 }
 
-function new_cooking_step(cooking_method: string, ingredient_names: Array<string>, kitchenware: KitchenWare): CookingStep {
+function new_cooking_step(
+    cooking_method: string, ingredient_names: Array<string>,
+    kitchenware: KitchenWare
+    ): CookingStep {
     return {cooking_method, ingredient_names, kitchenware};
 }
 
 export function print_recipe(recipe: Recipe): void {
+    console.log("-----------------------------------");
     print_bold(recipe.name);
+    console.log("-----------------------------------");
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
-    console.log("-----------------------------------");
+    console.log();
     const ingredient_info = recipe.ingredient_info;
     ingredient_info.forEach(p => {
         const [ingredient, amount] = p
@@ -58,38 +64,92 @@ export function print_recipe(recipe: Recipe): void {
     })
     console.log("-----------------------------------");
     const steps = recipe.steps;
+    let step_nr = 1;
     steps.forEach(step => {
-        console.log(step.ingredient_names, ": " + step.cooking_method + in_or_on(step.kitchenware));
+        console.log(
+            step_nr + ". " + up_first(step.cooking_method) + " the " +
+            ingredient_and_ingredients(step.ingredient_names) +
+            " " + stringify_kitchenware(step.kitchenware)
+            );
+        step_nr += 1;
     })
-    console.log();
+    console.log( step_nr + ". " + "Finally, add salt and pepper to taste! :-)");
+    console.log("-----------------------------------");
 }
 
-function stringify_ingredient_info(ingredient: Ingredient, amount: number): string {
+function up_first(str: string): string {
+    return str[0].toUpperCase() + str.slice(1);
+}
+
+function stringify_ingredient_info(
+    ingredient: Ingredient, amount: number
+    ): string {
     if (ingredient.measurement === "" && amount > 1) {
-        return amount + " " + ingredient.name + "s";
+        return amount + " " + refer_to_ingredient(ingredient, amount);
     } else {
-        return amount + " " + ingredient.measurement + " " + ingredient.name;
+        return amount + ingredient.measurement + " of " + ingredient.name;
     }
 }
 
-function in_or_on(kw: KitchenWare): string {
+function stringify_kitchenware(kw: KitchenWare): string {
+    let str = kw.name;
+    const vowels = ["e", "u", "i", "o", "a"];
+    if (vowels.includes(str[0])) {
+        str = "an " + str;
+    } else {
+        str = "a " + str;
+    }
+
     if (kw.name === "cutting board") {
-        return " on " + kw.name;
+        str = "on " + str;
     } else {
-        return " in " + kw.name;
+        str = "in " + str;
+    }
+
+    return str;
+}
+
+function ingredient_and_ingredients(ingredients: Array<string>): string {
+    let ingredient_str = ingredients[0];
+    const i_amount = ingredients.length;
+    if (i_amount > 1) {
+        let i = 1;
+        for (i; i < i_amount - 1; i++) {
+            ingredient_str += ", " + ingredients[i];
+        }
+        ingredient_str += " and " + ingredients[i];
+    } else {}
+    return ingredient_str;
+}
+
+/**
+ * returns ingredient name with correct(ish) conjugation depending on if it
+ *  should be referred to in plural or not
+ * @param ingredient - ingredient to name.
+ * @param amount - amount of the ingredient.
+ * @returns A string with conjugated ingredient name
+ */
+function refer_to_ingredient(ingredient: Ingredient, amount: number): string {
+    const name = ingredient.name;
+    const s_u_i_o = ["s", "u", "i", "o"];
+    if (ingredient.measurement === "" && amount > 1) {
+        const last_char = name[name.length - 1]
+        if (s_u_i_o.includes(last_char)) {
+            return name + "es";
+        } else if (last_char === "y") {
+            return name.slice(0, -1) + "ies";
+        } else {
+            return name + "s";
+        }
+    } else {
+        return name;
     }
 }
 
-export function generate_recipe([min_portion, max_portion]: Pair<number, number>, portions: number, filters: Array<string>): Recipe {
-    // returns ingredient name with s if it should be referred to in plural
-    function name_with_s(ingredient: Ingredient, amount: number): string {
-        if (ingredient.measurement === "" && amount > 1) {
-            return ingredient.name + "s";
-        } else {
-            return ingredient.name;
-        }
-    }
-
+export function generate_recipe(
+    [min_portion, max_portion]: Pair<number, number>,
+    portions: number, filters: Array<string>
+    ): Recipe {
     // Selects a random category from an array of categories and 
     // returns the category and its ingredient array. Removes both and retries
     // if the ingredient array is empty.
@@ -107,7 +167,9 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
             ingredient_data.splice(cat_i, 1);
             if (ingredient_data.length === 0) { // if all ingredients have already been selected:
                 category_data.push(...data.categories); //reloads data by creating a copies fron saved data
-                ingredient_data.push(...JSON.parse(JSON.stringify(data.ingredients))); 
+                ingredient_data.push(
+                    ...JSON.parse(JSON.stringify(data.ingredients))
+                    ); 
             }
             return randomize_category();
         } else {
@@ -117,16 +179,18 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
 
     // Returns a random ingredient from an array of ingredients and 
     // removes the ingredient from the array.
-    function randomize_ingredient(ingredient_arr: Array<Ingredient>): Ingredient {
-        const ingredient_i =  Math.floor(Math.random() * ingredient_arr.length);
-        const ingredient = ingredient_arr[ingredient_i];
-        ingredient_arr.splice(ingredient_i, 1);
+    function randomize_ingredient(arr: Array<Ingredient>): Ingredient {
+        const ingredient_i =  Math.floor(Math.random() * arr.length);
+        const ingredient = arr[ingredient_i];
+        arr.splice(ingredient_i, 1);
         return ingredient;
     }
 
     // Randomizes amount of an ingredient based on its range attribute, 
     // maximum space left in recipe and the portion amount.
-    function randomize_ingredient_amount(ingredient: Ingredient, max_for_recipe: number, portions: number): number {
+    function randomize_ingredient_amount(
+        ingredient: Ingredient, max_for_recipe: number, portions: number
+        ): number {
         let [min, max] = ingredient.range;
         [min, max] = [min * portions, max * portions];
         max = Math.min(max, max_for_recipe);
@@ -190,13 +254,18 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
 
             const ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
             const kcal_per_measure = ingredient.kcal_per_measurement;
-            const max_measures = Math.floor((max_kcal - kcal) / kcal_per_measure); // calculate maximum amount of measurements of ingredient that fits in recipe
-            let amount = randomize_ingredient_amount(ingredient, max_measures, portions); // randomize ingredient amount
+            const max_measures = Math.floor(  // calculate maximum amount of measurements of ingredient that fits in recipe
+                (max_kcal - kcal) / kcal_per_measure
+                );
+            let amount = randomize_ingredient_amount(
+                ingredient,max_measures, portions
+                );
 
             if (amount === 0) { // amount can be 0 if max_measures is lower than minimum measures for the ingredient and portion amount.
                 continue;
             } else {
-                add_method(randomize_cooking_method(cat), name_with_s(ingredient, amount));
+                const method = randomize_cooking_method(cat);
+                add_method(method, refer_to_ingredient(ingredient, amount));
                 recipe.ingredient_info.push(pair(ingredient, amount));
                 kcal += amount * kcal_per_measure;
             }
@@ -233,8 +302,8 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
         } else {}
         method.shift(); // removes current method from method
         if (has_separable_inventory(kw)) {
-            const extra_ingredients = do_separable_method(current_method, kw, steps);
-            kw.inventory.push(...extra_ingredients);
+            const extra_i = do_separable_method(current_method, kw, steps);
+            kw.inventory.push(...extra_i);
         } else {}
         kw.inventory.push(...ingredient_names);
         const more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
@@ -243,7 +312,12 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
         return add_cooking_step(method, ingredient_names, steps);
     }
 
-    function do_separable_method(method: string, kw: KitchenWare, steps): Array<string> {
+    // for separable kitchenware, finds all ingredients with same cooking method
+    // somewhere in method array. Executes the methods earlier in method array
+    // and returns ingredient names for method step.
+    function do_separable_method(
+        method: string, kw: KitchenWare, steps: Array<CookingStep>
+        ): Array<string> {
         const ingredient_names: Array<string> = []
         for (let i = 0; i < selected_methods.length; i++) {
             const other_method = head(selected_methods[i]);
@@ -263,7 +337,9 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
 
     // finds methods that contain the input method at the end and adds cooking
     // steps for them. Returns their ingredient names.
-    function do_similar_methods(method: Array<string>, steps: Array<CookingStep>): Array<string> {
+    function do_similar_methods(
+        method: Array<string>, steps: Array<CookingStep>
+        ): Array<string> {
         const ingredient_names: Array<string> = [];
         for (let i = 0; i < selected_methods.length; i++) {
             const other_method = head(selected_methods[i]);
@@ -272,7 +348,6 @@ export function generate_recipe([min_portion, max_portion]: Pair<number, number>
             } else {}
             const copy_method = [...other_method];
             for (let j = 0; j < other_method.length; j++) {
-                console.log(copy_method);
                 if (copy_method.toString() === method.toString()) {
                     const names = tail(selected_methods[i])
                     ingredient_names.push(...names); // adds ingredient for matching method to list

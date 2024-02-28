@@ -5,6 +5,13 @@ var basics_1 = require("./basics");
 var fs = require('fs');
 var filepath = __dirname + "/ror_data.json";
 /**
+ * Creates an empty SaveSata object
+ * @returns new SaveData object
+ */
+function new_save_data() {
+    return { categories: [], kitchenware: [], ingredients: [] };
+}
+/**
  * Reads and returns save data.
  * @returns {SaveData} - Save data object with categories, ingredients and
  * kitchenware.
@@ -16,7 +23,7 @@ function load_data() {
         return data;
     }
     else {
-        throw new Error("ror_data.json does not exist.");
+        return new_save_data();
     }
 }
 exports.load_data = load_data;

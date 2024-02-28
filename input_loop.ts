@@ -8,6 +8,21 @@ import { Pair } from "./lib/list";
 import { save_configuration } from "./save_options";
 import { save_new_recipe } from "./save_recipe";
 
+/**
+ * Pauses program until any key is pressed on windows, otherwise until enter
+ * is pressed.
+ */
+function wait_for_keypress(): void {
+    if (process.platform === "win32") {
+        const { spawnSync } = require('node:child_process');
+        let pause_str = "pause";
+        spawnSync("pause", {shell: true, stdio: [0, 1, 2]}); 
+    } else {
+        prompt("Press enter to continue.");
+    }
+    console.log();
+}
+
 export function RoR_start(): void {
     console.log("----------------------------------------");
     console.log("Welcome to Randomizer of Recipes, aka");
@@ -63,7 +78,7 @@ function recipimize(): void {
     const recipe: Recipe = generate_recipe(portion_size, portion_amount, restrictions);
     print_recipe(recipe);
 
-    //wait for keypress?
+    wait_for_keypress();
 
     print_alternatives(print_menu);
     user_input = check_input(valid_inputs, "Choose an alternative: ");
@@ -250,3 +265,7 @@ const print_bold_text: boolean = true;
 const portion_size: Pair<number, number> = [400, 700];
 const portion_amount: number = 4; //remove
 const restrictions: Array<string> = []; //remove
+
+if (require.main === module) {
+    RoR_start();
+}

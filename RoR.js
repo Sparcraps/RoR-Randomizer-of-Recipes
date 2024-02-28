@@ -29,10 +29,12 @@ function new_cooking_step(cooking_method, ingredient_names, kitchenware) {
     return { cooking_method: cooking_method, ingredient_names: ingredient_names, kitchenware: kitchenware };
 }
 function print_recipe(recipe) {
+    console.log("-----------------------------------");
     (0, input_loop_1.print_bold)(recipe.name);
+    console.log("-----------------------------------");
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
-    console.log("-----------------------------------");
+    console.log();
     var ingredient_info = recipe.ingredient_info;
     ingredient_info.forEach(function (p) {
         var ingredient = p[0], amount = p[1];
@@ -40,39 +42,86 @@ function print_recipe(recipe) {
     });
     console.log("-----------------------------------");
     var steps = recipe.steps;
+    var step_nr = 1;
     steps.forEach(function (step) {
-        console.log(step.ingredient_names, ": " + step.cooking_method + in_or_on(step.kitchenware));
+        console.log(step_nr + ". " + up_first(step.cooking_method) + " the " +
+            ingredient_and_ingredients(step.ingredient_names) +
+            " " + stringify_kitchenware(step.kitchenware));
+        step_nr += 1;
     });
-    console.log();
+    console.log(step_nr + ". " + "Finally, add salt and pepper to taste! :-)");
+    console.log("-----------------------------------");
 }
 exports.print_recipe = print_recipe;
+function up_first(str) {
+    return str[0].toUpperCase() + str.slice(1);
+}
 function stringify_ingredient_info(ingredient, amount) {
     if (ingredient.measurement === "" && amount > 1) {
-        return amount + " " + ingredient.name + "s";
+        return amount + " " + refer_to_ingredient(ingredient, amount);
     }
     else {
-        return amount + " " + ingredient.measurement + " " + ingredient.name;
+        return amount + ingredient.measurement + " of " + ingredient.name;
     }
 }
-function in_or_on(kw) {
-    if (kw.name === "cutting board") {
-        return " on " + kw.name;
+function stringify_kitchenware(kw) {
+    var str = kw.name;
+    var vowels = ["e", "u", "i", "o", "a"];
+    if (vowels.includes(str[0])) {
+        str = "an " + str;
     }
     else {
-        return " in " + kw.name;
+        str = "a " + str;
+    }
+    if (kw.name === "cutting board") {
+        str = "on " + str;
+    }
+    else {
+        str = "in " + str;
+    }
+    return str;
+}
+function ingredient_and_ingredients(ingredients) {
+    var ingredient_str = ingredients[0];
+    var i_amount = ingredients.length;
+    if (i_amount > 1) {
+        var i = 1;
+        for (i; i < i_amount - 1; i++) {
+            ingredient_str += ", " + ingredients[i];
+        }
+        ingredient_str += " and " + ingredients[i];
+    }
+    else { }
+    return ingredient_str;
+}
+/**
+ * returns ingredient name with correct(ish) conjugation depending on if it
+ *  should be referred to in plural or not
+ * @param ingredient - ingredient to name.
+ * @param amount - amount of the ingredient.
+ * @returns A string with conjugated ingredient name
+ */
+function refer_to_ingredient(ingredient, amount) {
+    var name = ingredient.name;
+    var s_u_i_o = ["s", "u", "i", "o"];
+    if (ingredient.measurement === "" && amount > 1) {
+        var last_char = name[name.length - 1];
+        if (s_u_i_o.includes(last_char)) {
+            return name + "es";
+        }
+        else if (last_char === "y") {
+            return name.slice(0, -1) + "ies";
+        }
+        else {
+            return name + "s";
+        }
+    }
+    else {
+        return name;
     }
 }
 function generate_recipe(_a, portions, filters) {
     var min_portion = _a[0], max_portion = _a[1];
-    // returns ingredient name with s if it should be referred to in plural
-    function name_with_s(ingredient, amount) {
-        if (ingredient.measurement === "" && amount > 1) {
-            return ingredient.name + "s";
-        }
-        else {
-            return ingredient.name;
-        }
-    }
     // Selects a random category from an array of categories and 
     // returns the category and its ingredient array. Removes both and retries
     // if the ingredient array is empty.
@@ -103,10 +152,10 @@ function generate_recipe(_a, portions, filters) {
     }
     // Returns a random ingredient from an array of ingredients and 
     // removes the ingredient from the array.
-    function randomize_ingredient(ingredient_arr) {
-        var ingredient_i = Math.floor(Math.random() * ingredient_arr.length);
-        var ingredient = ingredient_arr[ingredient_i];
-        ingredient_arr.splice(ingredient_i, 1);
+    function randomize_ingredient(arr) {
+        var ingredient_i = Math.floor(Math.random() * arr.length);
+        var ingredient = arr[ingredient_i];
+        arr.splice(ingredient_i, 1);
         return ingredient;
     }
     // Randomizes amount of an ingredient based on its range attribute, 
@@ -170,13 +219,15 @@ function generate_recipe(_a, portions, filters) {
             var _a = randomize_category(), cat = _a[0], ingredient_arr = _a[1]; // get random category with its ingredients
             var ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
             var kcal_per_measure = ingredient.kcal_per_measurement;
-            var max_measures = Math.floor((max_kcal - kcal) / kcal_per_measure); // calculate maximum amount of measurements of ingredient that fits in recipe
-            var amount = randomize_ingredient_amount(ingredient, max_measures, portions); // randomize ingredient amount
+            var max_measures = Math.floor(// calculate maximum amount of measurements of ingredient that fits in recipe
+            (max_kcal - kcal) / kcal_per_measure);
+            var amount = randomize_ingredient_amount(ingredient, max_measures, portions);
             if (amount === 0) { // amount can be 0 if max_measures is lower than minimum measures for the ingredient and portion amount.
                 continue;
             }
             else {
-                add_method(randomize_cooking_method(cat), name_with_s(ingredient, amount));
+                var method = randomize_cooking_method(cat);
+                add_method(method, refer_to_ingredient(ingredient, amount));
                 recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
                 kcal += amount * kcal_per_measure;
             }
@@ -210,8 +261,8 @@ function generate_recipe(_a, portions, filters) {
         else { }
         method.shift(); // removes current method from method
         if ((0, basics_1.has_separable_inventory)(kw)) {
-            var extra_ingredients = do_separable_method(current_method, kw, steps);
-            (_a = kw.inventory).push.apply(_a, extra_ingredients);
+            var extra_i = do_separable_method(current_method, kw, steps);
+            (_a = kw.inventory).push.apply(_a, extra_i);
         }
         else { }
         (_b = kw.inventory).push.apply(_b, ingredient_names);
@@ -220,6 +271,9 @@ function generate_recipe(_a, portions, filters) {
         ingredient_names.push.apply(ingredient_names, more_ingredients);
         return add_cooking_step(method, ingredient_names, steps);
     }
+    // for separable kitchenware, finds all ingredients with same cooking method
+    // somewhere in method array. Executes the methods earlier in method array
+    // and returns ingredient names for method step.
     function do_separable_method(method, kw, steps) {
         var ingredient_names = [];
         for (var i = 0; i < selected_methods.length; i++) {
@@ -249,7 +303,6 @@ function generate_recipe(_a, portions, filters) {
             else { }
             var copy_method = __spreadArray([], other_method, true);
             for (var j = 0; j < other_method.length; j++) {
-                console.log(copy_method);
                 if (copy_method.toString() === method.toString()) {
                     var names = (0, list_1.tail)(selected_methods[i]);
                     ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
