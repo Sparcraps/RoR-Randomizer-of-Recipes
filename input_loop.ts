@@ -24,7 +24,7 @@ import {
 import {
     save_new_recipe
 } from "./save_recipe";
-import { load_data, save_new_ingredient, SaveData } from "./save_load_data";
+import { delete_ingredient, load_data, save_new_ingredient, SaveData } from "./save_load_data";
 import { empty_ingredient, Ingredient } from "./basics";
 
 export function RoR_start(): void {
@@ -319,7 +319,12 @@ function main_menu(): void {
         //submenu for configuring ingredients
         function configure_ingredients(): void {
             function select_name(ingredient: Ingredient): Ingredient {
-                ingredient.name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+                let name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+                while (name === "") {
+                    console.log("Ingredient name cannot be empty.")
+                    name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+                }
+                ingredient.name = name;
                 return ingredient;
             }
 
@@ -360,7 +365,7 @@ function main_menu(): void {
             }
 
             function select_measurement(ingredient: Ingredient): Ingredient {
-                ingredient.measurement = prompt("Enter unit of measurement for the new ingredient: ").trim().toLowerCase();
+                ingredient.measurement = prompt('Enter unit of measurement either as amount in the format of a float number, or as a float followed by a string, e.g. "0.5dl": ').trim().toLowerCase();
                 return ingredient;
             }
 
@@ -403,9 +408,10 @@ function main_menu(): void {
 
                 //submenu for when an ingredient has been added
                 function ingredient_added(): void {
-                    print_bold("Data for the new ingredient: ")
                     const keys = Object.keys(new_ingredient);
                     const values = Object.values(new_ingredient);
+
+                    print_bold("Data for the new ingredient: ")
                     print_alternatives(keys);
                     for (let i = 0; i < values.length; i++) {
                         console.log(values[i]);
@@ -454,7 +460,43 @@ function main_menu(): void {
                     }
                 }
             } else if (user_input === "r") {
-                //make submenu
+                menu_memory = push(remove_ingredient, menu_memory)
+
+                function remove_ingredient(): void {
+                    print_menu = [
+                        '"s" = search for ingredient by name',
+                        '"l" = select ingredient from a list of all ingredient names',
+                        '"b" = back to ingredient menu'];
+                    valid_inputs = ["s", "l", "b"];
+                    user_input = check_input(valid_inputs, "Choose an alternative: ");
+
+                    if (user_input === "s") {
+                        const input = prompt("Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
+                        if (input !== "") {
+                            data = delete_ingredient(input);
+                        } else {}
+                    } else if (user_input === "l") {
+                        const ingr = data.ingredients;
+
+                        print_bold("Currently registered ingredients: ")
+                        for (let i = 0; i < ingr.length; i++) {
+                            for (let j = 0; j < ingr[i].length; j++) {
+                                console.log("- " + ingr[i][j].name);
+                            }
+                        }
+
+                        let input = check_input(valid_inputs, 'Enter the number corresponding to the ingredient you want to remove, or press enter to go back without removing an ingredient');
+                        if (input !== "") {
+                            try {
+                                data = delete_ingredient(input);
+                            } catch { //might have to handle error
+                                console.log("There is no ingredient with that name.")
+                            }
+                        } else {}
+                    } else if (user_input === "b") {
+                        oblivion();
+                    }
+                }
             } else if (user_input === "b") {
                 oblivion();
             }
