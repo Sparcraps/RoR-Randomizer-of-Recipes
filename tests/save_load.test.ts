@@ -14,7 +14,9 @@ describe("testing functions to save and load data", () => {
         expect(load_data()).toStrictEqual(data);
     })
 
-    test("save_new_ingredient gives error when ingredient name already exists", () => {
+    test(
+        "save_new_ingredient gives error when ingredient name already exists",
+        () => {
         const data = load_data()
         const ingredient_data = data.ingredients;
         if (!(ingredient_data.length === 0)) {
@@ -30,7 +32,9 @@ describe("testing functions to save and load data", () => {
         } else {}
     })
 
-    test("save_new_category gives error when category name already exists", () => {
+    test(
+        "save_new_category gives error when category name already exists",
+        () => {
         const data = load_data()
         const cats = data.categories;
         if (!(cats.length === 0)) {
@@ -70,8 +74,13 @@ describe("testing functions to save and load data", () => {
                 ));
     })
 
-    test("functions to save and delete work on test ingredients and test category", () => {
-        const test_category = new_category("test category", [["chop"], ["boil"]], 10); 
+    test(
+        "functions to save and delete" +
+        "work on test ingredients and test category",
+        () => {
+        const test_category = new_category(
+            "test category", [["chop"], ["boil"]], 10
+            ); 
 
         const ti1 = new_ingredient("test category", "test ingredient", 
                                     ["cat"], "liters", 100, [50, 500]);
@@ -108,7 +117,9 @@ describe("testing functions to save and load data", () => {
         expect(ingredient_data.length).toBe(index);
     });
 
-    test("save_new_kitchenware and delete_kitchenware works on test kitchenware", () => {
+    test(
+        "save_new_kitchenware and delete_kitchenware works on test kitchenware",
+        () => {
         const name = "test kitchenware";
         const test_kit = new_kitchenware(name, ["fry"]);
         let saved = save_new_kitchenware(test_kit);

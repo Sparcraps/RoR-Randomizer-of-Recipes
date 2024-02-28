@@ -93,8 +93,9 @@ export function save_new_kitchenware(
         const existing_index = find_by_name(kw.name, saved_kw);
         if (!(existing_index === -1)) {
             console.error(
-                new Error("Kitchenware with name " + kw.name + " already exists.")
-                );
+                new Error(
+                    "Kitchenware with name " + kw.name + " already exists."
+                    ));
         } else {
             saved_kw.push(kw);
         }

@@ -175,10 +175,10 @@ export function generate_recipe(
 
     // Returns a random ingredient from an array of ingredients and 
     // removes the ingredient from the array.
-    function randomize_ingredient(ingredient_arr: Array<Ingredient>): Ingredient {
-        const ingredient_i =  Math.floor(Math.random() * ingredient_arr.length);
-        const ingredient = ingredient_arr[ingredient_i];
-        ingredient_arr.splice(ingredient_i, 1);
+    function randomize_ingredient(arr: Array<Ingredient>): Ingredient {
+        const ingredient_i =  Math.floor(Math.random() * arr.length);
+        const ingredient = arr[ingredient_i];
+        arr.splice(ingredient_i, 1);
         return ingredient;
     }
 
