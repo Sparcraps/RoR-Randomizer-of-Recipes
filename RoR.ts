@@ -31,6 +31,7 @@ type CookingStep = {
     ingredient_names: Array<string>, // array of ingredient names
     cooking_method: string,
     kitchenware: KitchenWare
+    is_kw_existing: boolean
 };
 
 export type Recipe = {
@@ -51,9 +52,12 @@ export function new_recipe(portions: number): Recipe {
 
 function new_cooking_step(
     cooking_method: string, ingredient_names: Array<string>,
-    kitchenware: KitchenWare
+    kitchenware: KitchenWare,
+    is_kw_existing: boolean
     ): CookingStep {
-    return {cooking_method, ingredient_names, kitchenware};
+    return {
+        cooking_method, ingredient_names, kitchenware, is_kw_existing
+    };
 }
 
 export function print_recipe(recipe: Recipe): void {
@@ -74,8 +78,8 @@ export function print_recipe(recipe: Recipe): void {
     steps.forEach(step => {
         console.log(
             step_nr + ". " + up_first(step.cooking_method) + " the " +
-            ingredient_and_ingredients(step.ingredient_names) +
-            " " + stringify_kitchenware(step.kitchenware)
+            ingredient_and_ingredients(step.ingredient_names) + " " +
+            stringify_kitchenware(step.kitchenware, step.is_kw_existing)
             );
         step_nr += 1;
     })
@@ -113,10 +117,12 @@ function stringify_ingredient_info(
     }
 }
 
-function stringify_kitchenware(kw: KitchenWare): string {
+function stringify_kitchenware(kw: KitchenWare, exists: boolean): string {
     let str = kw.name;
     const vowels = ["e", "u", "i", "o", "a"];
-    if (vowels.includes(str[0])) {
+    if (exists) {
+        str = "the " + str;
+    } else if (vowels.includes(str[0])) {
         str = "an " + str;
     } else {
         str = "a " + str;
@@ -250,13 +256,14 @@ export function generate_recipe(
     }
 
     // first looks for kitchenware with the cooking method in the recipe's active
-    // kitchenware, then looks in saved kitchenware, and returns the first one it finds.
+    // kitchenware, then looks in saved kitchenware, and returns the first one it finds
+    // in a pair with a boolean for whether of not the kitchenware was already active.
     // needs to be updated to choose randomly if multiple kitchenware have the cooking method available
-    function get_kitchenware_from_method(cooking_method: string): KitchenWare {
+    function get_kitchenware_from_method(cooking_method: string): Pair<KitchenWare, boolean> {
         for (let i = 0; i < active_kitchenware.length; i++) {
             const kw = active_kitchenware[i];
             if (kw.cooking_methods.includes(cooking_method)) {
-                return kw;
+                return pair(kw, true);
             }
         }
 
@@ -265,7 +272,7 @@ export function generate_recipe(
             if (kw.cooking_methods.includes(cooking_method)) {
                 const copy_kw = JSON.parse(JSON.stringify(kw)); // copies kitchenware if it's from save data
                 active_kitchenware.push(copy_kw);
-                return copy_kw;
+                return pair(copy_kw, false);
             }
         }
 
@@ -347,8 +354,9 @@ export function generate_recipe(
         const current_method = method[0];
         method.shift(); // removes current method from method
 
+        let kw_exists = true;
         if (kw === undefined || !kw.cooking_methods.includes(current_method)) {
-            kw = get_kitchenware_from_method(current_method);
+            [kw, kw_exists] = get_kitchenware_from_method(current_method);
         } else {}
 
         let extra_i: Array<string> = [];
@@ -357,7 +365,7 @@ export function generate_recipe(
         } else {}
 
         const current_step = new_cooking_step(
-            current_method, [...ingredient_names, ...extra_i], kw
+            current_method, [...ingredient_names, ...extra_i], kw, kw_exists
             );
         steps.push(current_step);
 
