@@ -1,7 +1,7 @@
 import * as PromptSync from "prompt-sync";
 
 import { 
-    type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop
+    type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop, display_stack
 } from "./../lib/stack";
 
 import {
@@ -33,6 +33,11 @@ import {
     empty_ingredient, Ingredient
 } from "./../basics";
 
+import {
+    print_alternatives, check_input, integer_prompt, wait_for_keypress, print_bold, oblivion
+} from "./menu_global_functions";
+import { get_menu_memory, set_menu_memory } from "./menu_memory";
+
 export function RoR_start(): void {
     function kill_RoR(): void {
         print_bold("Goodbye :)");
@@ -47,80 +52,15 @@ export function RoR_start(): void {
     console.log("|_| \\_\\___/|_| \\_\\");
     console.log("----------------------------------------\n");
     
-    menu_memory = push(main_menu, menu_memory);
-    while (!is_stack_empty(menu_memory)) {
-        top(menu_memory)();
+    set_menu_memory(push(main_menu, get_menu_memory()));
+    while (!is_stack_empty(get_menu_memory())) {
+        top(get_menu_memory()!)();
     }
     kill_RoR();
 }
 
 function main_menu(): void {
-    //prints the menu alternatives
-    function print_alternatives(alternatives: Array<string>): void {
-        if (alternatives.length === 0) { // to not print empty space
-            return;
-        } else {
-            for (let i = 0; i < alternatives.length; i++) {
-                console.log(alternatives[i]);
-            }
-        }
-    }
     
-    //removes the last menu function from memory
-    function oblivion(repeat: number = 1): undefined {
-        for (repeat; repeat > 0; repeat--) {
-            if (!is_stack_empty(menu_memory)) {
-                menu_memory = pop(menu_memory);
-            } else {
-                throw new Error("Error removing function from memory stack");
-            }
-        }
-    }
-    
-    //checks if the user input is valid and otherwise prompts the user again
-    function check_input(valid: Array<string>, question: string): string {
-        console.log();
-        let user_input: string | null = prompt(question).trim();
-        if (user_input !== null) {
-            user_input = user_input.toLowerCase();
-        } else {}
-        console.log();
-    
-        while (!valid.includes(user_input)) {
-            print_bold("Invalid input. Try again");
-            user_input = prompt(question).trim();
-            if (user_input !== null) {
-                user_input = user_input.toLowerCase();
-            } else {}
-            console.log();
-        }
-        return user_input;
-    }
-
-    //helper function that checks if input is an integer, and otherwise prompts the user again
-    function integer_prompt(prompt_text: string): number {
-        let new_portion_amount: string | null = prompt(prompt_text).trim();
-        let parsed: number = parseInt(new_portion_amount);
-    
-        while (isNaN(parsed)) {
-            console.log("Invalid input. Please enter a valid number.");
-            new_portion_amount = prompt(prompt_text).trim();
-            parsed = parseInt(new_portion_amount);
-        }
-        return parsed;
-    }
-
-     //Pauses program until any key is pressed on Windows OS,
-     //otherwise until enter is pressed.
-    function wait_for_keypress(): void {
-        if (process.platform === "win32") {
-            const { spawnSync } = require('node:child_process');
-            spawnSync("pause", {shell: true, stdio: [0, 1, 2]}); 
-        } else {
-            prompt("Press enter to continue.");
-        }
-        console.log();
-    }
 
     //submenu for randomizing recipes
     function recipimize(): void {
@@ -135,7 +75,7 @@ function main_menu(): void {
 
             if (user_input === "r") {
                 oblivion();
-                menu_memory = push(recipimize, menu_memory);
+                set_menu_memory(push(recipimize, get_menu_memory()));
             } else if (user_input === "b") {
                 oblivion();
             }
@@ -159,7 +99,7 @@ function main_menu(): void {
             recipes = save_new_recipe(recipe);
             console.log("Recipe " + recipe.name + " saved!\n");
             oblivion();
-            menu_memory = push(recipimize_saved, menu_memory);
+            set_menu_memory(push(recipimize_saved, get_menu_memory()));
         } else if (user_input === "b") {
             oblivion();
         }
@@ -316,7 +256,7 @@ function main_menu(): void {
             user_input = check_input(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
     
             if (user_input === "y") {
-                menu_memory = push(configure_dietary, menu_memory);
+                set_menu_memory(push(configure_dietary, get_menu_memory()));
             } else if (user_input === "n") {
                 oblivion();
             } else {
@@ -460,7 +400,7 @@ function main_menu(): void {
                     save_new_ingredient(new_ingredient);
                     oblivion();
                 } else if (user_input === "n") {
-                    menu_memory = push(ingredient_adjustments, menu_memory);                        
+                    set_menu_memory(push(ingredient_adjustments, get_menu_memory()));
                 } else {
                     throw new Error("Error: invalid user_input has escaped.");
                 }
@@ -553,9 +493,9 @@ function main_menu(): void {
             user_input = check_input(valid_inputs, "Choose an alternative: ");
 
             if (user_input === "a") {
-                menu_memory = push(add_ingredient_menu, menu_memory);
+                set_menu_memory(push(add_ingredient_menu, get_menu_memory()));
             } else if (user_input === "r") {
-                menu_memory = push(remove_ingredient_menu, menu_memory);
+                set_menu_memory(push(remove_ingredient_menu, get_menu_memory()));
             } else if (user_input === "b") {
                 oblivion();
             } else {
@@ -573,11 +513,11 @@ function main_menu(): void {
         user_input = check_input(valid_inputs, "Choose what you want to configure: ");
         
         if (user_input === "p") {
-            menu_memory = push(configure_portion, menu_memory);
+            set_menu_memory(push(configure_portion, get_menu_memory()));
         } else if (user_input === "d") {
-            menu_memory = push(dietary_prompt, menu_memory);
+            set_menu_memory(push(dietary_prompt, get_menu_memory()));
         } else if (user_input === "i") {
-            menu_memory = push(configure_ingredients, menu_memory);
+            set_menu_memory(push(configure_ingredients, get_menu_memory()));
         } else if (user_input === "b") {
             oblivion();
         } else {
@@ -597,11 +537,11 @@ function main_menu(): void {
     if (user_input === "h") {
         print_help();
     } else if (user_input === "r") {
-        menu_memory = push(recipimize, menu_memory);
+        set_menu_memory(push(recipimize, get_menu_memory()));
     } else if (user_input === "s") {
-        menu_memory = push(saved_recipes, menu_memory);
+        set_menu_memory(push(saved_recipes, get_menu_memory()));
     } else if (user_input === "c") {
-        menu_memory = push(configure, menu_memory);
+        set_menu_memory(push(configure, get_menu_memory()));
     } else if (user_input === "q") {
         oblivion();
     } else {
@@ -609,18 +549,8 @@ function main_menu(): void {
     }
 }
 
-export function print_bold(print_str: string): void {
-    if (print_bold_text) {
-        console.log('\x1b[1m' + print_str + '\x1b[0m');
-    } else {
-        console.log(print_str);
-    }
-    return;
-}
-
-const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
-let menu_memory: Stack<Function> = empty_stack();
-const print_bold_text: boolean = true;
+export const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
+export const print_bold_text: boolean = true;
 const portion_size: Pair<number, number> = [400, 700];
 const valid_dietary_restrictions: Array<string> = ["meat", "gluten", "dairy", "eggs", "nuts", "fish"];
 

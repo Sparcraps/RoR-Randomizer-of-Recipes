@@ -9,18 +9,20 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.print_bold = exports.RoR_start = void 0;
+exports.print_bold_text = exports.prompt = exports.RoR_start = void 0;
 var PromptSync = require("prompt-sync");
-var stack_1 = require("./lib/stack");
-var RoR_1 = require("./RoR");
-var list_1 = require("./lib/list");
-var save_config_1 = require("./save_config");
-var save_recipe_1 = require("./save_recipe");
-var save_load_data_1 = require("./save_load_data");
-var basics_1 = require("./basics");
+var stack_1 = require("./../lib/stack");
+var RoR_1 = require("./../RoR");
+var list_1 = require("./../lib/list");
+var save_config_1 = require("./../save_config");
+var save_recipe_1 = require("./../save_recipe");
+var save_load_data_1 = require("./../save_load_data");
+var basics_1 = require("./../basics");
+var menu_global_functions_1 = require("./menu_global_functions");
+var menu_memory_1 = require("./menu_memory");
 function RoR_start() {
     function kill_RoR() {
-        print_bold("Goodbye :)");
+        (0, menu_global_functions_1.print_bold)("Goodbye :)");
     }
     console.log("----------------------------------------");
     console.log("Welcome to Randomizer of Recipes, aka");
@@ -30,80 +32,14 @@ function RoR_start() {
     console.log("|  _ < (_) |  _ < ");
     console.log("|_| \\_\\___/|_| \\_\\");
     console.log("----------------------------------------\n");
-    menu_memory = (0, stack_1.push)(main_menu, menu_memory);
-    while (!(0, stack_1.is_empty)(menu_memory)) {
-        (0, stack_1.top)(menu_memory)();
+    (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(main_menu, (0, menu_memory_1.get_menu_memory)()));
+    while (!(0, stack_1.is_empty)((0, menu_memory_1.get_menu_memory)())) {
+        (0, stack_1.top)((0, menu_memory_1.get_menu_memory)())();
     }
     kill_RoR();
 }
 exports.RoR_start = RoR_start;
 function main_menu() {
-    //prints the menu alternatives
-    function print_alternatives(alternatives) {
-        if (alternatives.length === 0) { // to not print empty space
-            return;
-        }
-        else {
-            for (var i = 0; i < alternatives.length; i++) {
-                console.log(alternatives[i]);
-            }
-        }
-    }
-    //removes the last menu function from memory
-    function oblivion(repeat) {
-        if (repeat === void 0) { repeat = 1; }
-        for (repeat; repeat > 0; repeat--) {
-            if (!(0, stack_1.is_empty)(menu_memory)) {
-                menu_memory = (0, stack_1.pop)(menu_memory);
-            }
-            else {
-                throw new Error("Error removing function from memory stack");
-            }
-        }
-    }
-    //checks if the user input is valid and otherwise prompts the user again
-    function check_input(valid, question) {
-        console.log();
-        var user_input = prompt(question).trim();
-        if (user_input !== null) {
-            user_input = user_input.toLowerCase();
-        }
-        else { }
-        console.log();
-        while (!valid.includes(user_input)) {
-            print_bold("Invalid input. Try again");
-            user_input = prompt(question).trim();
-            if (user_input !== null) {
-                user_input = user_input.toLowerCase();
-            }
-            else { }
-            console.log();
-        }
-        return user_input;
-    }
-    //helper function that checks if input is an integer, and otherwise prompts the user again
-    function integer_prompt(prompt_text) {
-        var new_portion_amount = prompt(prompt_text).trim();
-        var parsed = parseInt(new_portion_amount);
-        while (isNaN(parsed)) {
-            console.log("Invalid input. Please enter a valid number.");
-            new_portion_amount = prompt(prompt_text).trim();
-            parsed = parseInt(new_portion_amount);
-        }
-        return parsed;
-    }
-    //Pauses program until any key is pressed on Windows OS,
-    //otherwise until enter is pressed.
-    function wait_for_keypress() {
-        if (process.platform === "win32") {
-            var spawnSync = require('node:child_process').spawnSync;
-            spawnSync("pause", { shell: true, stdio: [0, 1, 2] });
-        }
-        else {
-            prompt("Press enter to continue.");
-        }
-        console.log();
-    }
     //submenu for randomizing recipes
     function recipimize() {
         //in case a recipe is saved, the menu alternatives need to be adjusted
@@ -111,14 +47,14 @@ function main_menu() {
             print_menu = ['"r" = randomize new recipe',
                 '"b" = back to main menu'];
             valid_inputs = ["r", "b"];
-            print_alternatives(print_menu);
-            user_input = check_input(valid_inputs, "Choose an alternative: ");
+            (0, menu_global_functions_1.print_alternatives)(print_menu);
+            user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");
             if (user_input === "r") {
-                oblivion();
-                menu_memory = (0, stack_1.push)(recipimize, menu_memory);
+                (0, menu_global_functions_1.oblivion)();
+                (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(recipimize, (0, menu_memory_1.get_menu_memory)()));
             }
             else if (user_input === "b") {
-                oblivion();
+                (0, menu_global_functions_1.oblivion)();
             }
         }
         print_menu = ['"r" = randomize new recipe',
@@ -127,53 +63,53 @@ function main_menu() {
         valid_inputs = ["r", "s", "b"];
         var recipe = (0, RoR_1.generate_recipe)(portion_size, portion_amount, restrictions);
         (0, RoR_1.print_recipe)(recipe);
-        wait_for_keypress();
-        print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Choose an alternative: ");
+        (0, menu_global_functions_1.wait_for_keypress)();
+        (0, menu_global_functions_1.print_alternatives)(print_menu);
+        user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");
         if (user_input === "r") {
             return;
         }
         else if (user_input === "s") {
             recipes = (0, save_recipe_1.save_new_recipe)(recipe);
             console.log("Recipe " + recipe.name + " saved!\n");
-            oblivion();
-            menu_memory = (0, stack_1.push)(recipimize_saved, menu_memory);
+            (0, menu_global_functions_1.oblivion)();
+            (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(recipimize_saved, (0, menu_memory_1.get_menu_memory)()));
         }
         else if (user_input === "b") {
-            oblivion();
+            (0, menu_global_functions_1.oblivion)();
         }
     }
     //prints an explanation of all alternatives in the main menu
     function print_help() {
-        print_bold("randomize recipe: ");
+        (0, menu_global_functions_1.print_bold)("randomize recipe: ");
         console.log("The main feature of RoR.");
         console.log("Generates a randomized recipe based on the current configurations.");
         console.log("The ingredients picked out for the recipe, their quantities and cooking methods will all be randomized,");
         console.log("until the requested number of portions has been met.\n");
-        print_bold("quit: ");
+        (0, menu_global_functions_1.print_bold)("quit: ");
         console.log("Terminates the program session.");
         console.log("All configurations and saved recipes carry over to the next time RoR is run.\n");
-        print_bold("saved recipes: ");
+        (0, menu_global_functions_1.print_bold)("saved recipes: ");
         console.log("View a menu of all previously saved recipes.");
         console.log("The recipes can be selected to have their contents viewed.\n");
-        print_bold("configure: ");
+        (0, menu_global_functions_1.print_bold)("configure: ");
         console.log("View a menu of recipe generation configurations.");
         console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.\n");
     }
     function saved_recipes() {
         function choose_recipe() {
-            print_bold("Your saved recipes:");
+            (0, menu_global_functions_1.print_bold)("Your saved recipes:");
             for (var i = 0; i < recipes.length; i++) {
                 var current_name = recipes[i].name;
                 console.log(i, current_name);
             }
-            var int = integer_prompt("Enter the number corresponding to the recipe you want to choose: ");
+            var int = (0, menu_global_functions_1.integer_prompt)("Enter the number corresponding to the recipe you want to choose: ");
             return recipes[int];
         }
         print_menu = ['"v" = view saved recipe', '"d" = delete saved recipe', '"b" = back to main menu'];
         valid_inputs = ["v", "d", "b"];
-        print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Choose an alternative: ");
+        (0, menu_global_functions_1.print_alternatives)(print_menu);
+        user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");
         if (user_input === "v") {
             if (recipes.length === 0) {
                 console.log("You have no saved recipes.");
@@ -181,7 +117,7 @@ function main_menu() {
             else {
                 var selected_recipe = choose_recipe();
                 (0, RoR_1.print_recipe)(selected_recipe);
-                wait_for_keypress();
+                (0, menu_global_functions_1.wait_for_keypress)();
             }
         }
         else if (user_input === "d") {
@@ -196,7 +132,7 @@ function main_menu() {
             }
         }
         else if (user_input === "b") {
-            oblivion();
+            (0, menu_global_functions_1.oblivion)();
         }
         else {
             throw new Error("Error: invalid user_input has escaped.");
@@ -208,14 +144,14 @@ function main_menu() {
         function configure_portion() {
             valid_inputs = ["y", "n"];
             console.log("Current portion amount: " + config.portion_amount.toString());
-            user_input = check_input(valid_inputs, "Do you wish to change the portion amount? (y/n): ");
+            user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Do you wish to change the portion amount? (y/n): ");
             if (user_input === "y") {
-                var input_int = integer_prompt("Enter new portion amount: ");
+                var input_int = (0, menu_global_functions_1.integer_prompt)("Enter new portion amount: ");
                 config = (0, save_config_1.change_portion_amount)(input_int, config);
                 console.log("New amount registered.");
             }
             else if (user_input === "n") {
-                oblivion();
+                (0, menu_global_functions_1.oblivion)();
             }
             else {
                 throw new Error("Error: invalid user_input has escaped.");
@@ -229,9 +165,9 @@ function main_menu() {
                 //input as well as information of its existance in currently active dietary restrictions
                 function select_valid_dietary() {
                     var valid = valid_dietary_restrictions;
-                    print_bold("Valid alternatives: ");
-                    print_alternatives(valid);
-                    var input = check_input(valid, "Choose dietary restriction of the above: ");
+                    (0, menu_global_functions_1.print_bold)("Valid alternatives: ");
+                    (0, menu_global_functions_1.print_alternatives)(valid);
+                    var input = (0, menu_global_functions_1.check_input)(valid, "Choose dietary restriction of the above: ");
                     var is_already_in_arr = config.dietary_restrictions.includes(input);
                     return (0, list_1.pair)(is_already_in_arr, input);
                 }
@@ -258,8 +194,8 @@ function main_menu() {
                 print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction',
                     '"v" = view active dietary restrictions', '"b" = back to configurations menu'];
                 valid_inputs = ["a", "r", "v", "b"];
-                print_alternatives(print_menu);
-                user_input = check_input(valid_inputs, "Choose an alternative: ");
+                (0, menu_global_functions_1.print_alternatives)(print_menu);
+                user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");
                 if (user_input === "a") {
                     add_diet();
                 }
@@ -270,24 +206,24 @@ function main_menu() {
                     view_active_diet();
                 }
                 else if (user_input === "b") {
-                    oblivion(2);
+                    (0, menu_global_functions_1.oblivion)(2);
                 }
                 else {
                     throw new Error("Error: invalid user_input has escaped.");
                 }
             }
             function view_active_diet() {
-                print_bold("Active dietary restrictions: ");
-                print_alternatives(config.dietary_restrictions);
+                (0, menu_global_functions_1.print_bold)("Active dietary restrictions: ");
+                (0, menu_global_functions_1.print_alternatives)(config.dietary_restrictions);
             }
             valid_inputs = ["y", "n"];
             view_active_diet();
-            user_input = check_input(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
+            user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
             if (user_input === "y") {
-                menu_memory = (0, stack_1.push)(configure_dietary, menu_memory);
+                (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(configure_dietary, (0, menu_memory_1.get_menu_memory)()));
             }
             else if (user_input === "n") {
-                oblivion();
+                (0, menu_global_functions_1.oblivion)();
             }
             else {
                 throw new Error("Error: invalid user_input has escaped.");
@@ -302,11 +238,11 @@ function main_menu() {
                     console.log("Current ingredient name: " + ingredient.name);
                 }
                 else { }
-                var name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+                var name = (0, exports.prompt)("Enter new ingredient name: ").trim().toLowerCase();
                 console.log();
                 while (name === "") {
                     console.log("Ingredient name cannot be empty / only contain whitespace.");
-                    name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+                    name = (0, exports.prompt)("Enter new ingredient name: ").trim().toLowerCase();
                 }
                 ingredient.name = name;
                 return ingredient;
@@ -317,14 +253,14 @@ function main_menu() {
                     console.log("Current ingredient category: " + ingredient.category);
                 }
                 else { }
-                print_bold("Valid ingredient categories: ");
+                (0, menu_global_functions_1.print_bold)("Valid ingredient categories: ");
                 var category_names = [];
                 var cats = data.categories;
                 for (var i = 0; i < cats.length; i++) {
                     category_names[i] = cats[i].name;
                 }
-                print_alternatives(category_names);
-                user_input = check_input(category_names, "Choose which category the new ingredient belongs to: ");
+                (0, menu_global_functions_1.print_alternatives)(category_names);
+                user_input = (0, menu_global_functions_1.check_input)(category_names, "Choose which category the new ingredient belongs to: ");
                 ingredient.category = user_input;
                 return ingredient;
             }
@@ -332,15 +268,15 @@ function main_menu() {
                 if (print_contents === void 0) { print_contents = false; }
                 if (print_contents) {
                     console.log("Current ingredient dietary restrictions: ");
-                    print_alternatives(ingredient.allergies);
+                    (0, menu_global_functions_1.print_alternatives)(ingredient.allergies);
                 }
                 else { }
                 var allergy_array = [];
                 var valid_dietary_not_active = __spreadArray([], valid_dietary_restrictions, true);
                 valid_dietary_not_active.push("");
-                print_bold("Valid dietary restrictions: ");
-                print_alternatives(valid_dietary_restrictions);
-                user_input = check_input(valid_dietary_not_active, "Enter a dietary restriction of the above that applies to the new ingredient, " +
+                (0, menu_global_functions_1.print_bold)("Valid dietary restrictions: ");
+                (0, menu_global_functions_1.print_alternatives)(valid_dietary_restrictions);
+                user_input = (0, menu_global_functions_1.check_input)(valid_dietary_not_active, "Enter a dietary restriction of the above that applies to the new ingredient, " +
                     "or press enter if no dietary restrictions apply: ");
                 while (user_input !== "") {
                     allergy_array.push(user_input);
@@ -351,9 +287,9 @@ function main_menu() {
                     else {
                         throw new Error("Error: could not find active dietary restriction");
                     }
-                    print_bold("Valid dietary restrictions that have not yet been added: ");
-                    print_alternatives(valid_dietary_not_active);
-                    user_input = check_input(valid_dietary_not_active, "Enter another dietary restriction that applies to the new ingredient, " +
+                    (0, menu_global_functions_1.print_bold)("Valid dietary restrictions that have not yet been added: ");
+                    (0, menu_global_functions_1.print_alternatives)(valid_dietary_not_active);
+                    user_input = (0, menu_global_functions_1.check_input)(valid_dietary_not_active, "Enter another dietary restriction that applies to the new ingredient, " +
                         "or press enter if no more dietary restrictions apply: ");
                 }
                 ingredient.allergies = allergy_array;
@@ -365,7 +301,7 @@ function main_menu() {
                     console.log("Current ingredient measurement: " + ingredient.measurement);
                 }
                 else { }
-                ingredient.measurement = prompt('Enter unit of measurement either as amount in the format of a float number, or as a float followed by a string, e.g. "0.5dl": ').trim().toLowerCase();
+                ingredient.measurement = (0, exports.prompt)('Enter unit of measurement either as amount in the format of a float number, or as a float followed by a string, e.g. "0.5dl": ').trim().toLowerCase();
                 return ingredient;
             }
             function select_kcal_per_measurement(ingredient, print_contents) {
@@ -374,7 +310,7 @@ function main_menu() {
                     console.log("Current ingredient kcal per measurement: " + ingredient.kcal_per_measurement.toString());
                 }
                 else { }
-                ingredient.kcal_per_measurement = integer_prompt("Enter the amount of kcal per measurement (rounded to nearest integer) for the new ingredient: ");
+                ingredient.kcal_per_measurement = (0, menu_global_functions_1.integer_prompt)("Enter the amount of kcal per measurement (rounded to nearest integer) for the new ingredient: ");
                 return ingredient;
             }
             function select_range(ingredient, print_contents) {
@@ -383,15 +319,15 @@ function main_menu() {
                     console.log("Current ingredient amount range: " + ingredient.range[0].toString() + " - " + ingredient.range[1].toString());
                 }
                 else { }
-                var lower_range = integer_prompt("Enter the lower limit for the amount able to be randomized of the new ingredient, measured in the ingredients measurement: ");
+                var lower_range = (0, menu_global_functions_1.integer_prompt)("Enter the lower limit for the amount able to be randomized of the new ingredient, measured in the ingredients measurement: ");
                 while (lower_range < 0) {
                     console.log("the lower limit cannot be negative");
-                    lower_range = integer_prompt("Please choose a new lower limit: ");
+                    lower_range = (0, menu_global_functions_1.integer_prompt)("Please choose a new lower limit: ");
                 }
-                var upper_range = integer_prompt("Enter the upper limit for the amount able to be randomized of the new ingredient, measured in the ingredients measurement: ");
+                var upper_range = (0, menu_global_functions_1.integer_prompt)("Enter the upper limit for the amount able to be randomized of the new ingredient, measured in the ingredients measurement: ");
                 while (upper_range < lower_range) {
                     console.log("the upper limit cannot be lower than the lower limit");
-                    upper_range = integer_prompt("Please choose a new upper limit: ");
+                    upper_range = (0, menu_global_functions_1.integer_prompt)("Please choose a new upper limit: ");
                 }
                 ingredient.range = (0, list_1.pair)(lower_range, upper_range);
                 return ingredient;
@@ -406,19 +342,19 @@ function main_menu() {
                 new_ingredient = select_range(new_ingredient);
                 var keys = Object.keys(new_ingredient);
                 var values = Object.values(new_ingredient);
-                print_bold("Data for the new ingredient: ");
-                print_alternatives(keys);
+                (0, menu_global_functions_1.print_bold)("Data for the new ingredient: ");
+                (0, menu_global_functions_1.print_alternatives)(keys);
                 for (var i = 0; i < values.length; i++) {
                     console.log(values[i]);
                 }
                 valid_inputs = ["y", "n"];
-                user_input = check_input(valid_inputs, "Are you happy with the ingredient data? (y/n): ");
+                user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Are you happy with the ingredient data? (y/n): ");
                 if (user_input === "y") {
                     (0, save_load_data_1.save_new_ingredient)(new_ingredient);
-                    oblivion();
+                    (0, menu_global_functions_1.oblivion)();
                 }
                 else if (user_input === "n") {
-                    menu_memory = (0, stack_1.push)(ingredient_adjustments, menu_memory);
+                    (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(ingredient_adjustments, (0, menu_memory_1.get_menu_memory)()));
                 }
                 else {
                     throw new Error("Error: invalid user_input has escaped.");
@@ -435,8 +371,8 @@ function main_menu() {
                         '"b" = save ingredient and go back to ingredient menu'
                     ];
                     valid_inputs = ["n", "c", "d", "m", "k", "r", "b"];
-                    print_alternatives(print_menu);
-                    user_input = check_input(valid_inputs, "Choose what ingredient data you want to adjust: ");
+                    (0, menu_global_functions_1.print_alternatives)(print_menu);
+                    user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose what ingredient data you want to adjust: ");
                     if (user_input === "n") {
                         new_ingredient = select_name(new_ingredient);
                     }
@@ -457,7 +393,7 @@ function main_menu() {
                     }
                     else if (user_input === "b") {
                         (0, save_load_data_1.save_new_ingredient)(new_ingredient);
-                        oblivion(2);
+                        (0, menu_global_functions_1.oblivion)(2);
                     }
                     else {
                         throw new Error("Error: invalid user_input has escaped.");
@@ -466,7 +402,7 @@ function main_menu() {
             }
             function remove_ingredient_menu() {
                 function search_and_delete() {
-                    var input = check_input(valid_inputs, "Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
+                    var input = (0, exports.prompt)("Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
                     if (input !== "") {
                         try {
                             data = (0, save_load_data_1.delete_ingredient)(input);
@@ -480,7 +416,7 @@ function main_menu() {
                 }
                 function print_all_ingredients() {
                     var ingr = data.ingredients;
-                    print_bold("Currently registered ingredients: ");
+                    (0, menu_global_functions_1.print_bold)("Currently registered ingredients: ");
                     for (var i = 0; i < ingr.length; i++) {
                         for (var j = 0; j < ingr[i].length; j++) {
                             console.log("- " + ingr[i][j].name);
@@ -493,8 +429,8 @@ function main_menu() {
                     '"b" = back to ingredient menu'
                 ];
                 valid_inputs = ["s", "l", "b"];
-                print_alternatives(print_menu);
-                user_input = check_input(valid_inputs, "Choose an alternative: ");
+                (0, menu_global_functions_1.print_alternatives)(print_menu);
+                user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");
                 if (user_input === "s") {
                     search_and_delete();
                 }
@@ -503,7 +439,7 @@ function main_menu() {
                     search_and_delete();
                 }
                 else if (user_input === "b") {
-                    oblivion();
+                    (0, menu_global_functions_1.oblivion)();
                 }
                 else {
                     throw new Error("Error: invalid user_input has escaped.");
@@ -511,16 +447,16 @@ function main_menu() {
             }
             valid_inputs = ["a", "r", "b"];
             print_menu = ['"a" = add ingredient', '"r" = remove ingredient', '"b" = back to configurations menu'];
-            print_alternatives(print_menu);
-            user_input = check_input(valid_inputs, "Choose an alternative: ");
+            (0, menu_global_functions_1.print_alternatives)(print_menu);
+            user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");
             if (user_input === "a") {
-                menu_memory = (0, stack_1.push)(add_ingredient_menu, menu_memory);
+                (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(add_ingredient_menu, (0, menu_memory_1.get_menu_memory)()));
             }
             else if (user_input === "r") {
-                menu_memory = (0, stack_1.push)(remove_ingredient_menu, menu_memory);
+                (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(remove_ingredient_menu, (0, menu_memory_1.get_menu_memory)()));
             }
             else if (user_input === "b") {
-                oblivion();
+                (0, menu_global_functions_1.oblivion)();
             }
             else {
                 throw new Error("Error: invalid user_input has escaped.");
@@ -531,19 +467,19 @@ function main_menu() {
             '"i" = ingredient data',
             '"b" = back to main menu'];
         valid_inputs = ["p", "d", "i", "b"];
-        print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Choose what you want to configure: ");
+        (0, menu_global_functions_1.print_alternatives)(print_menu);
+        user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose what you want to configure: ");
         if (user_input === "p") {
-            menu_memory = (0, stack_1.push)(configure_portion, menu_memory);
+            (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(configure_portion, (0, menu_memory_1.get_menu_memory)()));
         }
         else if (user_input === "d") {
-            menu_memory = (0, stack_1.push)(dietary_prompt, menu_memory);
+            (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(dietary_prompt, (0, menu_memory_1.get_menu_memory)()));
         }
         else if (user_input === "i") {
-            menu_memory = (0, stack_1.push)(configure_ingredients, menu_memory);
+            (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(configure_ingredients, (0, menu_memory_1.get_menu_memory)()));
         }
         else if (user_input === "b") {
-            oblivion();
+            (0, menu_global_functions_1.oblivion)();
         }
         else {
             throw new Error("Error: invalid user_input has escaped.");
@@ -554,40 +490,29 @@ function main_menu() {
         '"s" = saved recipes', '"c" = configure',
         '"q" = quit'];
     var valid_inputs = ["h", "r", "q", "s", "c"];
-    print_alternatives(print_menu);
-    user_input = check_input(valid_inputs, "Choose an alternative: ");
+    (0, menu_global_functions_1.print_alternatives)(print_menu);
+    user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");
     if (user_input === "h") {
         print_help();
     }
     else if (user_input === "r") {
-        menu_memory = (0, stack_1.push)(recipimize, menu_memory);
+        (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(recipimize, (0, menu_memory_1.get_menu_memory)()));
     }
     else if (user_input === "s") {
-        menu_memory = (0, stack_1.push)(saved_recipes, menu_memory);
+        (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(saved_recipes, (0, menu_memory_1.get_menu_memory)()));
     }
     else if (user_input === "c") {
-        menu_memory = (0, stack_1.push)(configure, menu_memory);
+        (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(configure, (0, menu_memory_1.get_menu_memory)()));
     }
     else if (user_input === "q") {
-        oblivion();
+        (0, menu_global_functions_1.oblivion)();
     }
     else {
         throw new Error("Error: invalid user_input has escaped.");
     }
 }
-function print_bold(print_str) {
-    if (print_bold_text) {
-        console.log('\x1b[1m' + print_str + '\x1b[0m');
-    }
-    else {
-        console.log(print_str);
-    }
-    return;
-}
-exports.print_bold = print_bold;
-var prompt = PromptSync({ sigint: true });
-var menu_memory = (0, stack_1.empty)();
-var print_bold_text = true;
+exports.prompt = PromptSync({ sigint: true });
+exports.print_bold_text = true;
 var portion_size = [400, 700];
 var valid_dietary_restrictions = ["meat", "gluten", "dairy", "eggs", "nuts", "fish"];
 var config = (0, save_config_1.load_configuration)();

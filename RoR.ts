@@ -4,8 +4,12 @@ import {
 } from "./basics";
 
 import {
-    RoR_start, print_bold
+    RoR_start
 } from "./menu/input_loop";
+
+import {
+    print_bold
+} from "./menu/menu_global_functions";
 
 import {
     type Pair, head, pair, tail
