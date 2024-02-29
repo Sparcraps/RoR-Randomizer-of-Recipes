@@ -1,5 +1,5 @@
 import { 
-    type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop
+    type Stack, empty as empty_stack, is_empty as is_stack_empty, pop
 } from "./../lib/stack";
 
 /**
