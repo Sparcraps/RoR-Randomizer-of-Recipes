@@ -2,37 +2,36 @@ import * as PromptSync from "prompt-sync";
 
 import { 
     type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop
-} from "./lib/stack";
+} from "./../lib/stack";
 
 import {
     type Recipe, generate_recipe, print_recipe
-} from "./RoR";
+} from "./../RoR";
 
 import {
     pair,
     type Pair
-} from "./lib/list";
+} from "./../lib/list";
 
 import {
     type Configuration,
     add_to_dietary_restrictions,
     load_configuration,
-    save_configuration,
     remove_from_dietary_restrictions,
     change_portion_amount
-} from "./save_config";
+} from "./../save_config";
 
 import {
     save_new_recipe, load_recipes, delete_recipe
-} from "./save_recipe";
+} from "./../save_recipe";
 
 import {
     delete_ingredient, load_data, save_new_ingredient, SaveData
-} from "./save_load_data";
+} from "./../save_load_data";
 
 import {
     empty_ingredient, Ingredient
-} from "./basics";
+} from "./../basics";
 
 export function RoR_start(): void {
     function kill_RoR(): void {

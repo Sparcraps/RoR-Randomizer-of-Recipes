@@ -5,7 +5,7 @@ import {
 
 import {
     RoR_start, print_bold
-} from "./input_loop";
+} from "./menu/input_loop";
 
 import {
     type Pair, head, pair, tail
