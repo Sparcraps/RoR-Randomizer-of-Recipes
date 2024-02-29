@@ -9,13 +9,13 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generate_recipe = exports.print_recipe = exports.new_recipe = void 0;
+exports.generate_recipe = exports.generate_name = exports.refer_to_ingredient = exports.print_recipe = exports.new_recipe = void 0;
 var basics_1 = require("./basics");
 var input_loop_1 = require("./input_loop");
 var list_1 = require("./lib/list");
 var save_load_data_1 = require("./save_load_data");
 var filter_1 = require("./filter");
-var generate_name_1 = require("./generate_name");
+var save_recipe_1 = require("./save_recipe");
 var data = (0, save_load_data_1.load_data)();
 function new_recipe(portions) {
     return {
@@ -150,6 +150,85 @@ function refer_to_ingredient(ingredient, amount, is_pcs) {
         return name;
     }
 }
+exports.refer_to_ingredient = refer_to_ingredient;
+/**
+ * A function to find the ingredient a recipe has the most of in calories.
+ * @param ingredients - an array containing pairs of the ingredients and their amounts in calories.
+ * @returns the ingredient the recipe has the most of in calories.
+ */
+function find_highest_amount(ingredients) {
+    var largest = ingredients[0];
+    var current = ingredients[0][1] * ingredients[0][0].kcal_per_measurement;
+    for (var i = 0; i < ingredients.length; i = i + 1) {
+        current = ingredients[i][1] * ingredients[i][0].kcal_per_measurement;
+        if (largest[1] * largest[0].kcal_per_measurement <= current) {
+            largest = ingredients[i];
+        }
+    }
+    var index = ingredients.indexOf(largest);
+    ingredients.splice(index, 1);
+    return largest[0];
+}
+/**
+* a function to find the last cooking step applied to a ingredient.
+* @param cooking_steps - an array of the cookingsteps in the recipe.
+* @param ingredient - an ingredient to the cookingstep must be applied to.
+* @returns the last cooking step applied to the ingredient.
+*/
+function find_last_cooking_step(cooking_steps, ingredient) {
+    var is_pcs = false;
+    if (ingredient.measurement == "") {
+        is_pcs = true;
+    }
+    var ingredientname = refer_to_ingredient(ingredient, 2, is_pcs);
+    for (var i = cooking_steps.length - 1; i >= 0; i = i - 1) {
+        if (cooking_steps[i].ingredient_names.includes(ingredientname)) {
+            return cooking_steps[i];
+        }
+    }
+    return cooking_steps[cooking_steps.length - 1];
+}
+/**
+* A function to generate a new name based on the ingredients and cooking steps in a recipe.
+* @param a recipe - consisting of ingredients and the cooking steps applied to them.
+* @returns the name generated as a string.
+*/
+function generate_name(recipe) {
+    // capitalizes first letter of each word in a string
+    function up_first_all(str) {
+        var words = str.split(" ");
+        var new_str = up_first(words[0]);
+        if (words.length > 1) {
+            var i = 1;
+            for (i; i < words.length; i++) {
+                new_str += " " + up_first(words[i]);
+            }
+        }
+        else { }
+        return new_str;
+    }
+    // capitalizes first letter of string
+    function up_first(str) {
+        return str[0].toUpperCase() + str.slice(1);
+    }
+    var ingredient_info = JSON.parse(JSON.stringify(recipe.ingredient_info)); // copies recipe ingredient info
+    var main_ingr = find_highest_amount(ingredient_info);
+    var main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
+    if (ingredient_info.length === 0) {
+        return up_first_all(main_ingr.name) + " " +
+            up_first_all(main_cooking_method.cooking_method);
+    }
+    else {
+        var secondary_ingr = find_highest_amount(ingredient_info);
+        if (main_cooking_method.cooking_method == "boil") {
+            main_cooking_method = find_last_cooking_step(recipe.steps, secondary_ingr);
+        }
+        return up_first_all(main_ingr.name) + " and " +
+            up_first_all(secondary_ingr.name) + " " +
+            up_first_all(main_cooking_method.cooking_method);
+    }
+}
+exports.generate_name = generate_name;
 function generate_recipe(_a, portions, filters) {
     var min_portion = _a[0], max_portion = _a[1];
     // Selects a random category from an array of categories and 
@@ -357,7 +436,7 @@ function generate_recipe(_a, portions, filters) {
     var steps = generate_cooking_steps();
     recipe.steps = steps;
     try {
-        recipe.name = (0, generate_name_1.generate_name)(recipe);
+        recipe.name = generate_name(recipe);
     }
     catch (err) {
         console.error(err);
@@ -372,6 +451,7 @@ function recipe_randomization() {
     // for testing purposes
     var recipe = generate_recipe((0, list_1.pair)(400, 700), 4, []);
     print_recipe(recipe);
+    (0, save_recipe_1.save_new_recipe)(recipe);
 }
 if (require.main === module) {
     recipe_randomization();

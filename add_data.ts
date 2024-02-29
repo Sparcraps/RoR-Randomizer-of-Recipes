@@ -2,11 +2,12 @@ import {
     type SaveData, save_new_category, save_new_ingredient, save_new_kitchenware, delete_ingredient, delete_category, load_data, save_data
 } from "./save_load_data"
 import {
-    new_ingredient, new_category, type Category, type Ingredient, new_kitchenware, find_by_name
+    new_ingredient, new_category, type Category, type Ingredient, new_kitchenware, find_by_name, 
 } from "./basics"
 import {
     type Pair, pair
 } from "./lib/list"
+import { refer_to_ingredient } from "./RoR";
 
 
 const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["bake"], ["grill"], ["chop", "grill"]], 5);
@@ -79,6 +80,9 @@ const frying_pan = new_kitchenware("frying pan", ["fry", "simmer", "add"]);
 const oven  = new_kitchenware("oven", ["bake", "grill", "add"]);
 const bowl = new_kitchenware("bowl", ["marinate"]);
 
+console.log(refer_to_ingredient(chicken_breast, 2, true));
+
+/*
 save_new_category(vegetable, root_vegetable, liquid, meat, spice, carbohydrate, fruit);
 
 save_new_ingredient(
@@ -95,7 +99,7 @@ save_new_ingredient(
 save_new_kitchenware(pot, cutting_board, frying_pan, oven, bowl);
 
 delete_category("liquid");
-
+*/
 // const data = load_data();
 // const cats = data.categories;
 // const cat_i = find_by_name("root vegetable", cats);
