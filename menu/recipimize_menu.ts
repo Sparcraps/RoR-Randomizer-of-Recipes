@@ -1,18 +1,38 @@
-import { Recipe, generate_recipe, print_recipe } from "../RoR";
-import { push } from "../lib/stack";
-import { Configuration, load_configuration } from "../save_config";
-import { load_recipes, save_new_recipe } from "../save_recipe";
-import { portion_size } from "./main_menu";
-import { check_input, oblivion, print_alternatives, wait_for_keypress } from "./menu_global_functions";
-import { get_menu_memory, set_menu_memory } from "./menu_memory";
+import {
+    Recipe, generate_recipe, print_recipe
+} from "../RoR";
 
+import {
+    push
+} from "../lib/stack";
 
-//submenu for randomizing recipes
+import {
+    Configuration, load_configuration
+} from "../save_config";
+
+import {
+    load_recipes, save_new_recipe
+} from "../save_recipe";
+
+import {
+    portion_size
+} from "./main_menu";
+
+import {
+    check_input, print_alternatives, wait_for_keypress
+} from "./menu_global_functions";
+
+import {
+    get_menu_memory, set_menu_memory, oblivion
+} from "./menu_memory";
+
+/**
+ * The submenu of main menu, responsible for recipe generation.
+ */
 export function recipimize(): void {
-    //in case a recipe is saved, the menu alternatives need to be adjusted
+    //in case a generated recipe is saved, the menu alternatives need to be adjusted
     function recipimize_saved(): void {
-        print_menu = ['"r" = randomize new recipe',
-                      '"b" = back to main menu'];
+        print_menu = ['"r" = randomize new recipe', '"b" = back to main menu'];
         valid_inputs = ["r", "b"];
 
         print_alternatives(print_menu);
@@ -32,11 +52,13 @@ export function recipimize(): void {
     const restrictions: Array<string> = config.dietary_restrictions;
 
     let print_menu = ['"r" = randomize new recipe',
-                  '"s" = save recipe',
-                  '"b" = back to main menu'];
+                      '"s" = save recipe',
+                      '"b" = back to main menu'];
     let valid_inputs = ["r", "s", "b"];
 
-    const recipe: Recipe = generate_recipe(portion_size, portion_amount, restrictions);
+    const recipe: Recipe = generate_recipe(portion_size,
+                                           portion_amount,
+                                           restrictions);
     print_recipe(recipe);
     wait_for_keypress();
 

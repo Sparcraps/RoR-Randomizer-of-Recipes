@@ -34,11 +34,11 @@ import {
 } from "../basics";
 
 import {
-    get_menu_memory, set_menu_memory
+    get_menu_memory, set_menu_memory, oblivion
 } from "./menu_memory";
 
 import {
-    print_alternatives, check_input, integer_prompt, wait_for_keypress, print_bold, oblivion
+    print_alternatives, check_input, integer_prompt, wait_for_keypress, print_bold
 } from "./menu_global_functions";
 import { recipimize } from "./recipimize_menu";
 
