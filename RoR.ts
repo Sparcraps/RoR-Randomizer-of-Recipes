@@ -5,7 +5,7 @@ import {
 
 import {
     RoR_start
-} from "./menu/input_loop";
+} from "./menu/main_menu";
 
 import {
     print_bold
@@ -27,16 +27,29 @@ import {
 import {
     filter_ingredients
 } from "./filter";
-import { generate_name } from "./generate_name";
+
+import {
+    generate_name
+} from "./generate_name";
 
 let data = load_data();
 
+/**
+ * CookingStep data type.
+ * contains the name of one cooking method, the ingredients it's applied to
+ * and the kitchenware used for it.
+ */
 type CookingStep = {
-    ingredient_names: Array<string>, // array of ingredient names
+    ingredient_names: Array<string>,
     cooking_method: string,
     kitchenware: KitchenWare
 };
 
+/**
+ * Recipe data type.
+ * contains an array of ingredients and their calorie amounts
+ * and the cooking steps.
+ */
 export type Recipe = {
     tag: "recipe",
     name: string,

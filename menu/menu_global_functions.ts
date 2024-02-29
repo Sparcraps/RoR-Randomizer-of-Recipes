@@ -1,6 +1,6 @@
 import {
     prompt, print_bold_text
-} from "./input_loop";
+} from "./main_menu";
 
 import {
     type Stack, is_empty as is_stack_empty, push, pop
