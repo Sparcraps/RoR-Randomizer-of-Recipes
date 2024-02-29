@@ -466,7 +466,7 @@ function main_menu() {
             }
             function remove_ingredient_menu() {
                 function search_and_delete() {
-                    var input = check_input(valid_inputs, "Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
+                    var input = prompt("Enter search string, or press enter to go back without removing an ingredient: ").trim().toLowerCase();
                     if (input !== "") {
                         try {
                             data = (0, save_load_data_1.delete_ingredient)(input);

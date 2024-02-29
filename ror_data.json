@@ -23,6 +23,11 @@
                     "bake"
                 ],
                 [
+                    "chop",
+                    "bake",
+                    "boil"
+                ],
+                [
                     "bake"
                 ],
                 [
@@ -63,11 +68,6 @@
                 [
                     "chop",
                     "bake"
-                ],
-                [
-                    "chop",
-                    "bake",
-                    "boil"
                 ],
                 [
                     "chop",
@@ -200,7 +200,6 @@
             "name": "oven",
             "cooking_methods": [
                 "bake",
-                "grill",
                 "add"
             ],
             "inventory": []
@@ -511,6 +510,20 @@
                 "range": [
                     1,
                     2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "shrimp",
+                "category": "meat",
+                "allergies": [
+                    "meat"
+                ],
+                "measurement": "50g",
+                "kcal_per_measurement": 100,
+                "range": [
+                    1,
+                    3
                 ],
                 "tag": "ingredient"
             }
