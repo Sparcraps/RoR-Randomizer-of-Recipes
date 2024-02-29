@@ -6,12 +6,12 @@ var save_recipe_1 = require("../save_recipe");
 var menu_global_functions_1 = require("./menu_global_functions");
 var menu_memory_1 = require("./menu_memory");
 /**
- * A submenu of main menu, responsible fetching saved recipes so that the user
- * can view and delete them.
+ * A submenu of the main menu, responsible fetching saved recipes so that
+ * the user can view and delete them.
  */
 function saved_recipes() {
-    // helper function that prints the current saved recipes and lets the user
-    // select one of them
+    // Helper function that prints the current saved recipes and lets the user
+    // select one of them.
     function choose_recipe() {
         (0, menu_global_functions_1.print_bold)("Your saved recipes:");
         for (var i = 0; i < recipes.length; i++) {
@@ -25,7 +25,7 @@ function saved_recipes() {
                 "the recipe you want to choose: ");
             true_index = int - 1;
             if (!(true_index < 0 || true_index >= recipes.length)) {
-                //to ensure no index out of range
+                // to ensure no index out of range
                 return recipes[true_index];
             }
             else {

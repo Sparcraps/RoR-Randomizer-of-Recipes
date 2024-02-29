@@ -1,28 +1,12 @@
 import * as PromptSync from "prompt-sync";
 
 import { 
-    empty as empty_stack, is_empty as is_stack_empty, push, top,
+    is_empty as is_stack_empty, push, top,
 } from "../lib/stack";
-
-import {
-    type Recipe
-} from "../RoR";
 
 import {
     type Pair
 } from "../lib/list";
-
-import {
-    type Configuration, load_configuration
-} from "../save_config";
-
-import {
-    load_recipes
-} from "../save_recipe";
-
-import {
-    load_data, SaveData
-} from "../save_load_data";
 
 import {
     get_menu_memory, set_menu_memory, oblivion
@@ -44,6 +28,11 @@ import {
     configure
 } from "./configurations_menu";
 
+/**
+ * Print the ASCII-art of RoR that is shown on startup and initialize
+ * the program by adding the main menu to the top of the menu memory.
+ * Also contains the main loop.
+ */
 export function RoR_start(): void {
     function kill_RoR(): void {
         print_bold("Goodbye :)");
@@ -65,6 +54,11 @@ export function RoR_start(): void {
     kill_RoR();
 }
 
+/**
+ * The main menu of RoR. Gives access to all content of the program
+ * by its submenus where the user selects how to advance through
+ * printed alternatives.
+ */
 function main_menu(): void {
     let user_input: string | null;
     let print_menu: Array<string> = ['"h" = help', '"r" = randomize recipe',
@@ -89,36 +83,48 @@ function main_menu(): void {
         throw new Error("Error: invalid user_input has escaped.");
     }
 
-    //prints an explanation of all alternatives in the main menu
+    // Prints explanations of all alternatives in the main menu
     function print_help(): void {
         print_bold("randomize recipe: ");
         console.log("The main feature of RoR.");
-        console.log("Generates a randomized recipe based on the current configurations.");
-        console.log("The ingredients picked out for the recipe, their quantities and cooking methods will all be randomized,")
-        console.log("until the requested number of portions has been met.\n")
+        console.log(
+            "Generates a randomized recipe based on the current configurations."
+            );
+        console.log(
+            "The ingredients picked out for the recipe, their quantities " +
+            "and cooking methods will all be randomized,"
+            );
+        console.log("until the requested number of portions has been met.\n");
     
         print_bold("quit: ");
         console.log("Terminates the program session.");
-        console.log("All configurations and saved recipes carry over to the next time RoR is run.\n");
+        console.log(
+            "All configurations and saved recipes carry over to " +
+        "the next time RoR is run.\n"
+        );
     
         print_bold("saved recipes: ");
         console.log("View a menu of all previously saved recipes.");
-        console.log("The recipes can be selected to have their contents viewed.\n");
+        console.log(
+            "The recipes can be selected to have their contents viewed.\n"
+        );
     
         print_bold("configure: ");
         console.log("View a menu of recipe generation configurations.");
-        console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.\n");
+        console.log(
+            "Number of portions, active dietary restrictions " +
+            "and ingredient data can be adjusted.\n"
+            );
     }
 }
 
+// global constants
 export const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
 export const print_bold_text: boolean = true;
 export const portion_size: Pair<number, number> = [400, 700];
-export const valid_dietary_restrictions: Array<string> = ["meat", "gluten", "dairy", "eggs", "nuts", "fish"];
-
-let config: Configuration = load_configuration();
-let data: SaveData = load_data();
-let recipes: Array<Recipe> = load_recipes();
+export const valid_dietary_restrictions: Array<string> = [
+    "meat", "gluten", "dairy", "eggs", "nuts", "fish"
+];
 
 if (require.main === module) {
     RoR_start();
