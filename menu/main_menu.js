@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.valid_dietary_restrictions = exports.portion_size = exports.print_bold_text = exports.prompt = exports.RoR_start = void 0;
 var PromptSync = require("prompt-sync");
 var stack_1 = require("../lib/stack");
-var RoR_1 = require("../RoR");
 var list_1 = require("../lib/list");
 var save_config_1 = require("../save_config");
 var save_recipe_1 = require("../save_recipe");
@@ -21,6 +20,7 @@ var basics_1 = require("../basics");
 var menu_memory_1 = require("./menu_memory");
 var menu_global_functions_1 = require("./menu_global_functions");
 var recipimize_menu_1 = require("./recipimize_menu");
+var saved_recipes_menu_1 = require("./saved_recipes_menu");
 function RoR_start() {
     function kill_RoR() {
         (0, menu_global_functions_1.print_bold)("Goodbye :)");
@@ -55,7 +55,7 @@ function main_menu() {
         (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(recipimize_menu_1.recipimize, (0, menu_memory_1.get_menu_memory)()));
     }
     else if (user_input === "s") {
-        (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(saved_recipes, (0, menu_memory_1.get_menu_memory)()));
+        (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(saved_recipes_menu_1.saved_recipes, (0, menu_memory_1.get_menu_memory)()));
     }
     else if (user_input === "c") {
         (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(configure, (0, menu_memory_1.get_menu_memory)()));
@@ -82,48 +82,6 @@ function main_menu() {
         (0, menu_global_functions_1.print_bold)("configure: ");
         console.log("View a menu of recipe generation configurations.");
         console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.\n");
-    }
-    function saved_recipes() {
-        function choose_recipe() {
-            (0, menu_global_functions_1.print_bold)("Your saved recipes:");
-            for (var i = 0; i < recipes.length; i++) {
-                var current_name = recipes[i].name;
-                console.log(i, current_name);
-            }
-            var int = (0, menu_global_functions_1.integer_prompt)("Enter the number corresponding to the recipe you want to choose: ");
-            return recipes[int];
-        }
-        print_menu = ['"v" = view saved recipe', '"d" = delete saved recipe', '"b" = back to main menu'];
-        valid_inputs = ["v", "d", "b"];
-        (0, menu_global_functions_1.print_alternatives)(print_menu);
-        user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");
-        if (user_input === "v") {
-            if (recipes.length === 0) {
-                console.log("You have no saved recipes.");
-            }
-            else {
-                var selected_recipe = choose_recipe();
-                (0, RoR_1.print_recipe)(selected_recipe);
-                (0, menu_global_functions_1.wait_for_keypress)();
-            }
-        }
-        else if (user_input === "d") {
-            if (recipes.length === 0) {
-                console.log("You have no saved recipes.");
-            }
-            else {
-                var selected_recipe = choose_recipe();
-                var name_1 = selected_recipe.name;
-                recipes = (0, save_recipe_1.delete_recipe)(name_1);
-                console.log("Recipe " + name_1 + " deleted!");
-            }
-        }
-        else if (user_input === "b") {
-            (0, menu_memory_1.oblivion)();
-        }
-        else {
-            throw new Error("Error: invalid user_input has escaped.");
-        }
     }
     //submenu for configurations
     function configure() {

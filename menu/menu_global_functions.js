@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.print_bold = exports.wait_for_keypress = exports.integer_prompt = exports.check_input = exports.print_alternatives = void 0;
+exports.wait_for_keypress = exports.integer_prompt = exports.check_input = exports.print_bold = exports.print_alternatives = void 0;
 var input_loop_1 = require("./input_loop");
 /**
  * Helper function that prints the alternatives the user can choose for
@@ -19,7 +19,29 @@ function print_alternatives(alternatives) {
     }
 }
 exports.print_alternatives = print_alternatives;
-//checks if the user input is valid and otherwise prompts the user again
+/**
+ * Helper function that prints the input string in bold font if the global
+ * constant print_bold_text is set to true, and otherwise prints it as usual.
+ * @param print_str - The string that is being printed
+ */
+function print_bold(print_str) {
+    if (input_loop_1.print_bold_text) {
+        console.log('\x1b[1m' + print_str + '\x1b[0m');
+    }
+    else {
+        console.log(print_str);
+    }
+    return;
+}
+exports.print_bold = print_bold;
+/**
+ * Helper function that checks if the user input is in a string Array of
+ * valid alternatives, and otherwise prompts the user again.
+ * @param valid - An Array containing valid alternatives as strings
+ * @param question - The question to prompt the user with
+ * @returns the valid prompted string, without whitespace
+ * and converted to lowercase.
+ */
 function check_input(valid, question) {
     var user_input = null;
     console.log();
@@ -39,7 +61,12 @@ function check_input(valid, question) {
     }
 }
 exports.check_input = check_input;
-//helper function that checks if input is an integer, and otherwise prompts the user again
+/**
+ * Helper function that checks if the input is an integer and if so, returns it.
+ * If not, the user is prompted again.
+ * @param prompt_text - The string to prompt the user with
+ * @returns the valid prompted integer.
+ */
 function integer_prompt(prompt_text) {
     var input;
     var parsed = NaN;
@@ -57,8 +84,10 @@ function integer_prompt(prompt_text) {
     }
 }
 exports.integer_prompt = integer_prompt;
-//Pauses program until any key is pressed on Windows OS,
-//otherwise until enter is pressed.
+/**
+ * Helper function that pauses program until any key is pressed on Windows OS.
+ * On other OS, pauses the program until enter is pressed.
+ */
 function wait_for_keypress() {
     if (process.platform === "win32") {
         var spawnSync = require('node:child_process').spawnSync;
@@ -70,13 +99,3 @@ function wait_for_keypress() {
     console.log();
 }
 exports.wait_for_keypress = wait_for_keypress;
-function print_bold(print_str) {
-    if (input_loop_1.print_bold_text) {
-        console.log('\x1b[1m' + print_str + '\x1b[0m');
-    }
-    else {
-        console.log(print_str);
-    }
-    return;
-}
-exports.print_bold = print_bold;

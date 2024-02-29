@@ -1,7 +1,8 @@
 import * as PromptSync from "prompt-sync";
 
 import { 
-    type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop, display_stack
+    type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top,
+    pop, display_stack
 } from "../lib/stack";
 
 import {
@@ -14,11 +15,8 @@ import {
 } from "../lib/list";
 
 import {
-    type Configuration,
-    add_to_dietary_restrictions,
-    load_configuration,
-    remove_from_dietary_restrictions,
-    change_portion_amount
+    type Configuration, add_to_dietary_restrictions, load_configuration,
+    remove_from_dietary_restrictions, change_portion_amount
 } from "../save_config";
 
 import {
@@ -38,9 +36,17 @@ import {
 } from "./menu_memory";
 
 import {
-    print_alternatives, check_input, integer_prompt, wait_for_keypress, print_bold
+    print_alternatives, check_input, integer_prompt, wait_for_keypress,
+    print_bold
 } from "./menu_global_functions";
-import { recipimize } from "./recipimize_menu";
+
+import {
+    recipimize
+} from "./recipimize_menu";
+
+import {
+    saved_recipes
+} from "./saved_recipes_menu";
 
 export function RoR_start(): void {
     function kill_RoR(): void {
@@ -106,48 +112,6 @@ function main_menu(): void {
         print_bold("configure: ");
         console.log("View a menu of recipe generation configurations.");
         console.log("Number of portions, active dietary restrictions and ingredient data can be adjusted.\n");
-    }
-
-    function saved_recipes(): void {
-        function choose_recipe(): Recipe {
-            print_bold("Your saved recipes:");
-            for (let i = 0; i < recipes.length; i++) {
-                let current_name: string = recipes[i].name;
-                console.log(i, current_name);
-            }
-
-            const int = integer_prompt("Enter the number corresponding to the recipe you want to choose: ");
-            return recipes[int];
-        }
-
-        print_menu = ['"v" = view saved recipe', '"d" = delete saved recipe', '"b" = back to main menu'];
-        valid_inputs = ["v", "d", "b"];
-
-        print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Choose an alternative: ");
-
-        if (user_input === "v") {
-            if (recipes.length === 0) {
-                console.log("You have no saved recipes.")
-            } else {
-                const selected_recipe = choose_recipe();
-                print_recipe(selected_recipe);
-                wait_for_keypress();
-            }
-        } else if (user_input === "d") {
-            if (recipes.length === 0) {
-                console.log("You have no saved recipes.")
-            } else {
-                const selected_recipe = choose_recipe();
-                const name = selected_recipe.name;
-                recipes = delete_recipe(name);
-                console.log("Recipe " + name + " deleted!");
-            }
-        } else if (user_input === "b") {
-            oblivion();
-        } else {
-            throw new Error("Error: invalid user_input has escaped.");
-        }
     }
 
     //submenu for configurations

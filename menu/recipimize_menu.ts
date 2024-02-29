@@ -27,10 +27,10 @@ import {
 } from "./menu_memory";
 
 /**
- * The submenu of main menu, responsible for recipe generation.
+ * A submenu of main menu, responsible for recipe generation.
  */
 export function recipimize(): void {
-    //in case a generated recipe is saved, the menu alternatives need to be adjusted
+    // in case a generated recipe is saved, the menu alternatives need to be adjusted
     function recipimize_saved(): void {
         print_menu = ['"r" = randomize new recipe', '"b" = back to main menu'];
         valid_inputs = ["r", "b"];
@@ -69,7 +69,7 @@ export function recipimize(): void {
         return;
     } else if (user_input === "s") {
         recipes = save_new_recipe(recipe);
-        console.log("Recipe " + recipe.name + " saved!\n");
+        console.log("Recipe: '" + recipe.name + "' saved!\n");
         oblivion();
         set_menu_memory(push(recipimize_saved, get_menu_memory()));
     } else if (user_input === "b") {
