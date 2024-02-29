@@ -1,12 +1,16 @@
 import {
     new_ingredient, type Ingredient 
 } from './basics';
+
 import {
     type Pair, pair
 } from "./lib/list";
-import { refer_to_ingredient } from './RoR';
 
-const testrecipe:Recipe = {
+import {
+    refer_to_ingredient
+} from './RoR';
+
+const testrecipe: Recipe = {
     "portions": 4,
     "ingredient_info": [
         [

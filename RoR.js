@@ -9,7 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generate_recipe = exports.generate_name = exports.print_recipe = exports.new_recipe = void 0;
+exports.generate_recipe = exports.generate_name = exports.refer_to_ingredient = exports.print_recipe = exports.new_recipe = void 0;
 var basics_1 = require("./basics");
 var menu_global_functions_1 = require("./menu/menu_global_functions");
 var list_1 = require("./lib/list");
@@ -157,6 +157,7 @@ function refer_to_ingredient(ingredient, amount, is_pcs) {
         return name;
     }
 }
+exports.refer_to_ingredient = refer_to_ingredient;
 /**
  * A function to find the ingredient a recipe has the most of in calories.
  * @param ingredients - an array containing pairs of the ingredients and their amounts in calories.

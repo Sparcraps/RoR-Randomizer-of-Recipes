@@ -176,7 +176,7 @@ function ingredient_and_ingredients(ingredients: Array<string>): string {
  * the ingredient is measured in pcs, false as default.
  * @returns A string with conjugated ingredient name
  */
-function refer_to_ingredient(
+export function refer_to_ingredient(
     ingredient: Ingredient, amount: number, is_pcs: boolean = false
     ): string {
     // returns true if ingredient should be referred to in plural,
