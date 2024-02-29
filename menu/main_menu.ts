@@ -2,16 +2,16 @@ import * as PromptSync from "prompt-sync";
 
 import { 
     type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top, pop, display_stack
-} from "./../lib/stack";
+} from "../lib/stack";
 
 import {
     type Recipe, generate_recipe, print_recipe
-} from "./../RoR";
+} from "../RoR";
 
 import {
     pair,
     type Pair
-} from "./../lib/list";
+} from "../lib/list";
 
 import {
     type Configuration,
@@ -19,24 +19,28 @@ import {
     load_configuration,
     remove_from_dietary_restrictions,
     change_portion_amount
-} from "./../save_config";
+} from "../save_config";
 
 import {
     save_new_recipe, load_recipes, delete_recipe
-} from "./../save_recipe";
+} from "../save_recipe";
 
 import {
     delete_ingredient, load_data, save_new_ingredient, SaveData
-} from "./../save_load_data";
+} from "../save_load_data";
 
 import {
     empty_ingredient, Ingredient
-} from "./../basics";
+} from "../basics";
+
+import {
+    get_menu_memory, set_menu_memory
+} from "./menu_memory";
 
 import {
     print_alternatives, check_input, integer_prompt, wait_for_keypress, print_bold, oblivion
 } from "./menu_global_functions";
-import { get_menu_memory, set_menu_memory } from "./menu_memory";
+import { recipimize } from "./recipimize_menu";
 
 export function RoR_start(): void {
     function kill_RoR(): void {
@@ -60,49 +64,27 @@ export function RoR_start(): void {
 }
 
 function main_menu(): void {
+    let user_input: string | null;
+    let print_menu: Array<string> = ['"h" = help', '"r" = randomize recipe',
+                                     '"s" = saved recipes', '"c" = configure',
+                                     '"q" = quit'];
+    let valid_inputs: Array<string> = ["h", "r", "q", "s", "c"];
     
+    print_alternatives(print_menu);
+    user_input = check_input(valid_inputs, "Choose an alternative: ");
 
-    //submenu for randomizing recipes
-    function recipimize(): void {
-        //in case a recipe is saved, the menu alternatives need to be adjusted
-        function recipimize_saved(): void {
-            print_menu = ['"r" = randomize new recipe',
-                          '"b" = back to main menu'];
-            valid_inputs = ["r", "b"];
-
-            print_alternatives(print_menu);
-            user_input = check_input(valid_inputs, "Choose an alternative: ");
-
-            if (user_input === "r") {
-                oblivion();
-                set_menu_memory(push(recipimize, get_menu_memory()));
-            } else if (user_input === "b") {
-                oblivion();
-            }
-        }
-
-        print_menu = ['"r" = randomize new recipe',
-                      '"s" = save recipe',
-                      '"b" = back to main menu'];
-        valid_inputs = ["r", "s", "b"];
-    
-        const recipe: Recipe = generate_recipe(portion_size, portion_amount, restrictions);
-        print_recipe(recipe);
-        wait_for_keypress();
-    
-        print_alternatives(print_menu);
-        user_input = check_input(valid_inputs, "Choose an alternative: ");
-        
-        if (user_input === "r") {
-            return;
-        } else if (user_input === "s") {
-            recipes = save_new_recipe(recipe);
-            console.log("Recipe " + recipe.name + " saved!\n");
-            oblivion();
-            set_menu_memory(push(recipimize_saved, get_menu_memory()));
-        } else if (user_input === "b") {
-            oblivion();
-        }
+    if (user_input === "h") {
+        print_help();
+    } else if (user_input === "r") {
+        set_menu_memory(push(recipimize, get_menu_memory()));
+    } else if (user_input === "s") {
+        set_menu_memory(push(saved_recipes, get_menu_memory()));
+    } else if (user_input === "c") {
+        set_menu_memory(push(configure, get_menu_memory()));
+    } else if (user_input === "q") {
+        oblivion();
+    } else {
+        throw new Error("Error: invalid user_input has escaped.");
     }
 
     //prints an explanation of all alternatives in the main menu
@@ -524,41 +506,16 @@ function main_menu(): void {
             throw new Error("Error: invalid user_input has escaped.");
         }
     }
-
-    let user_input: string | null;
-    let print_menu: Array<string> = ['"h" = help', '"r" = randomize recipe',
-                                     '"s" = saved recipes', '"c" = configure',
-                                     '"q" = quit'];
-    let valid_inputs: Array<string> = ["h", "r", "q", "s", "c"];
-    
-    print_alternatives(print_menu);
-    user_input = check_input(valid_inputs, "Choose an alternative: ");
-
-    if (user_input === "h") {
-        print_help();
-    } else if (user_input === "r") {
-        set_menu_memory(push(recipimize, get_menu_memory()));
-    } else if (user_input === "s") {
-        set_menu_memory(push(saved_recipes, get_menu_memory()));
-    } else if (user_input === "c") {
-        set_menu_memory(push(configure, get_menu_memory()));
-    } else if (user_input === "q") {
-        oblivion();
-    } else {
-        throw new Error("Error: invalid user_input has escaped.");
-    }
 }
 
 export const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
 export const print_bold_text: boolean = true;
-const portion_size: Pair<number, number> = [400, 700];
-const valid_dietary_restrictions: Array<string> = ["meat", "gluten", "dairy", "eggs", "nuts", "fish"];
+export const portion_size: Pair<number, number> = [400, 700];
+export const valid_dietary_restrictions: Array<string> = ["meat", "gluten", "dairy", "eggs", "nuts", "fish"];
 
 let config: Configuration = load_configuration();
 let data: SaveData = load_data();
 let recipes: Array<Recipe> = load_recipes();
-const portion_amount: number = config.portion_amount;
-const restrictions: Array<string> = config.dietary_restrictions;
 
 if (require.main === module) {
     RoR_start();
