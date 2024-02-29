@@ -25,8 +25,13 @@ function new_recipe(portions) {
     };
 }
 exports.new_recipe = new_recipe;
-function new_cooking_step(cooking_method, ingredient_names, kitchenware) {
-    return { cooking_method: cooking_method, ingredient_names: ingredient_names, kitchenware: kitchenware };
+function new_cooking_step(cooking_method, ingredient_names, kitchenware, is_kw_existing) {
+    return {
+        cooking_method: cooking_method,
+        ingredient_names: ingredient_names,
+        kitchenware: kitchenware,
+        is_kw_existing: is_kw_existing
+    };
 }
 function print_recipe(recipe) {
     console.log("-----------------------------------");
@@ -45,8 +50,8 @@ function print_recipe(recipe) {
     var step_nr = 1;
     steps.forEach(function (step) {
         console.log(step_nr + ". " + up_first(step.cooking_method) + " the " +
-            ingredient_and_ingredients(step.ingredient_names) +
-            " " + stringify_kitchenware(step.kitchenware));
+            ingredient_and_ingredients(step.ingredient_names) + " " +
+            stringify_kitchenware(step.kitchenware, step.is_kw_existing));
         step_nr += 1;
     });
     console.log(step_nr + ". " + "Finally, add salt and pepper to taste! :-)");
@@ -80,10 +85,13 @@ function stringify_ingredient_info(ingredient, amount) {
         return amount + rest + " of " + ingredient.name;
     }
 }
-function stringify_kitchenware(kw) {
+function stringify_kitchenware(kw, exists) {
     var str = kw.name;
     var vowels = ["e", "u", "i", "o", "a"];
-    if (vowels.includes(str[0])) {
+    if (exists) {
+        str = "the " + str;
+    }
+    else if (vowels.includes(str[0])) {
         str = "an " + str;
     }
     else {
@@ -292,14 +300,23 @@ function generate_recipe(_a, portions, filters) {
         var cooking_method = methods[i];
         return cooking_method;
     }
-    // looks for kitchenware with the cooking method in saved kitchenware, 
-    // and returns the first one it finds.
+    // first looks for kitchenware with the cooking method in the recipe's active
+    // kitchenware, then looks in saved kitchenware, and returns the first one it finds
+    // in a pair with a boolean for whether of not the kitchenware was already active.
     // needs to be updated to choose randomly if multiple kitchenware have the cooking method available
     function get_kitchenware_from_method(cooking_method) {
+        for (var i = 0; i < active_kitchenware.length; i++) {
+            var kw = active_kitchenware[i];
+            if (kw.cooking_methods.includes(cooking_method)) {
+                return (0, list_1.pair)(kw, true);
+            }
+        }
         for (var i = 0; i < kitchenware_data.length; i++) {
             var kw = kitchenware_data[i];
             if (kw.cooking_methods.includes(cooking_method)) {
-                return JSON.parse(JSON.stringify(kw)); // copies kitchenware from save data
+                var copy_kw = JSON.parse(JSON.stringify(kw)); // copies kitchenware if it's from save data
+                active_kitchenware.push(copy_kw);
+                return (0, list_1.pair)(copy_kw, false);
             }
         }
         throw new Error("No kitchenware with cooking method " + cooking_method + "exists.");
@@ -348,60 +365,62 @@ function generate_recipe(_a, portions, filters) {
         var cooking_steps = [];
         for (var i = 0; i < selected_methods.length; i++) {
             var _a = selected_methods[i], method = _a[0], ingredients = _a[1];
-            var more_ingredients = do_similar_methods(method, cooking_steps);
-            ingredients.push.apply(ingredients, more_ingredients);
-            add_cooking_step(method, ingredients, cooking_steps);
+            if (!(method.length === 0)) {
+                var more_ingredients = do_similar_methods(method, cooking_steps);
+                ingredients.push.apply(ingredients, more_ingredients);
+                add_cooking_step(method, ingredients, cooking_steps);
+            }
+            else { }
         }
         return cooking_steps;
     }
     // adds cooking step to steps array, removes first element in method, calls
     // recursively until method is empty.
     function add_cooking_step(method, ingredient_names, steps, kw) {
-        var _a, _b;
+        var _a;
         if (kw === void 0) { kw = undefined; }
         if (method.length === 0) {
             return;
         }
         else { }
         var current_method = method[0];
-        if (kw === undefined || !kw.cooking_methods.includes(current_method)) {
-            kw = get_kitchenware_from_method(current_method);
-        }
-        else { }
         method.shift(); // removes current method from method
-        if ((0, basics_1.has_separable_inventory)(kw)) {
-            var extra_i = do_separable_method(current_method, kw, steps);
-            (_a = kw.inventory).push.apply(_a, extra_i);
+        var kw_exists = true;
+        if (kw === undefined || !kw.cooking_methods.includes(current_method)) {
+            _a = get_kitchenware_from_method(current_method), kw = _a[0], kw_exists = _a[1];
+            kw_exists = false;
         }
         else { }
-        (_b = kw.inventory).push.apply(_b, ingredient_names);
+        var extra_i = [];
+        if ((0, basics_1.has_separable_inventory)(kw)) {
+            extra_i = do_separable_method(current_method);
+        }
+        else { }
+        var current_step = new_cooking_step(current_method, __spreadArray(__spreadArray([], ingredient_names, true), extra_i, true), kw, kw_exists);
+        steps.push(current_step);
         var more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.
-        steps.push(new_cooking_step(current_method, ingredient_names, kw));
-        ingredient_names.push.apply(ingredient_names, more_ingredients);
+        ingredient_names.push.apply(// finds ingredients that use the same method as the rest of method from some point.
+        ingredient_names, more_ingredients);
         return add_cooking_step(method, ingredient_names, steps);
     }
     // for separable kitchenware, finds all ingredients with same cooking method
-    // somewhere in method array. Executes the methods earlier in method array
-    // and returns ingredient names for method step.
-    function do_separable_method(method, kw, steps) {
+    // first in method array and returns ingredient names for method step.
+    function do_separable_method(method) {
         var ingredient_names = [];
         for (var i = 0; i < selected_methods.length; i++) {
             var other_method = (0, list_1.head)(selected_methods[i]);
-            for (var j = 0; j < other_method.length - 1; j++) {
-                var m = other_method[j];
-                if (m === method) {
-                    var names = (0, list_1.tail)(selected_methods[i]);
-                    ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
-                    var rest_of_method = other_method.splice(0, j + 1); // removes methods up to found method from other method array and saves these in another method
-                    rest_of_method.pop(); // removes found method
-                    add_cooking_step(rest_of_method, names, steps);
-                }
+            var m = other_method[0];
+            if (m === method) {
+                var names = (0, list_1.tail)(selected_methods[i]);
+                ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
+                other_method.shift(); // removes method from other_method
             }
         }
         return ingredient_names;
     }
     // finds methods that contain the input method at the end and adds cooking
-    // steps for them. Returns their ingredient names.
+    // steps for the earlier parts of their methods. 
+    // Returns their ingredient names.
     function do_similar_methods(method, steps) {
         var ingredient_names = [];
         for (var i = 0; i < selected_methods.length; i++) {
@@ -426,11 +445,42 @@ function generate_recipe(_a, portions, filters) {
         }
         return ingredient_names;
     }
+    // returns set of all methods that exist in kitchenware data
+    function get_doable_cooking_methods() {
+        var methods = new Set();
+        kitchenware_data.forEach(function (kw) {
+            var kw_methods = kw.cooking_methods;
+            kw_methods.forEach(function (method) { return methods.add(method); });
+        });
+        return methods;
+    }
+    // removes all cooking methods with steps that are not doable from
+    // category data.
+    function filter_cooking_methods(valid_methods) {
+        function is_valid_method(method) {
+            var is_valid = true;
+            for (var i = 0; i < method.length; i++) {
+                var m = method[i];
+                if (!valid_methods.has(m)) {
+                    is_valid = false;
+                    break;
+                }
+                else { }
+            }
+            return is_valid;
+        }
+        for (var i = 0; i < category_data.length; i++) {
+            var cat = category_data[i];
+            cat.cooking_methods = cat.cooking_methods.filter(function (method) { return is_valid_method(method); });
+        }
+    }
     var recipe = new_recipe(portions);
     var ingredient_data = JSON.parse(JSON.stringify(data.ingredients)); // creates copy of save data
-    (0, filter_1.filter_ingredients)(ingredient_data, filters);
     var category_data = JSON.parse(JSON.stringify(data.categories));
     var kitchenware_data = JSON.parse(JSON.stringify(data.kitchenware));
+    (0, filter_1.filter_ingredients)(ingredient_data, filters);
+    filter_cooking_methods(get_doable_cooking_methods());
+    var active_kitchenware = [];
     var selected_methods = [];
     randomize_ingredients_and_methods();
     var steps = generate_cooking_steps();

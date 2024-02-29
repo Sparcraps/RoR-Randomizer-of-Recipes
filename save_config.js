@@ -1,49 +1,46 @@
-const fs = require('fs');
-const filepath = __dirname + "/config.json";
-
-export type Configuration = {
-    portion_amount: number,
-    dietary_restrictions: Array<string>
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.remove_from_dietary_restrictions = exports.add_to_dietary_restrictions = exports.change_portion_amount = exports.save_configuration = exports.load_configuration = void 0;
+var fs = require('fs');
+var filepath = __dirname + "/config.json";
+function new_configuration() {
+    return { portion_amount: 4, dietary_restrictions: [] };
 }
-
-function new_configuration() { // configuration object with default settings (in case the file gets deleted...)
-    return { portion_amount: 4, dietary_restrictions: [] }
-}
-
 /**
  * Read and return saved configurations.
  * @returns {Configuration} - Configuration object.
  */
-export function load_configuration(): Configuration {
+function load_configuration() {
     if (fs.existsSync(filepath)) {
-        const json_data = fs.readFileSync(filepath);
-        const config = JSON.parse(json_data);
+        var json_data = fs.readFileSync(filepath);
+        var config = JSON.parse(json_data);
         // if (!is_configuration(config)) {
         //     throw new Error("config.json is not formatted correctly.");
         // }
         return config;
-    } else {
+    }
+    else {
         return new_configuration();
     }
 }
-
+exports.load_configuration = load_configuration;
 /**
  * Save a Configuration object to config.json.
  * Note: overwrites existing save data.
  * @param {SaveData} data - Save data to save.
  * @modifies ror_data.json
  */
-export function save_configuration(data: Configuration): void {
-    const json_data = JSON.stringify(data, null, 4);
+function save_configuration(data) {
+    var json_data = JSON.stringify(data, null, 4);
     fs.writeFileSync(filepath, json_data);
 }
-
-export function change_portion_amount(new_amount: number, config: Configuration): Configuration {
+exports.save_configuration = save_configuration;
+function change_portion_amount(new_amount, config) {
     config.portion_amount = new_amount;
     save_configuration(config);
     return config;
 }
-
+exports.change_portion_amount = change_portion_amount;
 /**
  * Add a dietary restriction to a Configuration object
  * and saves the resulting Array to config.json.
@@ -52,21 +49,20 @@ export function change_portion_amount(new_amount: number, config: Configuration)
  * @modifies config by adding diet_input to the end of it
  * @returns the updated Configuration.
  */
-export function add_to_dietary_restrictions(diet_input: string, config: Configuration): Configuration {
-    const rest = config.dietary_restrictions;
-    diet_input = diet_input.toLowerCase()
-
+function add_to_dietary_restrictions(diet_input, config) {
+    var rest = config.dietary_restrictions;
+    diet_input = diet_input.toLowerCase();
     if (!rest.includes(diet_input)) {
         rest.push(diet_input);
         save_configuration(config);
         // console.log("Dietary restriction successfully added!")
-    } else {
-        console.log("Dietary restriction not added; it is already active.")
     }
-
+    else {
+        console.log("Dietary restriction not added; it is already active.");
+    }
     return config;
 }
-
+exports.add_to_dietary_restrictions = add_to_dietary_restrictions;
 /**
  * Search and remove a dietary restriction from a Configuration object
  * and saves the resulting Array to config.json,
@@ -76,18 +72,18 @@ export function add_to_dietary_restrictions(diet_input: string, config: Configur
  * @modifies config.json and config
  * @returns the updated Configuration.
  */
-export function remove_from_dietary_restrictions(diet_input: string, config: Configuration): Configuration {
-    const rest = config.dietary_restrictions;
+function remove_from_dietary_restrictions(diet_input, config) {
+    var rest = config.dietary_restrictions;
     diet_input = diet_input.toLowerCase();
-    const i = rest.indexOf(diet_input);
-
+    var i = rest.indexOf(diet_input);
     if (i !== -1) {
         rest.splice(i, 1);
         save_configuration(config);
         // console.log("Dietary restriction successfully removed!")
-    } else {
-        console.log("Dietary restriction not removed; it is currently not active.")
     }
-
+    else {
+        console.log("Dietary restriction not removed; it is currently not active.");
+    }
     return config;
 }
+exports.remove_from_dietary_restrictions = remove_from_dietary_restrictions;

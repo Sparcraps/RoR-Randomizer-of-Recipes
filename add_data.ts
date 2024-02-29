@@ -10,8 +10,8 @@ import {
 import { refer_to_ingredient } from "./RoR";
 
 
-const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["bake"], ["grill"], ["chop", "grill"]], 5);
-const root_vegetable = new_category("root vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["chop", "grill"], ["boil", "mash"]], 2);
+const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["bake"], ["grill"], ["chop", "grill"]], 5);
+const root_vegetable = new_category("root vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["chop", "grill"], ["boil", "mash"]], 2);
 const liquid = new_category("liquid", [["add"], ["reduce"]], 1)
 const meat = new_category("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 3);
 const spice = new_category("spice", [["add"]], 5);
@@ -50,7 +50,7 @@ const minced_meat = new_ingredient("meat", "minced meat", ["meat"], "50g", 120, 
 const steak = new_ingredient("meat", "steak", ["meat"], "", 160, pair(1, 2));
 const salmon_filet = new_ingredient("meat", "salmon filet", ["meat"], "", 83, pair(1, 2));
 const cod_filet = new_ingredient("meat", "cod filet", ["meat"], "", 50, pair(1, 2));
-const shrimp = new_ingredient("meat", "cod filet", ["meat"], "50g", 100, pair(1, 3));
+const shrimp = new_ingredient("meat", "shrimp", ["meat"], "50g", 100, pair(1, 3));
 
 const cucumber = new_ingredient("fruit", "cucumber", [], "0.5", 17, pair(1, 2));
 const avocado = new_ingredient("fruit", "avocado", [], "0.5", 120, pair(1, 2));
@@ -77,7 +77,7 @@ const chili_flakes = new_ingredient("spice", "chili flakes", [], "tsp", 15, pair
 const pot = new_kitchenware("pot", ["boil", "reduce", "mash", "saute", "add"]);
 const cutting_board = new_kitchenware("cutting board", ["chop", "slice", "pound"]);
 const frying_pan = new_kitchenware("frying pan", ["fry", "simmer", "add"]);
-const oven  = new_kitchenware("oven", ["bake", "grill", "add"]);
+const oven  = new_kitchenware("oven", ["bake", "add"]);
 const bowl = new_kitchenware("bowl", ["marinate"]);
 
 console.log(refer_to_ingredient(chicken_breast, 2, true));
