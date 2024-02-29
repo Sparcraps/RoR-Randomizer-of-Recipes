@@ -41,35 +41,16 @@ export type Category = {
 };
 
 /**
- * Kitchenware data type.
- * Has an inventory of ingredients currently contained in the kitchenware.
+ * KitchenWare data type.
+ * Has an inventory of ingredients currently contained in the kitchenware,
+ * and also information about the cooking methods that can be applied 
+ * by the kitchenware.
  */
 export type KitchenWare = {
     tag: "kitchenware",
     name: string,
     cooking_methods: Array<string>,
     inventory: Array<string>
-};
-
-/**
- * Recipe data type.
- * contains an array of ingredients and their calorie amounts and the cooking steps.
- */
-
-export type Recipe = {
-    portions: number,
-    kcal_per_portion: number,
-    ingredient_info: Array<Pair<Ingredient, number>>,
-    steps: Array<CookingStep>,
-};
-
-/**
- * CookingStep data type.
- * contains the name of one cooking method, the ingredients it's applied to and the kitchenware used.
- */
-export type CookingStep = {
-    ingredient_names: Array<string>, // array of ingredient names
-    cooking_method: string,
 };
 
 /**

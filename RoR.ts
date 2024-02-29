@@ -4,8 +4,12 @@ import {
 } from "./basics";
 
 import {
-    RoR_start, print_bold
-} from "./input_loop";
+    RoR_start
+} from "./menu/main_menu";
+
+import {
+    print_bold
+} from "./menu/menu_global_functions";
 
 import {
     type Pair, head, pair, tail
@@ -23,17 +27,30 @@ import {
 import {
     filter_ingredients
 } from "./filter";
-import { save_new_recipe } from "./save_recipe";
+
+import {
+    save_new_recipe
+} from "./save_recipe";
 
 let data = load_data();
 
-type CookingStep = {
-    ingredient_names: Array<string>, // array of ingredient names
+/**
+ * CookingStep data type.
+ * contains the name of one cooking method, the ingredients it's applied to
+ * and the kitchenware used for it.
+ */
+export type CookingStep = {
+    ingredient_names: Array<string>,
     cooking_method: string,
     kitchenware: KitchenWare
     is_kw_existing: boolean
 };
 
+/**
+ * Recipe data type.
+ * contains an array of ingredients and their calorie amounts
+ * and the cooking steps.
+ */
 export type Recipe = {
     tag: "recipe",
     name: string,

@@ -11,7 +11,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generate_recipe = exports.generate_name = exports.print_recipe = exports.new_recipe = void 0;
 var basics_1 = require("./basics");
-var input_loop_1 = require("./input_loop");
+var menu_global_functions_1 = require("./menu/menu_global_functions");
 var list_1 = require("./lib/list");
 var save_load_data_1 = require("./save_load_data");
 var filter_1 = require("./filter");
@@ -34,7 +34,7 @@ function new_cooking_step(cooking_method, ingredient_names, kitchenware, is_kw_e
 }
 function print_recipe(recipe) {
     console.log("-----------------------------------");
-    (0, input_loop_1.print_bold)(recipe.name);
+    (0, menu_global_functions_1.print_bold)(recipe.name);
     console.log("-----------------------------------");
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
