@@ -195,9 +195,9 @@ function refer_to_ingredient(
  * @returns the ingredient the recipe has the most of in calories.
  */
 function find_highest_amount(ingredients: Array<Pair<Ingredient, 
-    number>>): Ingredient {
+                             number>>): Ingredient {
     let largest = ingredients[0];
-    let current: number = ingredients[0][1]*ingredients[0][0].kcal_per_measurement;
+    let current = ingredients[0][1]*ingredients[0][0].kcal_per_measurement;
 
     for(let i = 0; i < ingredients.length ; i = i + 1)
     {
@@ -222,13 +222,7 @@ function find_highest_amount(ingredients: Array<Pair<Ingredient,
 */
 function find_last_cooking_step(cooking_steps: Array<CookingStep>, 
                                 ingredient: Ingredient): CookingStep{
-    let is_pcs = false  
-
-    if(ingredient.measurement=="")
-    {
-        is_pcs = true;
-    }
-    let ingredientname = refer_to_ingredient(ingredient, 2, is_pcs);
+    let ingredientname = refer_to_ingredient(ingredient, 2);
 
     for(let i = cooking_steps.length - 1; i >= 0; i = i - 1)
     {
@@ -273,7 +267,8 @@ export function generate_name(recipe: Recipe): string {
         up_first_all(main_cooking_method.cooking_method);
     } else {
         const secondary_ingr = find_highest_amount(ingredient_info);
-        if(main_cooking_method.cooking_method == "boil"){
+        if(main_cooking_method.cooking_method == "boil" ||
+           main_cooking_method.cooking_method == "add"){
             main_cooking_method = find_last_cooking_step(recipe.steps, 
                                                          secondary_ingr);
         }
@@ -577,7 +572,6 @@ function recipe_randomization(): void {
     // for testing purposes
     const recipe = generate_recipe(pair(400, 700), 4, []);
     print_recipe(recipe);
-    save_new_recipe(recipe);
 }
 
 if (require.main === module) {
