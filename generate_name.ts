@@ -1,10 +1,12 @@
 import {
-    type Recipe, type CookingStep, new_ingredient,
-    type Ingredient 
-} from './basics'
+    new_ingredient, type Ingredient 
+} from './basics';
 import {
     type Pair, pair
 } from "./lib/list";
+import {
+    type Recipe, type CookingStep
+} from "./RoR";
 
 /**
  * A function to find the ingredient a recipe has the most of in calories.

@@ -34,13 +34,15 @@ import {
 import {
     get_menu_memory, set_menu_memory, oblivion
 } from "./menu_memory";
+import { dietary_prompt } from "./dietary_prompt_menu";
 
 /**
  * A submenu of main menu, where the user can select
  * what they want to configure.
  */
 export function configure(): void {
-    //submenu for changing portion size
+    // A submenu of the configurations menu where the user
+    // can change the portion size.
     function configure_portion(): void {            
         valid_inputs = ["y", "n"];
 
@@ -51,82 +53,6 @@ export function configure(): void {
             const input_int = integer_prompt("Enter new portion amount: ")
             config = change_portion_amount(input_int, config);
             console.log("New amount registered.")
-        } else if (user_input === "n") {
-            oblivion();
-        } else {
-            throw new Error("Error: invalid user_input has escaped.");
-        }
-    }
-
-    //submenu for dietary restrictions where active restrictions can be viewed
-    function dietary_prompt(): void {
-        //subsubmenu for dietary restrictions where active restrictions can be changed
-        function configure_dietary(): void {
-            //prompts the user to enter a valid dietary restriction and returns the
-            //input as well as information of its existance in currently active dietary restrictions
-            function select_valid_dietary(): Pair<boolean, string> {
-                const valid = valid_dietary_restrictions;
-
-                print_bold("Valid alternatives: ");
-                print_alternatives(valid);
-                
-                const input = check_input(valid, "Choose dietary restriction of the above: ");
-                const is_already_in_arr = config.dietary_restrictions.includes(input);
-                return pair(is_already_in_arr, input);
-            }
-
-            function add_diet(): void {
-                const diet_pair = select_valid_dietary();
-                if (!diet_pair[0]) {
-                    config = add_to_dietary_restrictions(diet_pair[1], config);
-                    console.log("Dietary restriction successfully added!")
-                } else {
-                    console.log("Dietary restriction not added; it is already active.")
-                }
-            }
-
-            function remove_diet(): void {
-                const diet_pair = select_valid_dietary();
-                if (diet_pair[0]) {
-                    config = remove_from_dietary_restrictions(diet_pair[1], config);
-                    console.log("Dietary restriction successfully removed!")
-                } else {
-                    console.log("Dietary restriction not removed; it is not active.")
-                }
-            }
-
-            print_menu = ['"a" = add dietary restriction', '"r" = remove dietary restriction',
-                          '"v" = view active dietary restrictions', '"b" = back to configurations menu'];
-            valid_inputs = ["a", "r", "v", "b"];
-    
-            print_alternatives(print_menu);
-            user_input = check_input(valid_inputs, "Choose an alternative: ");
-            
-            if (user_input === "a") {
-                add_diet();
-            } else if (user_input === "r") {
-                remove_diet();
-            } else if (user_input === "v") {
-                view_active_diet();
-            } else if (user_input === "b") {
-                oblivion(2);
-            } else {
-                throw new Error("Error: invalid user_input has escaped.");
-            }
-        }
-
-        function view_active_diet(): void {
-            print_bold("Active dietary restrictions: ");
-            print_alternatives(config.dietary_restrictions);
-        }
-
-        valid_inputs = ["y", "n"];
-
-        view_active_diet();
-        user_input = check_input(valid_inputs, "Do you wish to change the active dietary restrictions? (y/n): ");
-
-        if (user_input === "y") {
-            set_menu_memory(push(configure_dietary, get_menu_memory()));
         } else if (user_input === "n") {
             oblivion();
         } else {

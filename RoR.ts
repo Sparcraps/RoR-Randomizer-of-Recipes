@@ -39,7 +39,7 @@ let data = load_data();
  * contains the name of one cooking method, the ingredients it's applied to
  * and the kitchenware used for it.
  */
-type CookingStep = {
+export type CookingStep = {
     ingredient_names: Array<string>,
     cooking_method: string,
     kitchenware: KitchenWare

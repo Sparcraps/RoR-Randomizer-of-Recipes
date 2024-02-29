@@ -2,14 +2,6 @@ import {
     prompt, print_bold_text
 } from "./main_menu";
 
-import {
-    type Stack, is_empty as is_stack_empty, push, pop
-} from "../lib/stack";
-
-import {
-    set_menu_memory, get_menu_memory
-} from "./menu_memory";
-
 /**
  * Helper function that prints the alternatives the user can choose for
  * the different menus.

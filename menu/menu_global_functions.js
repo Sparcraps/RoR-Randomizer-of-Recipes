@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.wait_for_keypress = exports.integer_prompt = exports.check_input = exports.print_bold = exports.print_alternatives = void 0;
-var input_loop_1 = require("./input_loop");
+var main_menu_1 = require("./main_menu");
 /**
  * Helper function that prints the alternatives the user can choose for
  * the different menus.
@@ -25,7 +25,7 @@ exports.print_alternatives = print_alternatives;
  * @param print_str - The string that is being printed
  */
 function print_bold(print_str) {
-    if (input_loop_1.print_bold_text) {
+    if (main_menu_1.print_bold_text) {
         console.log('\x1b[1m' + print_str + '\x1b[0m');
     }
     else {
@@ -46,7 +46,7 @@ function check_input(valid, question) {
     var user_input = null;
     console.log();
     while (true) {
-        user_input = (0, input_loop_1.prompt)(question).trim();
+        user_input = (0, main_menu_1.prompt)(question).trim();
         if (user_input !== null) {
             user_input = user_input.toLowerCase();
             if (valid.includes(user_input)) {
@@ -71,7 +71,7 @@ function integer_prompt(prompt_text) {
     var input;
     var parsed = NaN;
     while (true) {
-        input = (0, input_loop_1.prompt)(prompt_text).trim();
+        input = (0, main_menu_1.prompt)(prompt_text).trim();
         if (input !== null) {
             parsed = parseInt(input);
             if (!isNaN(parsed)) {
@@ -94,7 +94,7 @@ function wait_for_keypress() {
         spawnSync("pause", { shell: true, stdio: [0, 1, 2] });
     }
     else {
-        (0, input_loop_1.prompt)("Press enter to continue.");
+        (0, main_menu_1.prompt)("Press enter to continue.");
     }
     console.log();
 }
