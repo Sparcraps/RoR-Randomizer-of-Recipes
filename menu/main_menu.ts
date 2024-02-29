@@ -1,43 +1,35 @@
 import * as PromptSync from "prompt-sync";
 
 import { 
-    type Stack, empty as empty_stack, is_empty as is_stack_empty, push, top,
-    pop, display_stack
+    empty as empty_stack, is_empty as is_stack_empty, push, top,
 } from "../lib/stack";
 
 import {
-    type Recipe, generate_recipe, print_recipe
+    type Recipe
 } from "../RoR";
 
 import {
-    pair,
     type Pair
 } from "../lib/list";
 
 import {
-    type Configuration, add_to_dietary_restrictions, load_configuration,
-    remove_from_dietary_restrictions, change_portion_amount
+    type Configuration, load_configuration
 } from "../save_config";
 
 import {
-    save_new_recipe, load_recipes, delete_recipe
+    load_recipes
 } from "../save_recipe";
 
 import {
-    delete_ingredient, load_data, save_new_ingredient, SaveData
+    load_data, SaveData
 } from "../save_load_data";
-
-import {
-    empty_ingredient, Ingredient
-} from "../basics";
 
 import {
     get_menu_memory, set_menu_memory, oblivion
 } from "./menu_memory";
 
 import {
-    print_alternatives, check_input, integer_prompt, wait_for_keypress,
-    print_bold
+    print_alternatives, check_input, print_bold
 } from "./menu_global_functions";
 
 import {
@@ -47,7 +39,10 @@ import {
 import {
     saved_recipes
 } from "./saved_recipes_menu";
-import { configure } from "./configurations_menu";
+
+import {
+    configure
+} from "./configurations_menu";
 
 export function RoR_start(): void {
     function kill_RoR(): void {

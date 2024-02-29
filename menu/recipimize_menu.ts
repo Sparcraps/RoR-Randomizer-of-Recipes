@@ -27,10 +27,11 @@ import {
 } from "./menu_memory";
 
 /**
- * A submenu of main menu, responsible for recipe generation.
+ * A submenu of the main menu, responsible for recipe generation.
  */
 export function recipimize(): void {
-    // in case a generated recipe is saved, the menu alternatives need to be adjusted
+    // An adjusted recipimize menu in the case where a generated recipe
+    // is saved, to make sure that the same recipe can't be saved twice.
     function recipimize_saved(): void {
         print_menu = ['"r" = randomize new recipe', '"b" = back to main menu'];
         valid_inputs = ["r", "b"];

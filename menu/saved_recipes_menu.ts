@@ -16,12 +16,12 @@ import {
 } from "./menu_memory";
 
 /**
- * A submenu of main menu, responsible fetching saved recipes so that the user
- * can view and delete them.
+ * A submenu of the main menu, responsible fetching saved recipes so that
+ * the user can view and delete them.
  */
 export function saved_recipes(): void {
-    // helper function that prints the current saved recipes and lets the user
-    // select one of them
+    // Helper function that prints the current saved recipes and lets the user
+    // select one of them.
     function choose_recipe(): Recipe {
         print_bold("Your saved recipes:");
         for (let i = 0; i < recipes.length; i++) {
@@ -38,7 +38,7 @@ export function saved_recipes(): void {
             true_index = int - 1;
 
             if (!(true_index < 0 || true_index >= recipes.length)) {
-                //to ensure no index out of range
+                // to ensure no index out of range
                 return recipes[true_index];
             } else {
                 console.log("Invalid number entered. Please try again.")
