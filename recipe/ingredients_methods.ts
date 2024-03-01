@@ -112,6 +112,8 @@ export function randomize_ingredients_and_methods(
         selected_methods.push(pair(method, [ingredient_name]))
     }
 
+    const method_add:Array<Pair<Method, string>> = [];
+
     while (kcal < min_kcal) {
         const [cat, ingredient_arr] = randomize_category(); // get random category with its ingredients
 
@@ -128,10 +130,24 @@ export function randomize_ingredients_and_methods(
             continue;
         } else {
             const method = randomize_cooking_method(cat);
-            add_method(method, refer_to_ingredient(ingredient, amount));
-            recipe.ingredient_info.push(pair(ingredient, amount));
-            kcal += amount * kcal_per_measure;
+            if(method[0] == "add")
+            {
+                method_add.push(pair(method, refer_to_ingredient(ingredient, amount)));
+                recipe.ingredient_info.push(pair(ingredient, amount));
+                kcal += amount * kcal_per_measure;
+            }
+            else{
+                add_method(method, refer_to_ingredient(ingredient, amount));
+                recipe.ingredient_info.push(pair(ingredient, amount));
+                kcal += amount * kcal_per_measure;
+            }
         }
+    }
+
+    for(let i = 0; i < method_add.length; i = i + 1)
+    {
+        const current_method = method_add[i];
+        add_method(current_method[0], current_method[1]);
     }
 
     recipe.kcal_per_portion = Math.round((kcal / recipe.portions) / 100) * 100; // roughly calculates kcal per portion for recipe

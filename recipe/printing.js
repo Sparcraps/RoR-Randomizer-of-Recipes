@@ -67,7 +67,7 @@ function stringify_kitchenware(kw, exists, cm) {
     else {
         str = "a " + str;
     }
-    if (cm == "add" || cm == "Add") {
+    if (cm == "add") {
         str = "to " + str;
     }
     else if (kw.name === "cutting board") {

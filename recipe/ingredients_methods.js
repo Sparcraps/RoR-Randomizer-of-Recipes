@@ -100,6 +100,7 @@ function randomize_ingredients_and_methods(_a, recipe, filters, data) {
         }
         selected_methods.push((0, list_1.pair)(method, [ingredient_name]));
     }
+    var method_add = [];
     while (kcal < min_kcal) {
         var _b = randomize_category(), cat = _b[0], ingredient_arr = _b[1]; // get random category with its ingredients
         var ingredient = randomize_ingredient(ingredient_arr); // randomize ingredient in ingredient array
@@ -112,10 +113,21 @@ function randomize_ingredients_and_methods(_a, recipe, filters, data) {
         }
         else {
             var method = randomize_cooking_method(cat);
-            add_method(method, (0, printing_1.refer_to_ingredient)(ingredient, amount));
-            recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
-            kcal += amount * kcal_per_measure;
+            if (method[0] == "add") {
+                method_add.push((0, list_1.pair)(method, (0, printing_1.refer_to_ingredient)(ingredient, amount)));
+                recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
+                kcal += amount * kcal_per_measure;
+            }
+            else {
+                add_method(method, (0, printing_1.refer_to_ingredient)(ingredient, amount));
+                recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
+                kcal += amount * kcal_per_measure;
+            }
         }
+    }
+    for (var i = 0; i < method_add.length; i = i + 1) {
+        var current_method = method_add[i];
+        add_method(current_method[0], current_method[1]);
     }
     recipe.kcal_per_portion = Math.round((kcal / recipe.portions) / 100) * 100; // roughly calculates kcal per portion for recipe
     return selected_methods;
