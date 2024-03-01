@@ -11,11 +11,10 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generate_recipe = exports.generate_name = exports.refer_to_ingredient = exports.print_recipe = exports.new_recipe = void 0;
 var basics_1 = require("./basics");
-var input_loop_1 = require("./input_loop");
+var menu_global_functions_1 = require("./menu/menu_global_functions");
 var list_1 = require("./lib/list");
 var save_load_data_1 = require("./save_load_data");
 var filter_1 = require("./filter");
-var save_recipe_1 = require("./save_recipe");
 var data = (0, save_load_data_1.load_data)();
 function new_recipe(portions) {
     return {
@@ -35,7 +34,7 @@ function new_cooking_step(cooking_method, ingredient_names, kitchenware, is_kw_e
 }
 function print_recipe(recipe) {
     console.log("-----------------------------------");
-    (0, input_loop_1.print_bold)(recipe.name);
+    (0, menu_global_functions_1.print_bold)(recipe.name);
     console.log("-----------------------------------");
     console.log("Portions: " + recipe.portions);
     console.log("Around " + recipe.kcal_per_portion + " kcal per portion.");
@@ -184,11 +183,7 @@ function find_highest_amount(ingredients) {
 * @returns the last cooking step applied to the ingredient.
 */
 function find_last_cooking_step(cooking_steps, ingredient) {
-    var is_pcs = false;
-    if (ingredient.measurement == "") {
-        is_pcs = true;
-    }
-    var ingredientname = refer_to_ingredient(ingredient, 2, is_pcs);
+    var ingredientname = refer_to_ingredient(ingredient, 2);
     for (var i = cooking_steps.length - 1; i >= 0; i = i - 1) {
         if (cooking_steps[i].ingredient_names.includes(ingredientname)) {
             return cooking_steps[i];
@@ -228,7 +223,8 @@ function generate_name(recipe) {
     }
     else {
         var secondary_ingr = find_highest_amount(ingredient_info);
-        if (main_cooking_method.cooking_method == "boil") {
+        if (main_cooking_method.cooking_method == "boil" ||
+            main_cooking_method.cooking_method == "add") {
             main_cooking_method = find_last_cooking_step(recipe.steps, secondary_ingr);
         }
         return up_first_all(main_ingr.name) + " and " +
@@ -388,7 +384,6 @@ function generate_recipe(_a, portions, filters) {
         var kw_exists = true;
         if (kw === undefined || !kw.cooking_methods.includes(current_method)) {
             _a = get_kitchenware_from_method(current_method), kw = _a[0], kw_exists = _a[1];
-            kw_exists = false;
         }
         else { }
         var extra_i = [];
@@ -501,7 +496,6 @@ function recipe_randomization() {
     // for testing purposes
     var recipe = generate_recipe((0, list_1.pair)(400, 700), 4, []);
     print_recipe(recipe);
-    (0, save_recipe_1.save_new_recipe)(recipe);
 }
 if (require.main === module) {
     recipe_randomization();

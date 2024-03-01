@@ -1,13 +1,16 @@
 import {
-    type Recipe, type CookingStep, new_ingredient,
-    type Ingredient 
-} from './basics'
+    new_ingredient, type Ingredient 
+} from './basics';
+
 import {
     type Pair, pair
 } from "./lib/list";
-import { refer_to_ingredient } from './RoR';
 
-const testrecipe:Recipe = {
+import {
+    refer_to_ingredient
+} from './RoR';
+
+const testrecipe: Recipe = {
     "portions": 4,
     "ingredient_info": [
         [
@@ -108,7 +111,7 @@ const testrecipe:Recipe = {
     "kcal_per_portion": 400
 }
 
-const testrecipe2:Recipe = {
+const testrecipe2: Recipe = {
     "portions": 4,
     "ingredient_info": [
         [

@@ -4,8 +4,12 @@ import {
 } from "./basics";
 
 import {
-    RoR_start, print_bold
-} from "./input_loop";
+    RoR_start
+} from "./menu/main_menu";
+
+import {
+    print_bold
+} from "./menu/menu_global_functions";
 
 import {
     type Pair, head, pair, tail
@@ -23,17 +27,30 @@ import {
 import {
     filter_ingredients
 } from "./filter";
-import { save_new_recipe } from "./save_recipe";
+
+import {
+    save_new_recipe
+} from "./save_recipe";
 
 let data = load_data();
 
-type CookingStep = {
-    ingredient_names: Array<string>, // array of ingredient names
+/**
+ * CookingStep data type.
+ * contains the name of one cooking method, the ingredients it's applied to
+ * and the kitchenware used for it.
+ */
+export type CookingStep = {
+    ingredient_names: Array<string>,
     cooking_method: string,
     kitchenware: KitchenWare
     is_kw_existing: boolean
 };
 
+/**
+ * Recipe data type.
+ * contains an array of ingredients and their calorie amounts
+ * and the cooking steps.
+ */
 export type Recipe = {
     tag: "recipe",
     name: string,
@@ -159,7 +176,7 @@ function ingredient_and_ingredients(ingredients: Array<string>): string {
  * the ingredient is measured in pcs, false as default.
  * @returns A string with conjugated ingredient name
  */
-function refer_to_ingredient(
+export function refer_to_ingredient(
     ingredient: Ingredient, amount: number, is_pcs: boolean = false
     ): string {
     // returns true if ingredient should be referred to in plural,
@@ -195,9 +212,9 @@ function refer_to_ingredient(
  * @returns the ingredient the recipe has the most of in calories.
  */
 function find_highest_amount(ingredients: Array<Pair<Ingredient, 
-    number>>): Ingredient {
+                             number>>): Ingredient {
     let largest = ingredients[0];
-    let current: number = ingredients[0][1]*ingredients[0][0].kcal_per_measurement;
+    let current = ingredients[0][1]*ingredients[0][0].kcal_per_measurement;
 
     for(let i = 0; i < ingredients.length ; i = i + 1)
     {
@@ -222,13 +239,7 @@ function find_highest_amount(ingredients: Array<Pair<Ingredient,
 */
 function find_last_cooking_step(cooking_steps: Array<CookingStep>, 
                                 ingredient: Ingredient): CookingStep{
-    let is_pcs = false  
-
-    if(ingredient.measurement=="")
-    {
-        is_pcs = true;
-    }
-    let ingredientname = refer_to_ingredient(ingredient, 2, is_pcs);
+    let ingredientname = refer_to_ingredient(ingredient, 2);
 
     for(let i = cooking_steps.length - 1; i >= 0; i = i - 1)
     {
@@ -273,7 +284,8 @@ export function generate_name(recipe: Recipe): string {
         up_first_all(main_cooking_method.cooking_method);
     } else {
         const secondary_ingr = find_highest_amount(ingredient_info);
-        if(main_cooking_method.cooking_method == "boil"){
+        if(main_cooking_method.cooking_method == "boil" ||
+           main_cooking_method.cooking_method == "add"){
             main_cooking_method = find_last_cooking_step(recipe.steps, 
                                                          secondary_ingr);
         }
@@ -573,5 +585,4 @@ export function generate_recipe(
 if (require.main === module) {
     const recipe = generate_recipe(pair(400, 700), 4, []);
     print_recipe(recipe);
-    save_new_recipe(recipe);
 }
