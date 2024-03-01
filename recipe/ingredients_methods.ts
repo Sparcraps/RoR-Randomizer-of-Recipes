@@ -1,9 +1,7 @@
 import { Recipe } from "./recipe_generation";
-import {
-    type Method, Ingredient, Category 
-} from "../basics"
+import { type Method, Ingredient, Category } from "../basics"
 import { Pair, head, pair, tail } from "../lib/list";
-import { SaveData } from "../save_load_data";
+import { SaveData } from "../data/save_load_data";
 import { filter_cooking_methods, filter_ingredients } from "./filters";
 import { refer_to_ingredient } from "./printing";
 

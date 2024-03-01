@@ -1,8 +1,3 @@
-// first looks for kitchenware with the cooking method in the recipe's active
-// kitchenware, then looks in saved kitchenware, and returns the first one it finds
-// in a pair with a boolean for whether of not the kitchenware was already active.
-
-import { Recipe } from "./recipe_generation";
 import { KitchenWare, Method, has_separable_inventory } from "../basics";
 import { Pair, head, pair, tail } from "../lib/list";
 import { SaveData } from "../data/save_load_data";
@@ -45,6 +40,9 @@ export function generate_cooking_steps(
         data.kitchenware
     ));
 
+    // first looks for kitchenware with the cooking method in the recipe's active
+    // kitchenware, then looks in saved kitchenware, and returns the first one it finds
+    // in a pair with a boolean for whether of not the kitchenware was already active.
     // needs to be updated to choose randomly if multiple kitchenware have the cooking method available
     function get_kitchenware_from_method(cooking_method: string): Pair<KitchenWare, boolean> {
         for (let i = 0; i < active_kitchenware.length; i++) {

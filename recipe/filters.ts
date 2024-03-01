@@ -1,8 +1,4 @@
-import {
-    KitchenWare,
-    type Ingredient,
-    Category
-} from "../basics"
+import { KitchenWare, type Ingredient, Category } from "../basics"
 
 
 /**
