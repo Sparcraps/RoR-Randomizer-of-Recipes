@@ -31,11 +31,11 @@
                     "bake"
                 ],
                 [
-                    "grill"
+                    "chop",
+                    "stir fry"
                 ],
                 [
-                    "chop",
-                    "grill"
+                    "stir fry"
                 ]
             ],
             "max_ingredients": 5
@@ -171,7 +171,8 @@
                 "reduce",
                 "mash",
                 "saute",
-                "add"
+                "add",
+                "simmer"
             ],
             "inventory": []
         },
@@ -191,7 +192,8 @@
             "cooking_methods": [
                 "fry",
                 "simmer",
-                "add"
+                "add",
+                "stir fry"
             ],
             "inventory": []
         },
@@ -329,6 +331,18 @@
                 "allergies": [],
                 "measurement": "0.5",
                 "kcal_per_measurement": 22,
+                "range": [
+                    1,
+                    2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "shallot",
+                "category": "vegetable",
+                "allergies": [],
+                "measurement": "",
+                "kcal_per_measurement": 31,
                 "range": [
                     1,
                     2
@@ -779,6 +793,18 @@
                 "allergies": [],
                 "measurement": "50g",
                 "kcal_per_measurement": 55,
+                "range": [
+                    1,
+                    3
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "noodles",
+                "category": "carbohydrate",
+                "allergies": [],
+                "measurement": "50g",
+                "kcal_per_measurement": 69,
                 "range": [
                     1,
                     3

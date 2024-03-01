@@ -9,10 +9,10 @@ import {
 } from "./lib/list"
 
 
-const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["bake"], ["grill"], ["chop", "grill"]], 5);
-const root_vegetable = new_category("root vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["chop", "grill"], ["boil", "mash"]], 2);
+const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["bake"], ["chop", "stir fry"], ["stir fry"]], 5);
+const root_vegetable = new_category("root vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["boil", "mash"]], 2);
 const liquid = new_category("liquid", [["add"], ["reduce"]], 1)
-const meat = new_category("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 3);
+const meat = new_category("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 2);
 const spice = new_category("spice", [["add"]], 5);
 const carbohydrate = new_category("carbohydrate", [["boil"], ["boil", "fry"]], 1)
 const fruit = new_category("fruit", [["chop", "add"]], 3);
@@ -30,6 +30,7 @@ const tomato = new_ingredient("vegetable", "tomato", [], "0.5", 22, pair(1, 2));
 const shallot = new_ingredient("vegetable", "shallot", [], "", 31, pair(1, 2));
 
 const spaghetti = new_ingredient("carbohydrate", "spaghetti", ["gluten"], "50g", 78, pair(1, 3));
+const noodles = new_ingredient("carbohydrate", "noodles", [], "50g", 69, pair(1, 3));
 const white_rice = new_ingredient("carbohydrate", "white rice", [], "50g", 65, pair(1, 3));
 const brown_rice = new_ingredient("carbohydrate", "brown rice", [], "50g", 55, pair(1, 3));
 
@@ -41,7 +42,7 @@ const sweet_potato = new_ingredient("root vegetable", "sweet potato", [], "0.5",
 const water = new_ingredient("liquid", "water", [], "0.5dl", 0, pair(1, 10));
 const stock = new_ingredient("liquid", "stock", [], "0.5dl", 0, pair(1, 10));
 
-const chicken_breast = new_ingredient("meat", "chicken breast", ["meat"], "", 164, pair(1, 2));
+const chicken_breast = new_ingredient("meat", "chicken breast", ["meat"], "", 164, pair(1, 1));
 const chicken_thigh = new_ingredient("meat", "chicken thigh", ["meat"], "", 62, pair(1, 2));
 const pork_cutlet = new_ingredient("meat", "pork cutlet", ["meat"], "", 218, pair(1, 2));
 const pork_belly = new_ingredient("meat", "pork belly", ["meat"], "50g", 177, pair(1, 2));
@@ -74,9 +75,9 @@ const garlic_powder = new_ingredient("spice", "garlic powder", [], " tsp", 9, pa
 const turmeric = new_ingredient("spice", "turmeric", [], " tsp", 9, pair(1, 2));
 const chili_flakes = new_ingredient("spice", "chili flakes", [], " tsp", 15, pair(1, 2));
 
-const pot = new_kitchenware("pot", ["boil", "reduce", "mash", "saute", "add"]);
+const pot = new_kitchenware("pot", ["boil", "reduce", "mash", "saute", "add", "simmer"]);
 const cutting_board = new_kitchenware("cutting board", ["chop", "slice", "pound"]);
-const frying_pan = new_kitchenware("frying pan", ["fry", "simmer", "add"]);
+const frying_pan = new_kitchenware("frying pan", ["fry", "simmer", "add", "stir fry"]);
 const oven  = new_kitchenware("oven", ["bake", "add"]);
 const bowl = new_kitchenware("bowl", ["marinate"]);
 
@@ -91,7 +92,7 @@ save_new_ingredient(
     sausage, salmon_filet, cod_filet, shrimp, tarragon, oregano, sage, basil,
     rosemary, mint, ginger_powder, thyme, paprika_powder, cardamom, coriander,
     anise_powder, cinnamon, cloves, onion_powder, garlic_powder, turmeric, 
-    chili_flakes
+    chili_flakes, noodles, shallot
     );
 
 save_new_kitchenware(pot, cutting_board, frying_pan, oven, bowl);

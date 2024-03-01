@@ -1,10 +1,9 @@
 import {
-    type Ingredient, type Category, type KitchenWare, new_category, 
-    new_ingredient, new_kitchenware, has_separable_inventory
+    type Ingredient, type Category, type KitchenWare, has_separable_inventory
 } from "./basics";
 
 import {
-    RoR_start, print_bold
+    print_bold
 } from "./input_loop";
 
 import {
@@ -12,18 +11,8 @@ import {
 } from "./lib/list";
 
 import {
-    type Queue, empty as qempty, enqueue, head as qhead, dequeue, display_queue
-} from "./lib/queue_array";
-
-import {
-    save_data, load_data, save_new_category, save_new_ingredient,
-    delete_category
+    load_data
 } from "./save_load_data";
-
-import {
-    filter_ingredients
-} from "./filter";
-import { save_new_recipe } from "./save_recipe";
 
 let data = load_data();
 
@@ -190,6 +179,41 @@ function refer_to_ingredient(
 }
 
 /**
+ * Function for filtering out ingredients according to allergies.
+ * @param ingredients - a 2D array of ingredients to be
+ * @param allergies - an array of strings symbolisig allergies
+ * @returns a 2D array of ingredients with the ingredients with the allergies removed
+ */
+export function filter_ingredients(
+                                   ingredients: Array<Array<Ingredient>>, 
+                                   allergies: Array<string>
+                                   ): Array<Array<Ingredient>>{
+    for(let category_index = 0; 
+        category_index < ingredients.length; 
+        category_index ++)
+    {
+        for(let ingredient_index = ingredients[category_index].length - 1;
+            ingredient_index >= 0;
+            ingredient_index = ingredient_index - 1)
+        {
+            const ingredient_allergy = ingredients[category_index]
+                                                  [ingredient_index].allergies;
+            for(let user_allergy_index = 0;
+                user_allergy_index < allergies.length; 
+                user_allergy_index++)
+            {
+                if(ingredient_allergy.includes(allergies[user_allergy_index]))
+                {
+                    ingredients[category_index].splice(ingredient_index, 1);
+                }
+            }
+        }
+    }
+    return ingredients;
+}
+
+
+/**
  * A function to find the ingredient a recipe has the most of in calories.
  * @param ingredients - an array containing pairs of the ingredients and their amounts in calories.
  * @returns the ingredient the recipe has the most of in calories.
@@ -348,7 +372,8 @@ export function generate_recipe(
     // kitchenware, then looks in saved kitchenware, and returns the first one it finds
     // in a pair with a boolean for whether of not the kitchenware was already active.
     // needs to be updated to choose randomly if multiple kitchenware have the cooking method available
-    function get_kitchenware_from_method(cooking_method: string): Pair<KitchenWare, boolean> {
+    function get_kitchenware_from_method(cooking_method: string): Pair<KitchenWare, 
+                                                                       boolean> {
         for (let i = 0; i < active_kitchenware.length; i++) {
             const kw = active_kitchenware[i];
             if (kw.cooking_methods.includes(cooking_method)) {
