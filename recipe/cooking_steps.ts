@@ -5,7 +5,7 @@
 import { Recipe } from "./recipe_generation";
 import { KitchenWare, Method, has_separable_inventory } from "../basics";
 import { Pair, head, pair, tail } from "../lib/list";
-import { SaveData } from "../save_load_data";
+import { SaveData } from "../data/save_load_data";
 
 /**
  * CookingStep data type.

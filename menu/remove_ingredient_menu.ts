@@ -1,6 +1,6 @@
 import {
     SaveData, delete_ingredient, load_data
-} from "../save_load_data";
+} from "../data/save_load_data";
 
 import {
     check_input, print_alternatives, print_bold

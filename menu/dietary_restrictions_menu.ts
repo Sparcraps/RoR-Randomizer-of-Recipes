@@ -5,7 +5,7 @@ import {
 import {
     type Configuration, add_to_dietary_restrictions, load_configuration,
     remove_from_dietary_restrictions
-} from "../save_config";
+} from "../data/save_config";
 
 import {
     valid_dietary_restrictions

@@ -4,7 +4,7 @@ import {
 
 import {
     Configuration, load_configuration
-} from "../save_config";
+} from "../data/save_config";
 
 import {
     configure_dietary

@@ -3,10 +3,10 @@ import {
 } from "./save_load_data"
 import {
     new_ingredient, new_category, type Category, type Ingredient, new_kitchenware, find_by_name, 
-} from "./basics"
+} from "../basics"
 import {
     type Pair, pair
-} from "./lib/list"
+} from "../lib/list"
 
 
 const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["bake"], ["grill"], ["chop", "grill"]], 5);

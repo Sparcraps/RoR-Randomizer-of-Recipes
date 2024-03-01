@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var save_load_data_1 = require("./save_load_data");
-var basics_1 = require("./basics");
-var list_1 = require("./lib/list");
+var basics_1 = require("../basics");
+var list_1 = require("../lib/list");
 var vegetable = (0, basics_1.new_category)("vegetable", [["chop", "boil"], ["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["bake"], ["grill"], ["chop", "grill"]], 5);
 var root_vegetable = (0, basics_1.new_category)("root vegetable", [["chop", "boil"], ["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["chop", "grill"], ["boil", "mash"]], 2);
 var liquid = (0, basics_1.new_category)("liquid", [["add"], ["reduce"]], 1);

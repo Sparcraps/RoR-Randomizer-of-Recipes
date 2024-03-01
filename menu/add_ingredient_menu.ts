@@ -12,7 +12,7 @@ import {
 
 import {
     SaveData, load_data, save_new_ingredient
-} from "../save_load_data";
+} from "../data/save_load_data";
 
 import {
     get_menu_memory, oblivion, set_menu_memory

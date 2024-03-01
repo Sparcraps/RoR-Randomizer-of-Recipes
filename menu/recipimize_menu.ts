@@ -12,11 +12,11 @@ import {
 
 import {
     Configuration, load_configuration
-} from "../save_config";
+} from "../data/save_config";
 
 import {
     load_recipes, save_new_recipe
-} from "../save_recipe";
+} from "../data/save_recipe";
 
 import {
     portion_size

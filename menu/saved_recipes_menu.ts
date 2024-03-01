@@ -8,7 +8,7 @@ import {
 
 import {
     delete_recipe, load_recipes
-} from "../save_recipe";
+} from "../data/save_recipe";
 
 import {
     check_input, integer_prompt, print_alternatives, print_bold,

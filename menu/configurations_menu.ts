@@ -4,7 +4,7 @@ import {
 
 import {
     type Configuration, change_portion_amount, load_configuration
-} from "../save_config";
+} from "../data/save_config";
 
 import {
     check_input, integer_prompt, print_alternatives

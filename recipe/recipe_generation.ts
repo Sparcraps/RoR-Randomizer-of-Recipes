@@ -1,6 +1,6 @@
 import { Ingredient } from "../basics";
 import { Pair, pair } from "../lib/list";
-import { load_data } from "../save_load_data";
+import { load_data } from "../data/save_load_data";
 import { CookingStep, generate_cooking_steps } from "./cooking_steps";
 import { generate_name } from "./generate_name";
 import { randomize_ingredients_and_methods } from "./ingredients_methods";
