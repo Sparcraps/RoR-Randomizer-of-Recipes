@@ -10,7 +10,7 @@ import { refer_to_ingredient } from "./printing";
  * @returns the ingredient the recipe has the most of in calories.
  */
 function find_highest_amount(ingredients: Array<Pair<Ingredient, 
-                             number>>): Ingredient {
+                             number>>): Pair<Ingredient, number> {
     let largest = ingredients[0];
     let current = ingredients[0][1]*ingredients[0][0].kcal_per_measurement;
 
@@ -26,7 +26,7 @@ function find_highest_amount(ingredients: Array<Pair<Ingredient,
     const index = ingredients.indexOf(largest);
     ingredients.splice(index, 1);
 
-    return largest[0];
+    return largest;
 }
 
 /**
@@ -36,8 +36,8 @@ function find_highest_amount(ingredients: Array<Pair<Ingredient,
 * @returns the last cooking step applied to the ingredient.
 */
 function find_last_cooking_step(cooking_steps: Array<CookingStep>, 
-                                ingredient: Ingredient): CookingStep{
-    let ingredientname = refer_to_ingredient(ingredient, 2);
+                                ingredient: Pair<Ingredient, number>): CookingStep{
+    let ingredientname = refer_to_ingredient(ingredient[0], ingredient[1]);
 
     for(let i = cooking_steps.length - 1; i >= 0; i = i - 1)
     {
@@ -76,19 +76,21 @@ export function generate_name(recipe: Recipe): string {
 
     const ingredient_info = JSON.parse(JSON.stringify(recipe.ingredient_info)); // copies recipe ingredient info
     const main_ingr = find_highest_amount(ingredient_info);
+    const main_ingr_name = main_ingr[0].name;
     let main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
     if (ingredient_info.length === 0) {
-        return up_first_all(main_ingr.name) + " " +
+        return up_first_all(main_ingr_name) + " " +
         up_first_all(main_cooking_method.cooking_method);
     } else {
         const secondary_ingr = find_highest_amount(ingredient_info);
+        const secondary_ingr_name = secondary_ingr[0].name
         if(main_cooking_method.cooking_method == "boil" ||
            main_cooking_method.cooking_method == "add"){
             main_cooking_method = find_last_cooking_step(recipe.steps, 
                                                          secondary_ingr);
         }
-        return up_first_all(main_ingr.name) + " and " +
-        up_first_all(secondary_ingr.name) + " " + 
+        return up_first_all(main_ingr_name) + " and " +
+        up_first_all(secondary_ingr_name) + " " + 
         up_first_all(main_cooking_method.cooking_method);
     }
 }

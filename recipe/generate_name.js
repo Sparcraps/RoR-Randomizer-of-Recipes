@@ -18,7 +18,7 @@ function find_highest_amount(ingredients) {
     }
     var index = ingredients.indexOf(largest);
     ingredients.splice(index, 1);
-    return largest[0];
+    return largest;
 }
 /**
 * a function to find the last cooking step applied to a ingredient.
@@ -27,7 +27,7 @@ function find_highest_amount(ingredients) {
 * @returns the last cooking step applied to the ingredient.
 */
 function find_last_cooking_step(cooking_steps, ingredient) {
-    var ingredientname = (0, printing_1.refer_to_ingredient)(ingredient, 2);
+    var ingredientname = (0, printing_1.refer_to_ingredient)(ingredient[0], ingredient[1]);
     for (var i = cooking_steps.length - 1; i >= 0; i = i - 1) {
         if (cooking_steps[i].ingredient_names.includes(ingredientname)) {
             return cooking_steps[i];
@@ -60,19 +60,21 @@ function generate_name(recipe) {
     }
     var ingredient_info = JSON.parse(JSON.stringify(recipe.ingredient_info)); // copies recipe ingredient info
     var main_ingr = find_highest_amount(ingredient_info);
+    var main_ingr_name = main_ingr[0].name;
     var main_cooking_method = find_last_cooking_step(recipe.steps, main_ingr);
     if (ingredient_info.length === 0) {
-        return up_first_all(main_ingr.name) + " " +
+        return up_first_all(main_ingr_name) + " " +
             up_first_all(main_cooking_method.cooking_method);
     }
     else {
         var secondary_ingr = find_highest_amount(ingredient_info);
+        var secondary_ingr_name = secondary_ingr[0].name;
         if (main_cooking_method.cooking_method == "boil" ||
             main_cooking_method.cooking_method == "add") {
             main_cooking_method = find_last_cooking_step(recipe.steps, secondary_ingr);
         }
-        return up_first_all(main_ingr.name) + " and " +
-            up_first_all(secondary_ingr.name) + " " +
+        return up_first_all(main_ingr_name) + " and " +
+            up_first_all(secondary_ingr_name) + " " +
             up_first_all(main_cooking_method.cooking_method);
     }
 }
