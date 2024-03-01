@@ -2,6 +2,7 @@ import { Recipe } from "./recipe_generation";
 import { Ingredient, KitchenWare } from "../basics";
 import { Pair, pair } from "../lib/list";
 import { print_bold } from "../menu/menu_global_functions";
+import { CookingStep } from "./cooking_steps";
 
 export function print_recipe(recipe: Recipe): void {
     console.log("-----------------------------------");
@@ -22,7 +23,7 @@ export function print_recipe(recipe: Recipe): void {
         console.log(
             step_nr + ". " + up_first(step.cooking_method) + " the " +
             ingredient_and_ingredients(step.ingredient_names) + " " +
-            stringify_kitchenware(step.kitchenware, step.is_kw_existing)
+            stringify_kitchenware(step.kitchenware, step.is_kw_existing, step.cooking_method)
             );
         step_nr += 1;
     })
@@ -60,7 +61,7 @@ function stringify_ingredient_info(
     }
 }
 
-function stringify_kitchenware(kw: KitchenWare, exists: boolean): string {
+function stringify_kitchenware(kw: KitchenWare, exists: boolean, cm: string): string {
     let str = kw.name;
     const vowels = ["e", "u", "i", "o", "a"];
     if (exists) {
@@ -71,9 +72,11 @@ function stringify_kitchenware(kw: KitchenWare, exists: boolean): string {
         str = "a " + str;
     }
 
-    if (kw.name === "cutting board") {
+    if (cm == "add") {
+        str = "to " + str;
+    } else if(kw.name === "cutting board"){
         str = "on " + str;
-    } else {
+    } else{
         str = "in " + str;
     }
 

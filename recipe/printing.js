@@ -21,7 +21,7 @@ function print_recipe(recipe) {
     steps.forEach(function (step) {
         console.log(step_nr + ". " + up_first(step.cooking_method) + " the " +
             ingredient_and_ingredients(step.ingredient_names) + " " +
-            stringify_kitchenware(step.kitchenware, step.is_kw_existing));
+            stringify_kitchenware(step.kitchenware, step.is_kw_existing, step.cooking_method));
         step_nr += 1;
     });
     console.log(step_nr + ". " + "Finally, add salt and pepper to taste! :-)");
@@ -55,7 +55,7 @@ function stringify_ingredient_info(ingredient, amount) {
         return amount + rest + " of " + ingredient.name;
     }
 }
-function stringify_kitchenware(kw, exists) {
+function stringify_kitchenware(kw, exists, cm) {
     var str = kw.name;
     var vowels = ["e", "u", "i", "o", "a"];
     if (exists) {
@@ -67,7 +67,10 @@ function stringify_kitchenware(kw, exists) {
     else {
         str = "a " + str;
     }
-    if (kw.name === "cutting board") {
+    if (cm == "add" || cm == "Add") {
+        str = "to " + str;
+    }
+    else if (kw.name === "cutting board") {
         str = "on " + str;
     }
     else {
