@@ -570,16 +570,8 @@ export function generate_recipe(
     return recipe;
 }
 
-/**
- * Calls generate_recipe, and then print_recipe with the generated recipe.
- */
-function recipe_randomization(): void {
-    // for testing purposes
+if (require.main === module) {
     const recipe = generate_recipe(pair(400, 700), 4, []);
     print_recipe(recipe);
     save_new_recipe(recipe);
-}
-
-if (require.main === module) {
-    recipe_randomization();
 }
