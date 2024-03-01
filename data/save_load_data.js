@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.delete_ingredient = exports.delete_kitchenware = exports.delete_category = exports.save_new_ingredient = exports.save_new_kitchenware = exports.save_new_category = exports.save_data = exports.load_data = void 0;
-var basics_1 = require("./basics");
+var basics_1 = require("../basics");
 var fs = require('fs');
 var filepath = __dirname + "/ror_data.json";
 /**

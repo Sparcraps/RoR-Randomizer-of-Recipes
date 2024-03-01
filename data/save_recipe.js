@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.delete_recipe = exports.save_new_recipe = exports.save_recipes = exports.load_recipes = void 0;
-var basics_1 = require("./basics");
+var basics_1 = require("../basics");
 var fs = require('fs');
 var filepath = __dirname + "/saved_recipes.json";
 /**

@@ -1,6 +1,6 @@
 import {
-    type Ingredient, type Category, type KitchenWare, NamedRecord, find_by_name
-} from "./basics"
+    type Ingredient, type Category, type KitchenWare, find_by_name
+} from "../basics"
 
 export type SaveData = {
     categories: Array<Category>,

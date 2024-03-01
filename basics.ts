@@ -36,13 +36,15 @@ export type Ingredient = {
 export type Category = {
     tag: "category",
     name: string,
-    cooking_methods: Array<Array<string>>,
+    cooking_methods: Array<Method>,
     max_ingredients: number
 };
 
 /**
- * Kitchenware data type.
- * Has an inventory of ingredients currently contained in the kitchenware.
+ * KitchenWare data type.
+ * Has an inventory of ingredients currently contained in the kitchenware,
+ * and also information about the cooking methods that can be applied 
+ * by the kitchenware.
  */
 export type KitchenWare = {
     tag: "kitchenware",
@@ -52,25 +54,10 @@ export type KitchenWare = {
 };
 
 /**
- * Recipe data type.
- * contains an array of ingredients and their calorie amounts and the cooking steps.
+ * Method data type.
+ * An array of strings representing the parts of the method.
  */
-
-export type Recipe = {
-    portions: number,
-    kcal_per_portion: number,
-    ingredient_info: Array<Pair<Ingredient, number>>,
-    steps: Array<CookingStep>,
-};
-
-/**
- * CookingStep data type.
- * contains the name of one cooking method, the ingredients it's applied to and the kitchenware used.
- */
-export type CookingStep = {
-    ingredient_names: Array<string>, // array of ingredient names
-    cooking_method: string,
-};
+export type Method = Array<string>;
 
 /**
  * Check whether the input is of type Ingredient.
