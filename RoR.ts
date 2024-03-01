@@ -151,7 +151,7 @@ function ingredient_and_ingredients(ingredients: Array<string>): string {
 }
 
 /**
- * returns ingredient name with correct(ish) conjugation depending on if it
+ * Returns ingredient name with correct(ish) conjugation depending on if it
  * should be referred to in plural or not
  * @param {Ingredient} ingredient - ingredient to name.
  * @param {number} amount - amount of the ingredient.
