@@ -1,6 +1,10 @@
 import {
-    Recipe, print_recipe
-} from "../RoR";
+    Recipe
+} from "../recipe/recipe_generation";
+
+import {
+    print_recipe
+} from "../recipe/printing";
 
 import {
     delete_recipe, load_recipes

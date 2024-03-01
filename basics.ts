@@ -36,7 +36,7 @@ export type Ingredient = {
 export type Category = {
     tag: "category",
     name: string,
-    cooking_methods: Array<Array<string>>,
+    cooking_methods: Array<Method>,
     max_ingredients: number
 };
 
@@ -52,6 +52,12 @@ export type KitchenWare = {
     cooking_methods: Array<string>,
     inventory: Array<string>
 };
+
+/**
+ * Method data type.
+ * An array of strings representing the parts of the method.
+ */
+export type Method = Array<string>;
 
 /**
  * Check whether the input is of type Ingredient.

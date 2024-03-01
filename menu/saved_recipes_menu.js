@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.saved_recipes = void 0;
-var RoR_1 = require("../RoR");
+var printing_1 = require("../recipe/printing");
 var save_recipe_1 = require("../save_recipe");
 var menu_global_functions_1 = require("./menu_global_functions");
 var menu_memory_1 = require("./menu_memory");
@@ -46,7 +46,7 @@ function saved_recipes() {
         }
         else {
             var selected_recipe = choose_recipe();
-            (0, RoR_1.print_recipe)(selected_recipe);
+            (0, printing_1.print_recipe)(selected_recipe);
             (0, menu_global_functions_1.wait_for_keypress)();
         }
     }

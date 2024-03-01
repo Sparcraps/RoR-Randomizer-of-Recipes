@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.recipimize = void 0;
-var RoR_1 = require("../RoR");
+var recipe_generation_1 = require("../recipe/recipe_generation");
+var printing_1 = require("../recipe/printing");
 var stack_1 = require("../lib/stack");
 var save_config_1 = require("../save_config");
 var save_recipe_1 = require("../save_recipe");
@@ -35,8 +36,8 @@ function recipimize() {
         '"s" = save recipe',
         '"b" = back to main menu'];
     var valid_inputs = ["r", "s", "b"];
-    var recipe = (0, RoR_1.generate_recipe)(main_menu_1.portion_size, portion_amount, restrictions);
-    (0, RoR_1.print_recipe)(recipe);
+    var recipe = (0, recipe_generation_1.generate_recipe)(main_menu_1.portion_size, portion_amount, restrictions);
+    (0, printing_1.print_recipe)(recipe);
     (0, menu_global_functions_1.wait_for_keypress)();
     (0, menu_global_functions_1.print_alternatives)(print_menu);
     var user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose an alternative: ");

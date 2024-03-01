@@ -8,7 +8,7 @@ import {
 
 import {
     refer_to_ingredient
-} from './RoR';
+} from "./recipe/printing";
 
 const testrecipe: Recipe = {
     "portions": 4,
