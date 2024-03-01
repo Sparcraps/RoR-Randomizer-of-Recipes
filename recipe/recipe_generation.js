@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generate_recipe = exports.new_recipe = void 0;
 var list_1 = require("../lib/list");
-var save_load_data_1 = require("../save_load_data");
+var save_load_data_1 = require("../data/save_load_data");
 var cooking_steps_1 = require("./cooking_steps");
 var generate_name_1 = require("./generate_name");
 var ingredients_methods_1 = require("./ingredients_methods");

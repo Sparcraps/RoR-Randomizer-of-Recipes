@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.remove_ingredient = void 0;
-var save_load_data_1 = require("../save_load_data");
+var save_load_data_1 = require("../data/save_load_data");
 var menu_global_functions_1 = require("./menu_global_functions");
 var menu_memory_1 = require("./menu_memory");
 var main_menu_1 = require("./main_menu");

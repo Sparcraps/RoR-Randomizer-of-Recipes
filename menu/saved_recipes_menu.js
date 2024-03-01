@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.saved_recipes = void 0;
 var printing_1 = require("../recipe/printing");
-var save_recipe_1 = require("../save_recipe");
+var save_recipe_1 = require("../data/save_recipe");
 var menu_global_functions_1 = require("./menu_global_functions");
 var menu_memory_1 = require("./menu_memory");
 /**

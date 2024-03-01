@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.configure_dietary = void 0;
 var list_1 = require("../lib/list");
-var save_config_1 = require("../save_config");
+var save_config_1 = require("../data/save_config");
 var main_menu_1 = require("./main_menu");
 var menu_global_functions_1 = require("./menu_global_functions");
 var menu_memory_1 = require("./menu_memory");

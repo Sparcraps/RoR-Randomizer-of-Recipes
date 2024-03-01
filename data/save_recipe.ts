@@ -1,10 +1,10 @@
 import {
     type Recipe
-} from "./recipe/recipe_generation";
+} from "../recipe/recipe_generation";
 
 import {
     find_by_name
-} from "./basics";
+} from "../basics";
 
 const fs = require('fs');
 const filepath = __dirname + "/saved_recipes.json";

@@ -1,7 +1,4 @@
 "use strict";
-// first looks for kitchenware with the cooking method in the recipe's active
-// kitchenware, then looks in saved kitchenware, and returns the first one it finds
-// in a pair with a boolean for whether of not the kitchenware was already active.
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -33,6 +30,9 @@ function generate_cooking_steps(selected_methods, data) {
     var active_kitchenware = [];
     var kw_data = JSON.parse(JSON.stringify(// creates copy of kitchenware data
     data.kitchenware));
+    // first looks for kitchenware with the cooking method in the recipe's active
+    // kitchenware, then looks in saved kitchenware, and returns the first one it finds
+    // in a pair with a boolean for whether of not the kitchenware was already active.
     // needs to be updated to choose randomly if multiple kitchenware have the cooking method available
     function get_kitchenware_from_method(cooking_method) {
         for (var i = 0; i < active_kitchenware.length; i++) {
