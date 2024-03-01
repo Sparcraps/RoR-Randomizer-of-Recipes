@@ -1,15 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var save_load_data_1 = require("./save_load_data");
-var basics_1 = require("./basics");
-var list_1 = require("./lib/list");
+var basics_1 = require("../basics");
+var list_1 = require("../lib/list");
 var vegetable = (0, basics_1.new_category)("vegetable", [["chop", "boil"], ["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["bake"], ["chop", "stir fry"], ["stir fry"]], 5);
-var root_vegetable = (0, basics_1.new_category)("root vegetable", [["chop", "boil"], ["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["chop", "grill"], ["boil", "mash"]], 2);
+var root_vegetable = (0, basics_1.new_category)("root vegetable", [["chop", "boil"], ["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["boil", "mash"]], 2);
 var liquid = (0, basics_1.new_category)("liquid", [["add"], ["reduce"]], 1);
-var meat = (0, basics_1.new_category)("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 3);
+var meat = (0, basics_1.new_category)("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 2);
 var spice = (0, basics_1.new_category)("spice", [["add"]], 5);
 var carbohydrate = (0, basics_1.new_category)("carbohydrate", [["boil"], ["boil", "fry"]], 1);
-var fruit = (0, basics_1.new_category)("fruit", [["chop", "add"]], 3);
 var broccoli = (0, basics_1.new_ingredient)("vegetable", "broccoli", [], "50g", 17, (0, list_1.pair)(1, 4));
 var celery = (0, basics_1.new_ingredient)("vegetable", "celery", [], "0.5", 7, (0, list_1.pair)(1, 2));
 var yellow_onion = (0, basics_1.new_ingredient)("vegetable", "yellow onion", [], "0.5", 46, (0, list_1.pair)(1, 2));
@@ -31,7 +30,7 @@ var parsnip = (0, basics_1.new_ingredient)("root vegetable", "parsnip", [], "0.5
 var sweet_potato = (0, basics_1.new_ingredient)("root vegetable", "sweet potato", [], "0.5", 112, (0, list_1.pair)(1, 2));
 var water = (0, basics_1.new_ingredient)("liquid", "water", [], "0.5dl", 0, (0, list_1.pair)(1, 10));
 var stock = (0, basics_1.new_ingredient)("liquid", "stock", [], "0.5dl", 0, (0, list_1.pair)(1, 10));
-var chicken_breast = (0, basics_1.new_ingredient)("meat", "chicken breast", ["meat"], "", 164, (0, list_1.pair)(1, 2));
+var chicken_breast = (0, basics_1.new_ingredient)("meat", "chicken breast", ["meat"], "", 164, (0, list_1.pair)(1, 1));
 var chicken_thigh = (0, basics_1.new_ingredient)("meat", "chicken thigh", ["meat"], "", 62, (0, list_1.pair)(1, 2));
 var pork_cutlet = (0, basics_1.new_ingredient)("meat", "pork cutlet", ["meat"], "", 218, (0, list_1.pair)(1, 2));
 var pork_belly = (0, basics_1.new_ingredient)("meat", "pork belly", ["meat"], "50g", 177, (0, list_1.pair)(1, 2));
@@ -41,8 +40,6 @@ var steak = (0, basics_1.new_ingredient)("meat", "steak", ["meat"], "", 160, (0,
 var salmon_filet = (0, basics_1.new_ingredient)("meat", "salmon filet", ["meat"], "", 83, (0, list_1.pair)(1, 2));
 var cod_filet = (0, basics_1.new_ingredient)("meat", "cod filet", ["meat"], "", 50, (0, list_1.pair)(1, 2));
 var shrimp = (0, basics_1.new_ingredient)("meat", "shrimp", ["meat"], "50g", 100, (0, list_1.pair)(1, 3));
-var cucumber = (0, basics_1.new_ingredient)("fruit", "cucumber", [], "0.5", 17, (0, list_1.pair)(1, 2));
-var avocado = (0, basics_1.new_ingredient)("fruit", "avocado", [], "0.5", 120, (0, list_1.pair)(1, 2));
 var tarragon = (0, basics_1.new_ingredient)("spice", "tarragon", [], " tsp", 10, (0, list_1.pair)(1, 2));
 var oregano = (0, basics_1.new_ingredient)("spice", "oregano", [], " tsp", 6, (0, list_1.pair)(1, 2));
 var sage = (0, basics_1.new_ingredient)("spice", "sage", [], " tsp", 2, (0, list_1.pair)(1, 2));
@@ -66,8 +63,8 @@ var cutting_board = (0, basics_1.new_kitchenware)("cutting board", ["chop", "sli
 var frying_pan = (0, basics_1.new_kitchenware)("frying pan", ["fry", "simmer", "add", "stir fry"]);
 var oven = (0, basics_1.new_kitchenware)("oven", ["bake", "add"]);
 var bowl = (0, basics_1.new_kitchenware)("bowl", ["marinate"]);
-(0, save_load_data_1.save_new_category)(vegetable, root_vegetable, liquid, meat, spice, carbohydrate, fruit);
-(0, save_load_data_1.save_new_ingredient)(broccoli, celery, yellow_onion, red_onion, cucumber, avocado, paprika, asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip, sweet_potato, water, stock, chicken_breast, chicken_thigh, pork_cutlet, minced_meat, steak, cabbage, aubergine, garlic_clove, tomato, pork_belly, sausage, salmon_filet, cod_filet, shrimp, tarragon, oregano, sage, basil, rosemary, mint, ginger_powder, thyme, paprika_powder, cardamom, coriander, anise_powder, cinnamon, cloves, onion_powder, garlic_powder, turmeric, chili_flakes, noodles, shallot);
+(0, save_load_data_1.save_new_category)(vegetable, root_vegetable, liquid, meat, spice, carbohydrate);
+(0, save_load_data_1.save_new_ingredient)(broccoli, celery, yellow_onion, red_onion, paprika, asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip, sweet_potato, water, stock, chicken_breast, chicken_thigh, pork_cutlet, minced_meat, steak, cabbage, aubergine, garlic_clove, tomato, pork_belly, sausage, salmon_filet, cod_filet, shrimp, tarragon, oregano, sage, basil, rosemary, mint, ginger_powder, thyme, paprika_powder, cardamom, coriander, anise_powder, cinnamon, cloves, onion_powder, garlic_powder, turmeric, chili_flakes, noodles, shallot);
 (0, save_load_data_1.save_new_kitchenware)(pot, cutting_board, frying_pan, oven, bowl);
 (0, save_load_data_1.delete_category)("liquid");
 // const data = load_data();

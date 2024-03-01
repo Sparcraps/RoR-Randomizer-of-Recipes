@@ -1,11 +1,11 @@
 import {
-    type SaveData, save_new_category, save_new_ingredient, save_new_kitchenware, delete_ingredient, delete_category, load_data, save_data
+    save_new_category, save_new_ingredient, save_new_kitchenware, delete_category
 } from "./save_load_data"
 import {
-    new_ingredient, new_category, type Category, type Ingredient, new_kitchenware, find_by_name, 
+    new_ingredient, new_category, new_kitchenware,
 } from "../basics"
 import {
-    type Pair, pair
+    pair
 } from "../lib/list"
 
 
@@ -15,7 +15,6 @@ const liquid = new_category("liquid", [["add"], ["reduce"]], 1)
 const meat = new_category("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 2);
 const spice = new_category("spice", [["add"]], 5);
 const carbohydrate = new_category("carbohydrate", [["boil"], ["boil", "fry"]], 1)
-const fruit = new_category("fruit", [["chop", "add"]], 3);
 
 const broccoli = new_ingredient("vegetable", "broccoli", [], "50g", 17, pair(1, 4));
 const celery = new_ingredient("vegetable", "celery", [], "0.5", 7, pair(1, 2));
@@ -53,9 +52,6 @@ const salmon_filet = new_ingredient("meat", "salmon filet", ["meat"], "", 83, pa
 const cod_filet = new_ingredient("meat", "cod filet", ["meat"], "", 50, pair(1, 2));
 const shrimp = new_ingredient("meat", "shrimp", ["meat"], "50g", 100, pair(1, 3));
 
-const cucumber = new_ingredient("fruit", "cucumber", [], "0.5", 17, pair(1, 2));
-const avocado = new_ingredient("fruit", "avocado", [], "0.5", 120, pair(1, 2));
-
 const tarragon = new_ingredient("spice", "tarragon", [], " tsp", 10, pair(1, 2));
 const oregano = new_ingredient("spice", "oregano", [], " tsp", 6, pair(1, 2));
 const sage = new_ingredient("spice", "sage", [], " tsp", 2, pair(1, 2));
@@ -82,10 +78,10 @@ const oven  = new_kitchenware("oven", ["bake", "add"]);
 const bowl = new_kitchenware("bowl", ["marinate"]);
 
 
-save_new_category(vegetable, root_vegetable, liquid, meat, spice, carbohydrate, fruit);
+save_new_category(vegetable, root_vegetable, liquid, meat, spice, carbohydrate);
 
 save_new_ingredient(
-    broccoli, celery, yellow_onion, red_onion, cucumber, avocado, paprika,
+    broccoli, celery, yellow_onion, red_onion, paprika,
     asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip,
     sweet_potato, water, stock, chicken_breast, chicken_thigh, pork_cutlet,
     minced_meat, steak, cabbage, aubergine, garlic_clove, tomato, pork_belly, 

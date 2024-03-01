@@ -70,10 +70,6 @@
                     "bake"
                 ],
                 [
-                    "chop",
-                    "grill"
-                ],
-                [
                     "boil",
                     "mash"
                 ]
@@ -124,7 +120,7 @@
                     "boil"
                 ]
             ],
-            "max_ingredients": 3
+            "max_ingredients": 2
         },
         {
             "tag": "category",
@@ -149,17 +145,6 @@
                 ]
             ],
             "max_ingredients": 1
-        },
-        {
-            "tag": "category",
-            "name": "fruit",
-            "cooking_methods": [
-                [
-                    "chop",
-                    "add"
-                ]
-            ],
-            "max_ingredients": 3
         }
     ],
     "kitchenware": [
@@ -411,7 +396,7 @@
                 "kcal_per_measurement": 164,
                 "range": [
                     1,
-                    2
+                    1
                 ],
                 "tag": "ingredient"
             },
@@ -808,32 +793,6 @@
                 "range": [
                     1,
                     3
-                ],
-                "tag": "ingredient"
-            }
-        ],
-        [
-            {
-                "name": "cucumber",
-                "category": "fruit",
-                "allergies": [],
-                "measurement": "0.5",
-                "kcal_per_measurement": 17,
-                "range": [
-                    1,
-                    2
-                ],
-                "tag": "ingredient"
-            },
-            {
-                "name": "avocado",
-                "category": "fruit",
-                "allergies": [],
-                "measurement": "0.5",
-                "kcal_per_measurement": 120,
-                "range": [
-                    1,
-                    2
                 ],
                 "tag": "ingredient"
             }

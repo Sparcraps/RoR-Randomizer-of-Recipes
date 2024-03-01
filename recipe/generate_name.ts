@@ -3,6 +3,7 @@ import { Ingredient } from "../basics";
 import { Pair } from "../lib/list";
 import { CookingStep } from "./cooking_steps";
 import { refer_to_ingredient } from "./printing";
+import { getConjugation } from "english-verbs-helper";
 
 /**
  * A function to find the ingredient a recipe has the most of in calories.
@@ -49,7 +50,7 @@ function find_last_cooking_step(cooking_steps: Array<CookingStep>,
     return cooking_steps[cooking_steps.length - 1];
 }
 
-
+const EnglishVerbs = require('english-verbs-helper');
 /**
 * A function to generate a new name based on the ingredients and cooking steps in a recipe.
 * @param a recipe - consisting of ingredients and the cooking steps applied to them.
@@ -86,11 +87,17 @@ export function generate_name(recipe: Recipe): string {
         const secondary_ingr_name = secondary_ingr[0].name
         if(main_cooking_method.cooking_method == "boil" ||
            main_cooking_method.cooking_method == "add"){
+
             main_cooking_method = find_last_cooking_step(recipe.steps, 
                                                          secondary_ingr);
         }
+        const title_cooking = getConjugation(EnglishVerbs, 
+                                             main_cooking_method.cooking_method, 
+                                             "SIMPLE_PAST", 
+                                             2, 
+                                             {});
         return up_first_all(main_ingr_name) + " and " +
         up_first_all(secondary_ingr_name) + " " + 
-        up_first_all(main_cooking_method.cooking_method);
+        up_first_all(title_cooking);
     }
 }
