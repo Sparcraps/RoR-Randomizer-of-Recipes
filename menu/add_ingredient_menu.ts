@@ -200,12 +200,11 @@ export function add_ingredient(): void {
                 if (kcal_input < 0 ) {
                     print_bold("kcal per measurement cannot be negative!");
                 } else {
+                    console.log();
                     ingredient.kcal_per_measurement = kcal_input;
                     return ingredient;
                 }
         }
-        
-        
     }
 
     // Helper function that prompts the user to select the range in which

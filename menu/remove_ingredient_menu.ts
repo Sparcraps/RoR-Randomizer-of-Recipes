@@ -29,7 +29,7 @@ export function remove_ingredient(): void {
         if (input !== "") {
             try {
                 data = delete_ingredient(input);
-                print_bold("\nIngredient removed!");
+                print_bold("\nIngredient removed from data!");
             } catch (error) {
                 console.log();
                 console.error(error.message);
