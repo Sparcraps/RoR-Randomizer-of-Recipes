@@ -286,10 +286,9 @@ export function delete_ingredient(...names: Array<string>): SaveData {
     
     for (let i = 0; i < names.length; i++) {
         const name = names[i];
-        console.error(
-            new Error(
+        throw new Error(
                 "There is no saved ingredient with the name " + name + "."
-                ));
+                );
     }
 
     data.ingredients = updated_ingredients;

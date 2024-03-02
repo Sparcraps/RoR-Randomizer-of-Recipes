@@ -18,10 +18,12 @@ function remove_ingredient() {
         if (input !== "") {
             try {
                 data = (0, save_load_data_1.delete_ingredient)(input);
+                (0, menu_global_functions_1.print_bold)("\nIngredient deleted!\n");
             }
-            catch ( //might have to handle error
-            _a) { //might have to handle error
-                console.log("There is no ingredient with that name.");
+            catch (error) {
+                console.log();
+                console.error(error.message);
+                console.log();
             }
         }
         else { }
@@ -36,6 +38,7 @@ function remove_ingredient() {
                 console.log("- " + ingr[i][j].name);
             }
         }
+        console.log();
     }
     var data = (0, save_load_data_1.load_data)();
     var print_menu = [
@@ -58,7 +61,7 @@ function remove_ingredient() {
         (0, menu_memory_1.oblivion)();
     }
     else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }
 exports.remove_ingredient = remove_ingredient;

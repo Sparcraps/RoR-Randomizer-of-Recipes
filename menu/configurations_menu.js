@@ -16,18 +16,19 @@ function configure() {
     // can change the portion size.
     function configure_portion() {
         valid_inputs = ["y", "n"];
-        console.log("Current portion amount: " + config.portion_amount.toString());
+        (0, menu_global_functions_1.print_bold)("Current portion amount: " + config.portion_amount.toString());
         user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Do you wish to change the portion amount? (y/n): ");
         if (user_input === "y") {
             var input_int = (0, menu_global_functions_1.integer_prompt)("Enter new portion amount: ");
             config = (0, save_config_1.change_portion_amount)(input_int, config);
-            console.log("New amount registered.");
+            (0, menu_global_functions_1.print_bold)("\nNew amount registered.\n");
+            (0, menu_memory_1.oblivion)();
         }
         else if (user_input === "n") {
             (0, menu_memory_1.oblivion)();
         }
         else {
-            throw new Error("Error: invalid user_input has escaped.");
+            throw new Error("Invalid user_input has escaped.");
         }
     }
     var config = (0, save_config_1.load_configuration)();
@@ -51,7 +52,7 @@ function configure() {
         (0, menu_memory_1.oblivion)();
     }
     else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }
 exports.configure = configure;

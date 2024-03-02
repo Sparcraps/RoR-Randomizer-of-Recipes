@@ -7,7 +7,7 @@ import {
 } from "../data/save_config";
 
 import {
-    check_input, integer_prompt, print_alternatives
+    check_input, integer_prompt, print_alternatives, print_bold
 } from "./menu_global_functions";
 
 import {
@@ -32,7 +32,9 @@ export function configure(): void {
     function configure_portion(): void {            
         valid_inputs = ["y", "n"];
 
-        console.log("Current portion amount: " + config.portion_amount.toString());
+        print_bold(
+            "Current portion amount: " + config.portion_amount.toString()
+            );
         user_input = check_input(
             valid_inputs, "Do you wish to change the portion amount? (y/n): "
             );
@@ -40,11 +42,12 @@ export function configure(): void {
         if (user_input === "y") {
             const input_int = integer_prompt("Enter new portion amount: ")
             config = change_portion_amount(input_int, config);
-            console.log("New amount registered.")
+            print_bold("\nNew amount registered.\n");
+            oblivion();
         } else if (user_input === "n") {
             oblivion();
         } else {
-            throw new Error("Error: invalid user_input has escaped.");
+            throw new Error("Invalid user_input has escaped.");
         }
     }
 
@@ -56,7 +59,8 @@ export function configure(): void {
     let valid_inputs = ["p", "d", "i", "b"];
 
     print_alternatives(print_menu);
-    let user_input = check_input(valid_inputs, "Choose what you want to configure: ");
+    let user_input = check_input(valid_inputs,
+                                 "Choose what you want to configure: ");
 
     if (user_input === "p") {
     set_menu_memory(push(configure_portion, get_menu_memory()));
@@ -67,6 +71,6 @@ export function configure(): void {
     } else if (user_input === "b") {
     oblivion();
     } else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }

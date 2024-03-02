@@ -61,7 +61,7 @@ function main_menu() {
         (0, menu_memory_1.oblivion)();
     }
     else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
     // Prints explanations of all alternatives in the main menu
     function print_help() {

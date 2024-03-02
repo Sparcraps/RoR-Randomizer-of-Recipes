@@ -1,2 +1,185 @@
 [
+    {
+        "tag": "recipe",
+        "name": "Spaghetti and Sweet Potato Mashed",
+        "portions": 4,
+        "ingredient_info": [
+            [
+                {
+                    "name": "spaghetti",
+                    "category": "carbohydrate",
+                    "allergies": [
+                        "gluten"
+                    ],
+                    "measurement": "50g",
+                    "kcal_per_measurement": 78,
+                    "range": [
+                        1,
+                        3
+                    ],
+                    "tag": "ingredient"
+                },
+                9
+            ],
+            [
+                {
+                    "name": "tomato",
+                    "category": "vegetable",
+                    "allergies": [],
+                    "measurement": "0.5",
+                    "kcal_per_measurement": 22,
+                    "range": [
+                        1,
+                        2
+                    ],
+                    "tag": "ingredient"
+                },
+                5
+            ],
+            [
+                {
+                    "name": "aubergine",
+                    "category": "vegetable",
+                    "allergies": [],
+                    "measurement": "0.25",
+                    "kcal_per_measurement": 61,
+                    "range": [
+                        1,
+                        2
+                    ],
+                    "tag": "ingredient"
+                },
+                6
+            ],
+            [
+                {
+                    "name": "sweet potato",
+                    "category": "root vegetable",
+                    "allergies": [],
+                    "measurement": "0.5",
+                    "kcal_per_measurement": 112,
+                    "range": [
+                        1,
+                        2
+                    ],
+                    "tag": "ingredient"
+                },
+                4
+            ]
+        ],
+        "steps": [
+            {
+                "cooking_method": "boil",
+                "ingredient_names": [
+                    "spaghetti"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "pot",
+                    "cooking_methods": [
+                        "boil",
+                        "reduce",
+                        "mash",
+                        "saute",
+                        "add",
+                        "simmer"
+                    ],
+                    "inventory": []
+                },
+                "is_kw_existing": false
+            },
+            {
+                "cooking_method": "bake",
+                "ingredient_names": [
+                    "tomatoes"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "oven",
+                    "cooking_methods": [
+                        "bake",
+                        "add"
+                    ],
+                    "inventory": []
+                },
+                "is_kw_existing": false
+            },
+            {
+                "cooking_method": "chop",
+                "ingredient_names": [
+                    "aubergines"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "cutting board",
+                    "cooking_methods": [
+                        "chop",
+                        "slice",
+                        "pound"
+                    ],
+                    "inventory": []
+                },
+                "is_kw_existing": false
+            },
+            {
+                "cooking_method": "stir fry",
+                "ingredient_names": [
+                    "aubergines"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "frying pan",
+                    "cooking_methods": [
+                        "fry",
+                        "simmer",
+                        "add",
+                        "stir fry"
+                    ],
+                    "inventory": []
+                },
+                "is_kw_existing": false
+            },
+            {
+                "cooking_method": "boil",
+                "ingredient_names": [
+                    "sweet potatoes"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "pot",
+                    "cooking_methods": [
+                        "boil",
+                        "reduce",
+                        "mash",
+                        "saute",
+                        "add",
+                        "simmer"
+                    ],
+                    "inventory": []
+                },
+                "is_kw_existing": true
+            },
+            {
+                "cooking_method": "mash",
+                "ingredient_names": [
+                    "sweet potatoes"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "pot",
+                    "cooking_methods": [
+                        "boil",
+                        "reduce",
+                        "mash",
+                        "saute",
+                        "add",
+                        "simmer"
+                    ],
+                    "inventory": []
+                },
+                "is_kw_existing": true
+            }
+        ],
+        "kcal_per_portion": 400
+    }
 ]

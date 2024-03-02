@@ -270,7 +270,7 @@ function delete_ingredient() {
     });
     for (var i = 0; i < names.length; i++) {
         var name_3 = names[i];
-        console.error(new Error("There is no saved ingredient with the name " + name_3 + "."));
+        throw new Error("There is no saved ingredient with the name " + name_3 + ".");
     }
     data.ingredients = updated_ingredients;
     save_data(data);

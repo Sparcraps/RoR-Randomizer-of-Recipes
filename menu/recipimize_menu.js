@@ -46,7 +46,7 @@ function recipimize() {
     }
     else if (user_input === "s") {
         recipes = (0, save_recipe_1.save_new_recipe)(recipe);
-        console.log("Recipe: '" + recipe.name + "' saved!\n");
+        (0, menu_global_functions_1.print_bold)("Recipe: '" + recipe.name + "' saved!\n");
         (0, menu_memory_1.oblivion)();
         (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(recipimize_saved, (0, menu_memory_1.get_menu_memory)()));
     }

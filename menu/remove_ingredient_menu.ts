@@ -29,10 +29,13 @@ export function remove_ingredient(): void {
         if (input !== "") {
             try {
                 data = delete_ingredient(input);
-            } catch { //might have to handle error
-                console.log("There is no ingredient with that name.")
+                print_bold("\nIngredient removed!");
+            } catch (error) {
+                console.log();
+                console.error(error.message);
             }
         } else {}
+        console.log();
     }
 
     // Helper function that prints the name of all 
@@ -46,6 +49,7 @@ export function remove_ingredient(): void {
                 console.log("- " + ingr[i][j].name);
             }
         }
+        console.log();
     }
 
     let data: SaveData = load_data();
@@ -67,6 +71,6 @@ export function remove_ingredient(): void {
     } else if (user_input === "b") {
         oblivion();
     } else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }

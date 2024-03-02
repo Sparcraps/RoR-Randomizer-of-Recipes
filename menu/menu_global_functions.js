@@ -31,7 +31,6 @@ function print_bold(print_str) {
     else {
         console.log(print_str);
     }
-    return;
 }
 exports.print_bold = print_bold;
 /**
@@ -80,6 +79,7 @@ function integer_prompt(prompt_text) {
             else { }
         }
         else { }
+        console.log();
         print_bold("Invalid input. Please enter a valid number.");
     }
 }

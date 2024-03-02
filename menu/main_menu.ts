@@ -80,7 +80,7 @@ function main_menu(): void {
     } else if (user_input === "q") {
         oblivion();
     } else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 
     // Prints explanations of all alternatives in the main menu

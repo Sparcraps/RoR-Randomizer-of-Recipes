@@ -39,6 +39,6 @@ export function dietary_prompt(): void {
     } else if (user_input === "n") {
         oblivion();
     } else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }

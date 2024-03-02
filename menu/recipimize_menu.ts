@@ -23,7 +23,7 @@ import {
 } from "./main_menu";
 
 import {
-    check_input, print_alternatives, wait_for_keypress
+    check_input, print_alternatives, print_bold, wait_for_keypress
 } from "./menu_global_functions";
 
 import {
@@ -74,7 +74,7 @@ export function recipimize(): void {
         return;
     } else if (user_input === "s") {
         recipes = save_new_recipe(recipe);
-        console.log("Recipe: '" + recipe.name + "' saved!\n");
+        print_bold("Recipe: '" + recipe.name + "' saved!\n");
         oblivion();
         set_menu_memory(push(recipimize_saved, get_menu_memory()));
     } else if (user_input === "b") {

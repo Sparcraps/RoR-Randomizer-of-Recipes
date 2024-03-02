@@ -24,7 +24,7 @@ function dietary_prompt() {
         (0, menu_memory_1.oblivion)();
     }
     else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }
 exports.dietary_prompt = dietary_prompt;

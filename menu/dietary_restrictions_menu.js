@@ -28,10 +28,10 @@ function configure_dietary() {
         var diet_pair = select_valid_dietary();
         if (!diet_pair[0]) {
             config = (0, save_config_1.add_to_dietary_restrictions)(diet_pair[1], config);
-            console.log("Dietary restriction successfully added!");
+            (0, menu_global_functions_1.print_bold)("Dietary restriction successfully added!\n");
         }
         else {
-            console.log("Dietary restriction not added; it is already active.");
+            (0, menu_global_functions_1.print_bold)("Dietary restriction not added; it is already active.\n");
         }
     }
     // Helper function that removes a dietary restriction
@@ -40,10 +40,10 @@ function configure_dietary() {
         var diet_pair = select_valid_dietary();
         if (diet_pair[0]) {
             config = (0, save_config_1.remove_from_dietary_restrictions)(diet_pair[1], config);
-            console.log("Dietary restriction successfully removed!");
+            (0, menu_global_functions_1.print_bold)("Dietary restriction successfully removed!\n");
         }
         else {
-            console.log("Dietary restriction not removed; it is not active.");
+            (0, menu_global_functions_1.print_bold)("Dietary restriction not removed; it is not active.\n");
         }
     }
     var config = (0, save_config_1.load_configuration)();
@@ -61,14 +61,20 @@ function configure_dietary() {
         remove_diet();
     }
     else if (user_input === "v") {
-        (0, menu_global_functions_1.print_bold)("Active dietary restrictions: ");
-        (0, menu_global_functions_1.print_alternatives)(config.dietary_restrictions);
+        if (config.dietary_restrictions.length === 0) {
+            (0, menu_global_functions_1.print_bold)("You have no active dietary restrictions.\n");
+        }
+        else {
+            (0, menu_global_functions_1.print_bold)("Active dietary restrictions: ");
+            (0, menu_global_functions_1.print_alternatives)(config.dietary_restrictions);
+            console.log();
+        }
     }
     else if (user_input === "b") {
         (0, menu_memory_1.oblivion)(2);
     }
     else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }
 exports.configure_dietary = configure_dietary;

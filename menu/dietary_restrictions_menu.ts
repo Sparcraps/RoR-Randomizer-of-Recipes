@@ -46,9 +46,11 @@ export function configure_dietary(): void {
         const diet_pair = select_valid_dietary();
         if (!diet_pair[0]) {
             config = add_to_dietary_restrictions(diet_pair[1], config);
-            console.log("Dietary restriction successfully added!")
+            print_bold("Dietary restriction successfully added!\n");
         } else {
-            console.log("Dietary restriction not added; it is already active.")
+            print_bold(
+                "Dietary restriction not added; it is already active.\n"
+                );
         }
     }
 
@@ -58,9 +60,9 @@ export function configure_dietary(): void {
         const diet_pair = select_valid_dietary();
         if (diet_pair[0]) {
             config = remove_from_dietary_restrictions(diet_pair[1], config);
-            console.log("Dietary restriction successfully removed!")
+            print_bold("Dietary restriction successfully removed!\n");
         } else {
-            console.log("Dietary restriction not removed; it is not active.")
+            print_bold("Dietary restriction not removed; it is not active.\n");
         }
     }
 
@@ -79,11 +81,16 @@ export function configure_dietary(): void {
     } else if (user_input === "r") {
         remove_diet();
     } else if (user_input === "v") {
-        print_bold("Active dietary restrictions: ");
-        print_alternatives(config.dietary_restrictions);
+        if (config.dietary_restrictions.length === 0) {
+            print_bold("You have no active dietary restrictions.\n");
+        } else {
+            print_bold("Active dietary restrictions: ");
+            print_alternatives(config.dietary_restrictions);
+            console.log();
+        }
     } else if (user_input === "b") {
         oblivion(2);
     } else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }

@@ -29,7 +29,6 @@ export function print_bold(print_str: string): void {
     } else {
         console.log(print_str);
     }
-    return;
 }
 
 /**
@@ -78,7 +77,7 @@ export function integer_prompt(prompt_text: string): number {
                 return parsed;
             } else {}
         } else {}
-
+        console.log();
         print_bold("Invalid input. Please enter a valid number.");
     }
 }

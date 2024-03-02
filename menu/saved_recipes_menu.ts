@@ -32,20 +32,21 @@ export function saved_recipes(): void {
             let current_name: string = recipes[i].name;
             console.log(i + 1, current_name);
         }
+        console.log();
 
         let int: number;
         let true_index: number;
 
         while (true) {
             int = integer_prompt("Enter the number corresponding to " +
-            "the recipe you want to choose: ");
+            "the recipe you want to choose: \n");
             true_index = int - 1;
 
             if (!(true_index < 0 || true_index >= recipes.length)) {
                 // to ensure no index out of range
                 return recipes[true_index];
             } else {
-                console.log("Invalid number entered. Please try again.")
+                print_bold("Invalid number entered. Please try again.\n");
             }
         }
     }
@@ -61,7 +62,7 @@ export function saved_recipes(): void {
 
     if (user_input === "v") {
         if (recipes.length === 0) {
-            console.log("You have no saved recipes.\n")
+            print_bold("You have no saved recipes.\n")
         } else {
             const selected_recipe = choose_recipe();
             print_recipe(selected_recipe);
@@ -69,16 +70,16 @@ export function saved_recipes(): void {
         }
     } else if (user_input === "d") {
         if (recipes.length === 0) {
-            console.log("You have no saved recipes.\n")
+            print_bold("You have no saved recipes.\n")
         } else {
             const selected_recipe = choose_recipe();
             const name = selected_recipe.name;
             recipes = delete_recipe(name);
-            console.log("Recipe " + name + " deleted!\n");
+            print_bold("Recipe " + name + " deleted!\n");
         }
     } else if (user_input === "b") {
         oblivion();
     } else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("invalid user_input has escaped.");
     }
 }

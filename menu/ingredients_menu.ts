@@ -38,6 +38,6 @@ export function configure_ingredients(): void {
     } else if (user_input === "b") {
         oblivion();
     } else {
-        throw new Error("Error: invalid user_input has escaped.");
+        throw new Error("Invalid user_input has escaped.");
     }
 }
