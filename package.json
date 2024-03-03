@@ -9,6 +9,7 @@
   "author": "Jakob Vanky, Momo Sundbäck Brohult, Isa Mülhbach",
   "license": "ISC",
   "dependencies": {
+    "en-inflectors": "^1.0.12",
     "english-verbs-helper": "^3.3.0",
     "prompt-sync": "^4.2.0"
   },

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.refer_to_ingredient = exports.print_recipe = void 0;
+var en_inflectors_1 = require("en-inflectors");
 var list_1 = require("../lib/list");
 var menu_global_functions_1 = require("../menu/menu_global_functions");
 function print_recipe(recipe) {
@@ -105,7 +106,7 @@ function refer_to_ingredient(ingredient, amount, is_pcs) {
     // returns true if ingredient should be referred to in plural,
     // false otherwise.
     function is_plural() {
-        var _a = num_rest_of_measurement(ingredient.measurement), num = _a[0], rest = _a[1];
+        var rest = (0, list_1.tail)(num_rest_of_measurement(ingredient.measurement));
         if (rest === "") {
             return true;
         }
@@ -116,16 +117,8 @@ function refer_to_ingredient(ingredient, amount, is_pcs) {
     var name = ingredient.name;
     var s_u_i_o = ["s", "u", "i", "o"];
     if (is_pcs || is_plural()) {
-        var last_char = name[name.length - 1];
-        if (s_u_i_o.includes(last_char)) {
-            return name + "es";
-        }
-        else if (last_char === "y") {
-            return name.slice(0, -1) + "ies";
-        }
-        else {
-            return name + "s";
-        }
+        var inflect = new en_inflectors_1.Inflectors(name);
+        return inflect.toPlural();
     }
     else {
         return name;

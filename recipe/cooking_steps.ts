@@ -1,11 +1,15 @@
-import { KitchenWare, Method, has_separable_inventory } from "../basics";
-import { Pair, head, pair, tail } from "../lib/list";
-import { SaveData } from "../data/save_load_data";
+import {
+    type  KitchenWare, type  Method, has_separable_inventory
+} from "../basics";
+import { type Pair, head, pair, tail } from "../lib/list";
+import { type SaveData } from "../data/save_load_data";
 
 /**
  * CookingStep data type.
- * contains the name of one cooking method, the ingredients it's applied to
- * and the kitchenware used for it.
+ * contains the name of one cooking method, the names of the ingredients 
+ * it's applied to, in plural if necessary, the kitchenware used for it and a
+ * boolean describing whether or not an earlier cookingstep used the
+ * kitchenware.
  */
 export type CookingStep = {
     ingredient_names: Array<string>,
@@ -63,7 +67,6 @@ export function generate_cooking_steps(
 
         throw new Error("No kitchenware with cooking method " + cooking_method + "exists.");
     }
-
 
     // adds cooking step to steps array, removes first element in method, calls
     // recursively until method is empty.

@@ -1,6 +1,7 @@
+import { Inflectors } from "en-inflectors";
 import { Recipe } from "./recipe_generation";
 import { Ingredient, KitchenWare } from "../basics";
-import { Pair, pair } from "../lib/list";
+import { Pair, pair, tail } from "../lib/list";
 import { print_bold } from "../menu/menu_global_functions";
 import { CookingStep } from "./cooking_steps";
 
@@ -107,11 +108,11 @@ function ingredient_and_ingredients(ingredients: Array<string>): string {
  */
 export function refer_to_ingredient(
     ingredient: Ingredient, amount: number, is_pcs: boolean = false
-    ): string {
+): string {
     // returns true if ingredient should be referred to in plural,
     // false otherwise.
     function is_plural(): boolean {
-        const [num, rest] = num_rest_of_measurement(ingredient.measurement);
+        const rest = tail(num_rest_of_measurement(ingredient.measurement));
         if (rest === "") {
             return true;
         } else {
@@ -122,14 +123,8 @@ export function refer_to_ingredient(
     const s_u_i_o = ["s", "u", "i", "o"];
     
     if (is_pcs || is_plural()) {
-        const last_char = name[name.length - 1]
-        if (s_u_i_o.includes(last_char)) {
-            return name + "es";
-        } else if (last_char === "y") {
-            return name.slice(0, -1) + "ies";
-        } else {
-            return name + "s";
-        }
+        const inflect = new Inflectors(name);
+        return inflect.toPlural();
     } else {
         return name;
     }

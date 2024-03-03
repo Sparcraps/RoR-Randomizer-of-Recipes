@@ -167,6 +167,7 @@ function add_ingredient() {
                 (0, menu_global_functions_1.print_bold)("kcal per measurement cannot be negative!");
             }
             else {
+                console.log();
                 ingredient.kcal_per_measurement = kcal_input;
                 return ingredient;
             }

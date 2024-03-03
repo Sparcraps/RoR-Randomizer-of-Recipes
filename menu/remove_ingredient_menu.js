@@ -18,15 +18,15 @@ function remove_ingredient() {
         if (input !== "") {
             try {
                 data = (0, save_load_data_1.delete_ingredient)(input);
-                (0, menu_global_functions_1.print_bold)("\nIngredient deleted!\n");
+                (0, menu_global_functions_1.print_bold)("\nIngredient removed from data!");
             }
             catch (error) {
                 console.log();
                 console.error(error.message);
-                console.log();
             }
         }
         else { }
+        console.log();
     }
     // Helper function that prints the name of all 
     // currently registered ingredients.
