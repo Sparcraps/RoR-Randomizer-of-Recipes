@@ -1,8 +1,9 @@
-import { prompt, valid_dietary_restrictions } from "../RoR";
+import {
+    prompt, valid_dietary_restrictions
+} from "../RoR";
 
 import {
-    Category,
-    Ingredient, empty_ingredient
+    type Category, type Ingredient, empty_ingredient
 } from "../basics";
 
 import {
@@ -10,7 +11,7 @@ import {
 } from "./menu_global_functions";
 
 import {
-    SaveData, load_data, save_new_ingredient
+    type SaveData, load_data, save_new_ingredient
 } from "../data/save_load_data";
 
 import {
@@ -32,7 +33,7 @@ export function add_ingredient(): void {
     // A subsubmenu of the ingredients menu, where the user ends up if they
     // wish to edit any of the ingredient data of a newly created ingredient, 
     // before confirming to create the ingredient.
-    function ingredient_adjustments(): void {
+    function edit_ingredient(): void {
         print_menu = [
             '"n" = change ingredient name',
             '"c" = change ingredient categories',
@@ -272,7 +273,7 @@ export function add_ingredient(): void {
         save_new_ingredient(new_ingredient);
         oblivion();
     } else if (user_input === "n") {
-        set_menu_memory(push(ingredient_adjustments, get_menu_memory()));
+        set_menu_memory(push(edit_ingredient, get_menu_memory()));
     } else {
         throw new Error("Invalid user_input has escaped.");
     }
