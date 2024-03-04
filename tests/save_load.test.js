@@ -56,11 +56,14 @@ describe("testing functions to save and load data", function () {
     test("functions to save, delete and replace" +
         " work on test ingredients and test category", function () {
         var test_category = (0, basics_1.new_category)("test category", [["chop"], ["boil"]], 10);
+        var test_category2 = (0, basics_1.new_category)("test category", [["crush"], ["fry"]], 3);
         var ti1 = (0, basics_1.new_ingredient)("test category", "test ingredient", ["cat"], "liters", 100, [50, 500]);
         var ti2 = (0, basics_1.new_ingredient)("test category", "test ingredient 2", ["dog"], "liters", 100, [50, 300]);
         var ti3 = (0, basics_1.new_ingredient)("test category", "test ingredient 3", ["snake"], "liters", 100, [20, 300]);
-        (0, save_load_data_1.save_new_category)(test_category);
-        var saved = (0, save_load_data_1.save_new_ingredient)(ti1, ti2);
+        var saved = (0, save_load_data_1.save_new_category)(test_category);
+        var cat_data = saved.categories;
+        expect(cat_data).toContainEqual(test_category);
+        saved = (0, save_load_data_1.save_new_ingredient)(ti1, ti2);
         var ingredient_data = saved.ingredients;
         var index = ingredient_data.length - 1;
         var test_arr = ingredient_data[index];
@@ -82,17 +85,24 @@ describe("testing functions to save and load data", function () {
         test_arr = ingredient_data[index];
         expect(test_arr).toContainEqual(ti4);
         expect(test_arr).toContainEqual(ti3);
+        saved = (0, save_load_data_1.replace_category)(test_category2);
+        cat_data = saved.categories;
+        expect(cat_data).toContainEqual(test_category2);
         saved = (0, save_load_data_1.delete_category)("test category");
         var cats = saved.categories;
         ingredient_data = saved.ingredients;
         expect(cats.length).toBe(index);
         expect(ingredient_data.length).toBe(index);
     });
-    test("save_new_kitchenware and delete_kitchenware works on test kitchenware", function () {
+    test("save_new_kitchenware, replace_kitchenware" +
+        " and delete_kitchenware works on test kitchenware", function () {
         var name = "test kitchenware";
         var test_kit = (0, basics_1.new_kitchenware)(name, ["fry"]);
+        var test_kit2 = (0, basics_1.new_kitchenware)(name, ["chop"]);
         var saved = (0, save_load_data_1.save_new_kitchenware)(test_kit);
         expect(saved.kitchenware).toContainEqual(test_kit);
+        saved = (0, save_load_data_1.replace_kitchenware)(test_kit2);
+        expect(saved.kitchenware).toContainEqual(test_kit2);
         saved = (0, save_load_data_1.delete_kitchenware)(name);
         expect(saved.kitchenware.some(function (e) { return e.name === name; })).toBe(false);
     });

@@ -1,10 +1,12 @@
 import {
     load_data, save_data, save_new_ingredient, delete_ingredient,
-    save_new_category, delete_category, save_new_kitchenware, delete_kitchenware, replace_ingredient
+    save_new_category, delete_category, save_new_kitchenware, 
+    delete_kitchenware, replace_ingredient, replace_category,
+    replace_kitchenware
 } from "../data/save_load_data";
 
 import {
-    new_ingredient, Category, new_category, new_kitchenware
+    new_ingredient, new_category, new_kitchenware
 } from "../basics";
 
 describe("testing functions to save and load data", () => {
@@ -85,7 +87,11 @@ describe("testing functions to save and load data", () => {
         () => {
         const test_category = new_category(
             "test category", [["chop"], ["boil"]], 10
-            ); 
+        ); 
+
+        const test_category2 = new_category(
+            "test category", [["crush"], ["fry"]], 3
+        );
 
         const ti1 = new_ingredient("test category", "test ingredient", 
                                     ["cat"], "liters", 100, [50, 500]);
@@ -94,8 +100,11 @@ describe("testing functions to save and load data", () => {
         const ti3 = new_ingredient("test category", "test ingredient 3", 
                                     ["snake"], "liters", 100, [20, 300]);
 
-        save_new_category(test_category);
-        let saved = save_new_ingredient(ti1, ti2);
+        let saved = save_new_category(test_category);
+        let cat_data = saved.categories;
+        expect(cat_data).toContainEqual(test_category);
+
+        saved = save_new_ingredient(ti1, ti2);
         let ingredient_data = saved.ingredients;
         const index = ingredient_data.length - 1
         let test_arr = ingredient_data[index];
@@ -123,6 +132,10 @@ describe("testing functions to save and load data", () => {
         expect(test_arr).toContainEqual(ti4);
         expect(test_arr).toContainEqual(ti3);
 
+        saved = replace_category(test_category2);
+        cat_data = saved.categories;
+        expect(cat_data).toContainEqual(test_category2);
+
         saved = delete_category("test category");
         const cats = saved.categories;
         ingredient_data = saved.ingredients;
@@ -131,12 +144,18 @@ describe("testing functions to save and load data", () => {
     });
 
     test(
-        "save_new_kitchenware and delete_kitchenware works on test kitchenware",
+        "save_new_kitchenware, replace_kitchenware" + 
+        " and delete_kitchenware work on test kitchenware",
         () => {
         const name = "test kitchenware";
         const test_kit = new_kitchenware(name, ["fry"]);
+        const test_kit2 = new_kitchenware(name, ["chop"]);
+
         let saved = save_new_kitchenware(test_kit);
         expect(saved.kitchenware).toContainEqual(test_kit);
+
+        saved = replace_kitchenware(test_kit2);
+        expect(saved.kitchenware).toContainEqual(test_kit2);
 
         saved = delete_kitchenware(name);
         expect(saved.kitchenware.some(e => e.name === name)).toBe(false);
