@@ -11,8 +11,7 @@ import {
 
 const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["bake"], ["chop", "stir fry"], ["stir fry"]], 5);
 const root_vegetable = new_category("root vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["boil", "mash"]], 2);
-const liquid = new_category("liquid", [["add"], ["reduce"]], 1)
-const meat = new_category("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 1);
+const meat = new_category("meat", [["slice", "stir fry"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 1);
 const spice = new_category("spice", [["add"]], 5);
 const carbohydrate = new_category("carbohydrate", [["boil"], ["boil", "fry"]], 1)
 
@@ -37,9 +36,6 @@ const carrot = new_ingredient("root vegetable", "carrot", [], "0.5", 30, pair(1,
 const potato = new_ingredient("root vegetable", "potato", [], "0.5", 85, pair(1, 3));
 const parsnip = new_ingredient("root vegetable", "parsnip", [], "0.5", 105, pair(1, 3));
 const sweet_potato = new_ingredient("root vegetable", "sweet potato", [], "0.5", 112, pair(1, 2));
-
-const water = new_ingredient("liquid", "water", [], "0.5 dl", 0, pair(1, 10));
-const stock = new_ingredient("liquid", "stock", [], "0.5 dl", 0, pair(1, 10));
 
 const chicken_breast = new_ingredient("meat", "chicken breast", ["meat"], "", 164, pair(1, 1));
 const chicken_thigh = new_ingredient("meat", "chicken thigh", ["meat"], "", 62, pair(1, 2));
@@ -78,12 +74,12 @@ const oven  = new_kitchenware("oven", ["bake", "add"]);
 const bowl = new_kitchenware("bowl", ["marinate"]);
 
 
-save_new_category(vegetable, root_vegetable, liquid, meat, spice, carbohydrate);
+save_new_category(vegetable, root_vegetable, meat, spice, carbohydrate);
 
 save_new_ingredient(
     broccoli, celery, yellow_onion, red_onion, paprika,
     asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip,
-    sweet_potato, water, stock, chicken_breast, chicken_thigh, pork_cutlet,
+    sweet_potato,chicken_breast, chicken_thigh, pork_cutlet,
     minced_meat, steak, cabbage, aubergine, garlic_clove, tomato, pork_belly, 
     sausage, salmon_filet, cod_filet, shrimp, tarragon, oregano, sage, basil,
     rosemary, mint, ginger_powder, thyme, paprika_powder, cardamom, coriander,
@@ -92,8 +88,6 @@ save_new_ingredient(
     );
 
 save_new_kitchenware(pot, cutting_board, frying_pan, oven, bowl);
-
-delete_category("liquid");
 
 // const data = load_data();
 // const cats = data.categories;
