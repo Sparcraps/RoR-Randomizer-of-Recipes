@@ -1,7 +1,7 @@
 import * as PromptSync from "prompt-sync";
 
 import { 
-    is_empty as is_stack_empty, push, top,
+    push
 } from "../lib/stack";
 
 import {
@@ -29,37 +29,11 @@ import {
 } from "./configurations_menu";
 
 /**
- * Print the ASCII-art of RoR that is shown on startup and initialize
- * the program by adding the main menu to the top of the menu memory.
- * Also contains the main loop.
- */
-export function RoR_start(): void {
-    function kill_RoR(): void {
-        print_bold("Goodbye :)");
-    }
-    
-    console.log("----------------------------------------");
-    console.log("Welcome to Randomizer of Recipes, aka");
-    console.log("____       ____   ");
-    console.log("|  _ \\ ___ |  _ \\ ");
-    console.log("| |_) / _ \\| |_) |");
-    console.log("|  _ < (_) |  _ < ");
-    console.log("|_| \\_\\___/|_| \\_\\");
-    console.log("----------------------------------------\n");
-    
-    set_menu_memory(push(main_menu, get_menu_memory()));
-    while (!is_stack_empty(get_menu_memory())) {
-        top(get_menu_memory()!)();
-    }
-    kill_RoR();
-}
-
-/**
  * The main menu of RoR. Gives access to all content of the program
  * by its submenus where the user selects how to advance through
  * printed alternatives.
  */
-function main_menu(): void {
+export function main_menu(): void {
     let user_input: string | null;
     let print_menu: Array<string> = ['"h" = help', '"r" = randomize recipe',
                                      '"s" = saved recipes', '"c" = configure',
@@ -125,7 +99,3 @@ export const portion_size: Pair<number, number> = [400, 700];
 export const valid_dietary_restrictions: Array<string> = [
     "meat", "gluten", "dairy", "eggs", "nuts", "fish"
 ];
-
-if (require.main === module) {
-    RoR_start();
-}
