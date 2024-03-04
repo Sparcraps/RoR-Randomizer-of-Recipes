@@ -282,7 +282,7 @@ function empty_ingredient() {
 }
 exports.empty_ingredient = empty_ingredient;
 function has_separable_inventory(kw) {
-    if (kw.name === "cutting board" || kw.name === "oven") {
+    if (kw.name === "cutting board" || kw.name === "oven" || kw.name === "bowl") {
         return true;
     }
     else {

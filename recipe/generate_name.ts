@@ -96,8 +96,8 @@ export function generate_name(recipe: Recipe): string {
                                              "SIMPLE_PAST", 
                                              2, 
                                              {});
-        return up_first_all(main_ingr_name) + " and " +
-        up_first_all(secondary_ingr_name) + " " + 
-        up_first_all(title_cooking);
+        return up_first_all(title_cooking) + " " +
+            up_first_all(main_ingr_name) + " and " +
+            up_first_all(secondary_ingr_name);
     }
 }

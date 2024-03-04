@@ -76,9 +76,9 @@ function generate_name(recipe) {
             main_cooking_method = find_last_cooking_step(recipe.steps, secondary_ingr);
         }
         var title_cooking = (0, english_verbs_helper_1.getConjugation)(EnglishVerbs, main_cooking_method.cooking_method, "SIMPLE_PAST", 2, {});
-        return up_first_all(main_ingr_name) + " and " +
-            up_first_all(secondary_ingr_name) + " " +
-            up_first_all(title_cooking);
+        return up_first_all(title_cooking) + " " +
+            up_first_all(main_ingr_name) + " and " +
+            up_first_all(secondary_ingr_name);
     }
 }
 exports.generate_name = generate_name;
