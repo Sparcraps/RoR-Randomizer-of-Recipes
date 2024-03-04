@@ -434,7 +434,7 @@
                 "allergies": [
                     "meat"
                 ],
-                "measurement": "50g",
+                "measurement": "50 g",
                 "kcal_per_measurement": 120,
                 "range": [
                     1,
@@ -462,7 +462,7 @@
                 "allergies": [
                     "meat"
                 ],
-                "measurement": "50g",
+                "measurement": "50 g",
                 "kcal_per_measurement": 177,
                 "range": [
                     1,
@@ -518,7 +518,7 @@
                 "allergies": [
                     "meat"
                 ],
-                "measurement": "50g",
+                "measurement": "50 g",
                 "kcal_per_measurement": 100,
                 "range": [
                     1,
@@ -532,7 +532,7 @@
                 "name": "tarragon",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 10,
                 "range": [
                     1,
@@ -544,7 +544,7 @@
                 "name": "oregano",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 6,
                 "range": [
                     1,
@@ -556,7 +556,7 @@
                 "name": "sage",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 2,
                 "range": [
                     1,
@@ -568,7 +568,7 @@
                 "name": "basil",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 1,
                 "range": [
                     1,
@@ -580,7 +580,7 @@
                 "name": "rosemary",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 4,
                 "range": [
                     1,
@@ -592,7 +592,7 @@
                 "name": "mint",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 4,
                 "range": [
                     1,
@@ -604,7 +604,7 @@
                 "name": "ginger powder",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 6,
                 "range": [
                     1,
@@ -628,7 +628,7 @@
                 "name": "paprika powder",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 7,
                 "range": [
                     1,
@@ -640,7 +640,7 @@
                 "name": "cardamom",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 7,
                 "range": [
                     1,
@@ -652,7 +652,7 @@
                 "name": "coriander",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 8,
                 "range": [
                     1,
@@ -664,7 +664,7 @@
                 "name": "anise powder",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 10,
                 "range": [
                     1,
@@ -676,7 +676,7 @@
                 "name": "cinnamon",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 6,
                 "range": [
                     1,
@@ -688,7 +688,7 @@
                 "name": "cloves",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 7,
                 "range": [
                     1,
@@ -700,7 +700,7 @@
                 "name": "onion powder",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 9,
                 "range": [
                     1,
@@ -712,7 +712,7 @@
                 "name": "garlic powder",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 9,
                 "range": [
                     1,
@@ -724,7 +724,7 @@
                 "name": "turmeric",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 9,
                 "range": [
                     1,
@@ -736,7 +736,7 @@
                 "name": "chili flakes",
                 "category": "spice",
                 "allergies": [],
-                "measurement": " tsp",
+                "measurement": "1 tsp",
                 "kcal_per_measurement": 15,
                 "range": [
                     1,
@@ -752,7 +752,7 @@
                 "allergies": [
                     "gluten"
                 ],
-                "measurement": "50g",
+                "measurement": "50 g",
                 "kcal_per_measurement": 78,
                 "range": [
                     1,
@@ -764,7 +764,7 @@
                 "name": "white rice",
                 "category": "carbohydrate",
                 "allergies": [],
-                "measurement": "50g",
+                "measurement": "50 g",
                 "kcal_per_measurement": 65,
                 "range": [
                     1,
@@ -776,7 +776,7 @@
                 "name": "brown rice",
                 "category": "carbohydrate",
                 "allergies": [],
-                "measurement": "50g",
+                "measurement": "50 g",
                 "kcal_per_measurement": 55,
                 "range": [
                     1,
@@ -788,7 +788,7 @@
                 "name": "noodles",
                 "category": "carbohydrate",
                 "allergies": [],
-                "measurement": "50g",
+                "measurement": "50 g",
                 "kcal_per_measurement": 69,
                 "range": [
                     1,
