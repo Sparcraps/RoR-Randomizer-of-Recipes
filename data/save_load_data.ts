@@ -328,7 +328,7 @@ export function replace_category(
  * @returns {SaveData} - Updated save data.
  */
 export function replace_kitchenware(
-    ...new_kitch: Array<KitchenWarey>
+    ...new_kitch: Array<KitchenWare>
 ): SaveData {
     const name_arr: Array<string> = [];
     new_kitch.forEach(kw => {
