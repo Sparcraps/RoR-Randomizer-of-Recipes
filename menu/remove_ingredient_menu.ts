@@ -10,9 +10,7 @@ import {
     oblivion
 } from "./menu_memory";
 
-import {
-    prompt
-} from "./main_menu";
+import { prompt } from "../RoR";
 
 /**
  * A submenu of the ingredients menu, where the user can remove

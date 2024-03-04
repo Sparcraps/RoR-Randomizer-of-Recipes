@@ -1,3 +1,9 @@
+import * as PromptSync from "prompt-sync";
+
+import {
+    type Pair
+} from "./lib/list";
+
 import {
     is_empty as is_stack_empty, push, top
 } from "./lib/stack";
@@ -40,6 +46,14 @@ export function RoR_start(): void {
     kill_RoR();
 }
 
+// global constants
+export const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
+export const print_bold_text: boolean = true;
+export const portion_size: Pair<number, number> = [400, 700];
+export const valid_dietary_restrictions: Array<string> = [
+    "meat", "gluten", "dairy", "eggs", "nuts", "fish"
+];
+
 if (require.main === module) {
     RoR_start();
-}
+};

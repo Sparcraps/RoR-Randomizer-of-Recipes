@@ -1,6 +1,4 @@
-import {
-    prompt, print_bold_text
-} from "./main_menu";
+import { prompt, print_bold_text } from "../RoR";
 
 /**
  * Helper function that prints the alternatives the user can choose for

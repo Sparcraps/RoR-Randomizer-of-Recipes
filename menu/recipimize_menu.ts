@@ -18,9 +18,7 @@ import {
     load_recipes, save_new_recipe
 } from "../data/save_recipe";
 
-import {
-    portion_size
-} from "./main_menu";
+import { portion_size } from "../RoR";
 
 import {
     check_input, print_alternatives, print_bold, wait_for_keypress

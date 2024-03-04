@@ -1,12 +1,7 @@
-import * as PromptSync from "prompt-sync";
 
 import { 
     push
 } from "../lib/stack";
-
-import {
-    type Pair
-} from "../lib/list";
 
 import {
     get_menu_memory, set_menu_memory, oblivion
@@ -91,11 +86,3 @@ export function main_menu(): void {
             );
     }
 }
-
-// global constants
-export const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
-export const print_bold_text: boolean = true;
-export const portion_size: Pair<number, number> = [400, 700];
-export const valid_dietary_restrictions: Array<string> = [
-    "meat", "gluten", "dairy", "eggs", "nuts", "fish"
-];

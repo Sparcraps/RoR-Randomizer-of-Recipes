@@ -7,9 +7,7 @@ import {
     remove_from_dietary_restrictions
 } from "../data/save_config";
 
-import {
-    valid_dietary_restrictions
-} from "./main_menu";
+import { valid_dietary_restrictions } from "../RoR";
 
 import {
     check_input, print_alternatives, print_bold

@@ -1,6 +1,4 @@
-import {
-    prompt, valid_dietary_restrictions
-} from "./main_menu";
+import { prompt, valid_dietary_restrictions } from "../RoR";
 
 import {
     Category,
