@@ -17,7 +17,7 @@ const spice = new_category("spice", [["add"]], 5);
 const carbohydrate = new_category("carbohydrate", [["boil"], ["boil", "fry"]], 1)
 
 const broccoli = new_ingredient("vegetable", "broccoli", [], "50g", 17, pair(1, 4));
-const celery = new_ingredient("vegetable", "celery", [], "0.5", 7, pair(1, 2));
+const celery = new_ingredient("vegetable", "celery rib", [], "0.5", 7, pair(1, 2));
 const yellow_onion = new_ingredient("vegetable", "yellow onion", [], "0.5", 46, pair(1, 2));
 const red_onion = new_ingredient("vegetable", "red onion", [], "0.5", 46, pair(1, 2));
 const paprika = new_ingredient("vegetable", "paprika", [], "0.5", 31, pair(1, 2));

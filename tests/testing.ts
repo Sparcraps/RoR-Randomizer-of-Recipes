@@ -1,6 +1,6 @@
 import { Inflectors } from "en-inflectors";
 
-const i = new Inflectors("rib of celery").toPlural();
+const i = new Inflectors("celery rib").toPlural();
 
 const str = JSON.stringify(i);
 
