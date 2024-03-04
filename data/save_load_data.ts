@@ -250,7 +250,7 @@ export function delete_kitchenware(...names: Array<string>): SaveData {
 /**
  * Deletes ingredients with the specified name from ror_data.json and
  * returns the updated save data.
- * @param {...string} names - The sames of the ingredients to delete.
+ * @param {...string} names - The names of the ingredients to delete.
  * @modifies ror_data.json
  * @returns {SaveData} - Updated save data.
  */
@@ -262,7 +262,7 @@ export function delete_ingredient(...names: Array<string>): SaveData {
     // Returns array without ingredients with names in names array.
     function delete_from_arr(arr: Array<Ingredient>): Array<Ingredient> {
         if (names.length === 0) {
-            return arr
+            return arr;
         } else {
             const updated_arr: Array<Ingredient> = [];
             const l = arr.length;
@@ -282,16 +282,96 @@ export function delete_ingredient(...names: Array<string>): SaveData {
 
     ingredient_data.forEach(arr => {
             updated_ingredients.push(delete_from_arr(arr));
-    })
+    });
     
     for (let i = 0; i < names.length; i++) {
         const name = names[i];
         throw new Error(
                 "There is no saved ingredient with the name " + name + "."
-                );
+            );
     }
 
     data.ingredients = updated_ingredients;
     save_data(data);
     return data;
+}
+
+/**
+ * Replaces categories with the same name as input categories in 
+ * ror_data.json and returns the updated save data.
+ * @param {...Category} new_cats - The categories to update with.
+ * @modifies ror_data.json
+ * @returns {SaveData} - Updated save data.
+ */
+export function replace_category(
+    ...new_cats: Array<Category>
+): SaveData {
+    const name_arr: Array<string> = [];
+    new_cats.forEach(cat => {
+        name_arr.push(cat.name); // for use by delete_category
+    });
+
+    try {
+        delete_category(...name_arr);
+        const data = save_new_category(...new_cats);
+        return data;
+    } catch (err) {
+        throw err;
+    } 
+}
+
+/**
+ * Replaces kitchenware with the same name as input kitchenware in 
+ * ror_data.json and returns the updated save data.
+ * @param {...KitchenWare} new_kitch - The kitchenware to update with.
+ * @modifies ror_data.json
+ * @returns {SaveData} - Updated save data.
+ */
+export function replace_kitchenware(
+    ...new_kitch: Array<KitchenWarey>
+): SaveData {
+    const name_arr: Array<string> = [];
+    new_kitch.forEach(kw => {
+        name_arr.push(kw.name); // for use by delete_kitchenware
+    });
+
+    try {
+        delete_kitchenware(...name_arr);
+        const data = save_new_kitchenware(...new_kitch);
+        return data;
+    } catch (err) {
+        throw err;
+    } 
+}
+
+/**
+ * Replaces ingredients with the same name as input ingredients in 
+ * ror_data.json and returns the updated save data.
+ * @param {...Ingredient} new_ingredients - The ingredients to update with.
+ * @modifies ror_data.json
+ * @returns {SaveData} - Updated save data.
+ */
+export function replace_ingredient(
+    ...new_ingredients: Array<Ingredient>
+): SaveData {
+    const name_arr: Array<string> = [];
+    for (let i = 0; i < new_ingredients.length; i++) {
+        const cat = new_ingredients[i].category;
+        if (find_by_name(cat, load_data().categories) === -1) { // if the category for the new ingredient doesn't exist,
+            new_ingredients.splice(i, 1);                       //save_new_ingredient would not work.
+            console.error(                                             
+                new Error("Category with name " + cat + "doesn't exist.")
+            );                                                         
+        } else {
+            name_arr.push(new_ingredients[i].name); // for use by delete_ingredient
+        }
+    }        
+                    
+    try {
+        delete_ingredient(...name_arr);
+        const data = save_new_ingredient(...new_ingredients);
+        return data;
+    } catch (err) {
+        throw err;
+    } 
 }
