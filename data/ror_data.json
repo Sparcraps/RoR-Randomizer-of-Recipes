@@ -120,7 +120,7 @@
                     "boil"
                 ]
             ],
-            "max_ingredients": 2
+            "max_ingredients": 1
         },
         {
             "tag": "category",

@@ -12,7 +12,7 @@ import {
 const vegetable = new_category("vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["fry"], ["chop", "bake"], ["chop", "bake", "boil"], ["bake"], ["chop", "stir fry"], ["stir fry"]], 5);
 const root_vegetable = new_category("root vegetable", [["chop", "boil"],["boil"], ["chop", "fry"], ["marinate", "chop", "fry"], ["chop", "marinate", "fry"], ["chop", "bake"], ["boil", "mash"]], 2);
 const liquid = new_category("liquid", [["add"], ["reduce"]], 1)
-const meat = new_category("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 2);
+const meat = new_category("meat", [["grill"], ["slice", "grill"], ["pound", "fry"], ["marinate", "fry"], ["marinate", "slice", "fry"], ["slice", "marinate", "fry"], ["fry"], ["slice", "fry"], ["boil"], ["slice", "boil"]], 1);
 const spice = new_category("spice", [["add"]], 5);
 const carbohydrate = new_category("carbohydrate", [["boil"], ["boil", "fry"]], 1)
 

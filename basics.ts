@@ -342,7 +342,9 @@ export function empty_ingredient(): Ingredient {
 }
 
 export function has_separable_inventory(kw: KitchenWare) {
-    if (kw.name === "cutting board" || kw.name === "oven") {
+    if (
+        kw.name === "cutting board" || kw.name === "oven" || kw.name === "bowl"
+    ) {
         return true;
     } else {
         return false;
