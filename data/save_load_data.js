@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delete_ingredient = exports.delete_kitchenware = exports.delete_category = exports.save_new_ingredient = exports.save_new_kitchenware = exports.save_new_category = exports.save_data = exports.load_data = void 0;
+exports.replace_ingredient = exports.delete_ingredient = exports.delete_kitchenware = exports.delete_category = exports.save_new_ingredient = exports.save_new_kitchenware = exports.save_new_category = exports.save_data = exports.load_data = void 0;
 var basics_1 = require("../basics");
 var fs = require('fs');
 var filepath = __dirname + "/ror_data.json";
@@ -277,3 +277,36 @@ function delete_ingredient() {
     return data;
 }
 exports.delete_ingredient = delete_ingredient;
+/**
+ * Replaces ingredients with the same name as input ingredients in
+ * ror_data.json and returns the updated save data.
+ * @param {...string} names - The sames of the ingredients to delete.
+ * @modifies ror_data.json
+ * @returns {SaveData} - Updated save data.
+ */
+function replace_ingredient() {
+    var new_ingredients = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        new_ingredients[_i] = arguments[_i];
+    }
+    var name_arr = [];
+    for (var i = 0; i < new_ingredients.length; i++) {
+        var cat = new_ingredients[i].category;
+        if ((0, basics_1.find_by_name)(cat, load_data().categories) === -1) { // if the category for the new ingredient doesn't exist,
+            new_ingredients.splice(i, 1); //save_new_ingredient would not work.
+            console.error(new Error("Category with name " + cat + "doesn't exist."));
+        }
+        else {
+            name_arr.push(new_ingredients[i].name); // for use by delete_ingredient
+        }
+    }
+    try {
+        delete_ingredient.apply(void 0, name_arr);
+        var data = save_new_ingredient.apply(void 0, new_ingredients);
+        return data;
+    }
+    catch (err) {
+        throw err;
+    }
+}
+exports.replace_ingredient = replace_ingredient;

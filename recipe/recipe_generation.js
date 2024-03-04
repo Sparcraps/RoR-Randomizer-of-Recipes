@@ -17,6 +17,10 @@ function new_recipe(portions) {
 }
 exports.new_recipe = new_recipe;
 function generate_recipe(min_max_kcal, portions, filters) {
+    if ((0, list_1.tail)(min_max_kcal) <= (0, list_1.head)(min_max_kcal)) {
+        throw new Error("Max kcal per portion needs to be larger than min kcal per portion");
+    }
+    else { }
     var recipe = new_recipe(portions);
     var selected_methods = (0, ingredients_methods_1.randomize_ingredients_and_methods)(min_max_kcal, recipe, filters, data);
     var steps = (0, cooking_steps_1.generate_cooking_steps)(selected_methods, data);
@@ -31,6 +35,6 @@ function generate_recipe(min_max_kcal, portions, filters) {
 }
 exports.generate_recipe = generate_recipe;
 if (require.main === module) {
-    var recipe = generate_recipe((0, list_1.pair)(400, 700), 4, []);
+    var recipe = generate_recipe((0, list_1.pair)(900, 700), 4, []);
     (0, printing_1.print_recipe)(recipe);
 }

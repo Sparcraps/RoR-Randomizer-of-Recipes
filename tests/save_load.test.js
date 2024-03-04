@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var save_load_data_1 = require("../save_load_data");
+var save_load_data_1 = require("../data/save_load_data");
 var basics_1 = require("../basics");
 describe("testing functions to save and load data", function () {
     test("save_data and load_data work", function () {
@@ -38,7 +38,12 @@ describe("testing functions to save and load data", function () {
         var console_spy = jest.spyOn(console, 'error')
             .mockImplementation(function () { });
         var no_name = "61723801837814017480956710847514859078419";
-        (0, save_load_data_1.delete_ingredient)(no_name);
+        try {
+            (0, save_load_data_1.delete_ingredient)(no_name);
+        }
+        catch (err) {
+            console.error(err);
+        }
         expect(console_spy).toHaveBeenCalledWith(new Error("There is no saved ingredient with the name " + no_name + "."));
     });
     test("delete_category gives error when category doesn't exist", function () {
@@ -48,8 +53,9 @@ describe("testing functions to save and load data", function () {
         (0, save_load_data_1.delete_category)(no_name);
         expect(console_spy).toHaveBeenCalledWith(new Error("There is no saved category with the name " + no_name + "."));
     });
-    test("functions to save and delete work on test ingredients and test category", function () {
-        var test_category = (0, basics_1.new_category)("test category", ["chop", "boil"], 10);
+    test("functions to save, delete and replace" +
+        " work on test ingredients and test category", function () {
+        var test_category = (0, basics_1.new_category)("test category", [["chop"], ["boil"]], 10);
         var ti1 = (0, basics_1.new_ingredient)("test category", "test ingredient", ["cat"], "liters", 100, [50, 500]);
         var ti2 = (0, basics_1.new_ingredient)("test category", "test ingredient 2", ["dog"], "liters", 100, [50, 300]);
         var ti3 = (0, basics_1.new_ingredient)("test category", "test ingredient 3", ["snake"], "liters", 100, [20, 300]);
@@ -69,6 +75,12 @@ describe("testing functions to save and load data", function () {
         test_arr = ingredient_data[index];
         expect(test_arr.some(function (e) { return e.name === "test ingredient 2"; })).toBe(false);
         expect(test_arr).toContainEqual(ti1);
+        expect(test_arr).toContainEqual(ti3);
+        var ti4 = (0, basics_1.new_ingredient)("test category", "test ingredient", ["air"], "liters", 100, [800, 900]);
+        saved = (0, save_load_data_1.replace_ingredient)(ti4);
+        ingredient_data = saved.ingredients;
+        test_arr = ingredient_data[index];
+        expect(test_arr).toContainEqual(ti4);
         expect(test_arr).toContainEqual(ti3);
         saved = (0, save_load_data_1.delete_category)("test category");
         var cats = saved.categories;

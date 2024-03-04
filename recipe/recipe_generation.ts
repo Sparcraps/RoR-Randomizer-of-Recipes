@@ -1,5 +1,5 @@
 import { Ingredient } from "../basics";
-import { Pair, pair } from "../lib/list";
+import { Pair, head, pair, tail } from "../lib/list";
 import { load_data } from "../data/save_load_data";
 import { CookingStep, generate_cooking_steps } from "./cooking_steps";
 import { generate_name } from "./generate_name";
@@ -33,6 +33,12 @@ export function generate_recipe(
     min_max_kcal: Pair<number, number>,
     portions: number, filters: Array<string>,
 ): Recipe {
+    if (tail(min_max_kcal) <= head(min_max_kcal)) {
+        throw new Error(
+            "Max kcal per portion needs to be larger than min kcal per portion"
+        );
+    } else {}
+
     const recipe = new_recipe(portions);
 
     const selected_methods = randomize_ingredients_and_methods(
@@ -50,6 +56,6 @@ export function generate_recipe(
 }
 
 if (require.main === module) {
-    const recipe = generate_recipe(pair(400, 700), 4, []);
+    const recipe = generate_recipe(pair(900, 700), 4, []);
     print_recipe(recipe);
 }

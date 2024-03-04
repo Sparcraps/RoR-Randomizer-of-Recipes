@@ -1,7 +1,7 @@
 import {
     load_data, save_data, save_new_ingredient, delete_ingredient,
-    save_new_category, delete_category, save_new_kitchenware, delete_kitchenware
-} from "../save_load_data";
+    save_new_category, delete_category, save_new_kitchenware, delete_kitchenware, replace_ingredient
+} from "../data/save_load_data";
 
 import {
     new_ingredient, Category, new_category, new_kitchenware
@@ -55,7 +55,12 @@ describe("testing functions to save and load data", () => {
             .mockImplementation(() => {});
 
         const no_name = "61723801837814017480956710847514859078419"
-        delete_ingredient(no_name);
+        try {
+            delete_ingredient(no_name);
+        } catch (err) {
+            console.error(err);
+        }
+        
         expect(console_spy).toHaveBeenCalledWith(
             new Error(
                 "There is no saved ingredient with the name " + no_name + "."
@@ -75,8 +80,8 @@ describe("testing functions to save and load data", () => {
     })
 
     test(
-        "functions to save and delete" +
-        "work on test ingredients and test category",
+        "functions to save, delete and replace" +
+        " work on test ingredients and test category",
         () => {
         const test_category = new_category(
             "test category", [["chop"], ["boil"]], 10
@@ -104,10 +109,18 @@ describe("testing functions to save and load data", () => {
 
         saved = delete_ingredient(ti2.name);
         ingredient_data = saved.ingredients;
-
         test_arr = ingredient_data[index];
         expect(test_arr.some(e => e.name === "test ingredient 2")).toBe(false);
         expect(test_arr).toContainEqual(ti1);
+        expect(test_arr).toContainEqual(ti3);
+
+        const ti4 = new_ingredient("test category", "test ingredient", 
+                                    ["air"], "liters", 100, [800, 900]);
+
+        saved = replace_ingredient(ti4);
+        ingredient_data = saved.ingredients;
+        test_arr = ingredient_data[index];
+        expect(test_arr).toContainEqual(ti4);
         expect(test_arr).toContainEqual(ti3);
 
         saved = delete_category("test category");
