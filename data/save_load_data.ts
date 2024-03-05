@@ -336,7 +336,8 @@ export function delete_ingredient(...names: Array<string>): SaveData {
  * ror_data.json and returns the updated save data.
  * @param {string} old_name - The name of the category to replace.
  * @param {Category} new_cat - The category to update with.
- * @precondition - 
+ * @precondition - if the name of new_cat is not the same as old_name, it cannot
+ * be the same as the name of any saved Category.
  * @modifies ror_data.json
  * @returns {SaveData} - Updated save data.
  */
@@ -358,6 +359,8 @@ export function replace_category(
  * ror_data.json and returns the updated save data.
  * @param old_name - The name of the kitchenware to replace.
  * @param {KitchenWare} new_kw - The kitchenware to update with.
+ * @precondition - if the name of new_kw is not the same as old_name, it cannot
+ * be the same as the name of any saved Kitchenware.
  * @modifies ror_data.json
  * @returns {SaveData} - Updated save data.
  */
@@ -379,6 +382,9 @@ export function replace_kitchenware(
  * ror_data.json and returns the updated save data.
  * @param {string} old_ingredient_name - The name of the ingredient to replace.
  * @param {Ingredient} new_ingredient - The ingredient to update with.
+ * @precondition - if the name of new_ingredient is not the same as
+ * old_ingredient_name, it cannot be the same as the name of any saved
+ * Ingredient.
  * @modifies ror_data.json
  * @returns {SaveData} - Updated save data.
  */
