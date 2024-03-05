@@ -100,7 +100,7 @@ function generate_cooking_steps(selected_methods) {
             extra_i = do_separable_method(current_method, steps);
         }
         else { }
-        kw.inventory = __spreadArray(__spreadArray([], ingredient_names, true), extra_i, true);
+        basics_1.add_ingredient_to_kitchenware.apply(void 0, __spreadArray(__spreadArray([kw], ingredient_names, false), extra_i, false));
         var current_step = new_cooking_step(current_method, __spreadArray(__spreadArray([], ingredient_names, true), extra_i, true), kw, is_active);
         steps.push(current_step);
         var more_ingredients = do_similar_methods(method, steps); // finds ingredients that use the same method as the rest of method from some point.

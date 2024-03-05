@@ -239,20 +239,20 @@ export function add_to_ingredient_history(ingredient: Ingredient, str: string): 
 
 /**
  * Add an Ingredient to an existing KitchenWare's inventory, unless the ingredient is already in the inventory.
- * @param ingredient - Ingredient that is being added
  * @param kitchenware - Kitchenware to add ingredient to
+ * @param ingredient - Ingredient that is being added
  * @returns Returns kitchenware with updated inventory, or without updated inventory if ingredient was already in inventory.
  */
-export function add_ingredient_to_kitchenware(ingredient: Ingredient, kitchenware: KitchenWare): KitchenWare {
+export function add_ingredient_to_kitchenware(
+    kitchenware: KitchenWare, ...ingredients: Array<string>
+): KitchenWare {
     const inv = get_kitchenware_inventory(kitchenware);
-    const ingredient_name = get_ingredient_name(ingredient);
-    
-    if (!inv.includes(ingredient_name)) {
-        inv.push(ingredient_name);
-        return kitchenware;
-    } else {
-        return kitchenware;
-    }
+    ingredients.forEach(i => {
+        if (!inv.includes(i)) {
+            inv.push(i);
+        }
+    })
+    return kitchenware;
 }
 
 /**

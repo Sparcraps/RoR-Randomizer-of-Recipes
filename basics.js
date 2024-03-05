@@ -181,20 +181,22 @@ export function add_to_ingredient_history(ingredient: Ingredient, str: string): 
 */
 /**
  * Add an Ingredient to an existing KitchenWare's inventory, unless the ingredient is already in the inventory.
- * @param ingredient - Ingredient that is being added
  * @param kitchenware - Kitchenware to add ingredient to
+ * @param ingredient - Ingredient that is being added
  * @returns Returns kitchenware with updated inventory, or without updated inventory if ingredient was already in inventory.
  */
-function add_ingredient_to_kitchenware(ingredient, kitchenware) {
+function add_ingredient_to_kitchenware(kitchenware) {
+    var ingredients = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        ingredients[_i - 1] = arguments[_i];
+    }
     var inv = get_kitchenware_inventory(kitchenware);
-    var ingredient_name = get_ingredient_name(ingredient);
-    if (!inv.includes(ingredient_name)) {
-        inv.push(ingredient_name);
-        return kitchenware;
-    }
-    else {
-        return kitchenware;
-    }
+    ingredients.forEach(function (i) {
+        if (!inv.includes(i)) {
+            inv.push(i);
+        }
+    });
+    return kitchenware;
 }
 exports.add_ingredient_to_kitchenware = add_ingredient_to_kitchenware;
 /**

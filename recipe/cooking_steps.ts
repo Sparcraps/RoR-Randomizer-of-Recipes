@@ -1,5 +1,5 @@
 import {
-    type  KitchenWare, type  Method, has_separable_inventory
+    type  KitchenWare, type  Method, has_separable_inventory, add_ingredient_to_kitchenware
 } from "../basics";
 import { type Pair, head, pair, tail } from "../lib/list";
 import { get_data } from "../data/save_load_data";
@@ -119,7 +119,7 @@ export function generate_cooking_steps(
             extra_i = do_separable_method(current_method, steps);
         } else {}
 
-        kw.inventory = [...ingredient_names, ...extra_i]
+        add_ingredient_to_kitchenware(kw, ...ingredient_names, ...extra_i);
         const current_step = new_cooking_step(
             current_method, [...ingredient_names, ...extra_i], kw, is_active
             );
