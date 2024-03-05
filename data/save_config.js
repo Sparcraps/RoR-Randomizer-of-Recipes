@@ -1,8 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.remove_from_dietary_restrictions = exports.add_to_dietary_restrictions = exports.change_portion_amount = exports.save_configuration = exports.load_configuration = void 0;
-var fs = require('fs');
-var filepath = __dirname + "/config.json";
+var menu_global_functions_1 = require("../menu/menu_global_functions");
+/**
+ * Creates a new configurations object with default settings.
+ * Can be used in case the config.json gets deleted.
+ * @returns a Configuration object
+ */
 function new_configuration() {
     return { portion_amount: 4, dietary_restrictions: [] };
 }
@@ -55,10 +59,9 @@ function add_to_dietary_restrictions(diet_input, config) {
     if (!rest.includes(diet_input)) {
         rest.push(diet_input);
         save_configuration(config);
-        // console.log("Dietary restriction successfully added!")
     }
     else {
-        console.log("Dietary restriction not added; it is already active.");
+        (0, menu_global_functions_1.print_bold)("Dietary restriction not added; it is already active.");
     }
     return config;
 }
@@ -79,11 +82,13 @@ function remove_from_dietary_restrictions(diet_input, config) {
     if (i !== -1) {
         rest.splice(i, 1);
         save_configuration(config);
-        // console.log("Dietary restriction successfully removed!")
     }
     else {
-        console.log("Dietary restriction not removed; it is currently not active.");
+        (0, menu_global_functions_1.print_bold)("Dietary restriction not removed; " +
+            "it is currently not active.");
     }
     return config;
 }
 exports.remove_from_dietary_restrictions = remove_from_dietary_restrictions;
+var fs = require('fs');
+var filepath = __dirname + "/config.json";
