@@ -66,7 +66,7 @@ export function configure(): void {
         set_menu_memory(push(dietary_prompt, get_menu_memory()));
     } else if (user_input === "i") {
         set_menu_memory(push(configure_ingredients, get_menu_memory()));
-    } else if (user_input === "i") {
+    } else if (user_input === "c") {
         set_menu_memory(push(configure_categories, get_menu_memory()));
     } else if (user_input === "k") {
         set_menu_memory(push(configure_kitchenware, get_menu_memory()));
