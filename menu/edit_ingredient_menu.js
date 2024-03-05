@@ -12,7 +12,6 @@ var menu_memory_1 = require("./menu_memory");
  */
 function edit_ingredient(ingredient) {
     var print_menu = [
-        '"n" = change ingredient name',
         '"c" = change ingredient categories',
         '"d" = change ingredient dietary restrictions',
         '"m" = change ingredient measurement',
@@ -20,13 +19,12 @@ function edit_ingredient(ingredient) {
         '"r" = change ingredient amount range',
         '"b" = save ingredient and go back to ingredient menu'
     ];
-    var valid_inputs = ["n", "c", "d", "m", "k", "r", "b"];
+    var valid_inputs = ["c", "d", "m", "k", "r", "b"];
+    (0, menu_global_functions_1.print_bold)("Ingredient being edited: " + ingredient.name);
+    console.log();
     (0, menu_global_functions_1.print_alternatives)(print_menu);
     var user_input = (0, menu_global_functions_1.check_input)(valid_inputs, "Choose what ingredient data you want to adjust: ");
-    if (user_input === "n") {
-        ingredient = (0, add_ingredient_menu_1.select_name)(ingredient, true);
-    }
-    else if (user_input === "c") {
+    if (user_input === "c") {
         ingredient = (0, add_ingredient_menu_1.select_category)(ingredient, true);
     }
     else if (user_input === "d") {

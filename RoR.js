@@ -6,6 +6,7 @@ var stack_1 = require("./lib/stack");
 var main_menu_1 = require("./menu/main_menu");
 var menu_global_functions_1 = require("./menu/menu_global_functions");
 var menu_memory_1 = require("./menu/menu_memory");
+var save_load_data_1 = require("./data/save_load_data");
 /**
  * Print the ASCII-art of RoR that is shown on startup and initialize
  * the program by adding the main menu to the top of the menu memory.
@@ -15,6 +16,7 @@ function RoR_start() {
     function kill_RoR() {
         (0, menu_global_functions_1.print_bold)("Goodbye :)");
     }
+    (0, save_load_data_1.load_data)();
     console.log("----------------------------------------");
     console.log("Welcome to Randomizer of Recipes, aka");
     console.log("____       ____   ");

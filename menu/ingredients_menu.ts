@@ -7,7 +7,7 @@ import {
 } from "../basics";
 
 import {
-    SaveData, delete_ingredient, load_data
+    SaveData, delete_ingredient, get_data
 } from "../data/save_load_data";
 
 import {
@@ -94,7 +94,7 @@ export function configure_ingredients(): void {
         };
     }
 
-    let data: SaveData = load_data();
+    let data: SaveData = get_data();
     let valid_inputs = ["a", "e", "r", "l", "b"];
     let print_menu = ['"a" = add ingredient',
                       '"e" = edit existing ingredient',

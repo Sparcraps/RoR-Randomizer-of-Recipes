@@ -9,7 +9,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.select_range = exports.select_kcal = exports.select_measurement = exports.select_allergies = exports.select_category = exports.select_name = exports.add_ingredient = void 0;
+exports.select_range = exports.select_kcal = exports.select_measurement = exports.select_allergies = exports.select_category = exports.add_ingredient = void 0;
 var RoR_1 = require("../RoR");
 var basics_1 = require("../basics");
 var menu_global_functions_1 = require("./menu_global_functions");
@@ -22,6 +22,18 @@ var edit_ingredient_menu_1 = require("./edit_ingredient_menu");
  * A submenu of the ingredients menu, where the user adds a new ingredient.
  */
 function add_ingredient() {
+    // Helper function that prompts the user to select a name for
+    // an ingredient and then returns the updated ingredient.
+    function select_name(ingredient) {
+        var name = (0, RoR_1.prompt)("Enter new ingredient name: ").trim().toLowerCase();
+        console.log();
+        while (name === "") {
+            (0, menu_global_functions_1.print_bold)("Ingredient name cannot be empty or only contain whitespace.");
+            name = (0, RoR_1.prompt)("Enter new ingredient name: ").trim().toLowerCase();
+        }
+        ingredient.name = name;
+        return ingredient;
+    }
     var new_ingredient = (0, basics_1.empty_ingredient)();
     new_ingredient = select_name(new_ingredient);
     new_ingredient = select_category(new_ingredient);
@@ -51,31 +63,18 @@ function add_ingredient() {
     }
 }
 exports.add_ingredient = add_ingredient;
-// Helper function that prompts the user to select a name for
-// an ingredient and then returns the updated ingredient.
-function select_name(ingredient, print_contents) {
-    if (print_contents === void 0) { print_contents = false; }
-    if (print_contents) {
-        (0, menu_global_functions_1.print_bold)("Current ingredient name: " + ingredient.name);
-        console.log();
-    }
-    else { }
-    var name = (0, RoR_1.prompt)("Enter new ingredient name: ").trim().toLowerCase();
-    console.log();
-    while (name === "") {
-        (0, menu_global_functions_1.print_bold)("Ingredient name cannot be empty or only contain whitespace.");
-        name = (0, RoR_1.prompt)("Enter new ingredient name: ").trim().toLowerCase();
-    }
-    ingredient.name = name;
-    return ingredient;
-}
-exports.select_name = select_name;
-// Helper function that prompts the user to select a category for
-// an ingredient and then returns the updated ingredient.
-function select_category(ingredient, print_contents) {
-    if (print_contents === void 0) { print_contents = false; }
-    var data = (0, save_load_data_1.load_data)();
-    if (print_contents) {
+/**
+ * Helper function that prompts the user to select a category for
+ * an ingredient.
+ * @param ingredient - The ingredient to select category for
+ * @param is_editing - Determines whether the current category should be
+ * printed before prompting the user (false by default)
+ * @returns the updated ingredient.
+ */
+function select_category(ingredient, is_editing) {
+    if (is_editing === void 0) { is_editing = false; }
+    var data = (0, save_load_data_1.get_data)();
+    if (is_editing) {
         (0, menu_global_functions_1.print_bold)("Current ingredient category: " + ingredient.category);
         console.log();
     }
@@ -89,14 +88,25 @@ function select_category(ingredient, print_contents) {
     (0, menu_global_functions_1.print_alternatives)(category_names);
     var user_input = (0, menu_global_functions_1.check_input)(category_names, "Choose which category the new ingredient belongs to: ");
     ingredient.category = user_input;
+    if (is_editing) {
+        (0, menu_global_functions_1.print_bold)("Ingredient category updated!");
+        console.log();
+    }
+    else { }
     return ingredient;
 }
 exports.select_category = select_category;
-// Helper function that prompts the user to select the dietary restrictions
-// that apply to an ingredient and then returns the updated ingredient.
-function select_allergies(ingredient, print_contents) {
-    if (print_contents === void 0) { print_contents = false; }
-    if (print_contents) {
+/**
+ * Helper function that prompts the user to select the dietary restrictions
+ * that apply to an ingredient.
+ * @param ingredient - The ingredient to select dietary restrictions for
+ * @param is_editing - Determines whether the current dietary restrictions
+ * should be printed before prompting the user (false by default)
+ * @returns the updated ingredient.
+ */
+function select_allergies(ingredient, is_editing) {
+    if (is_editing === void 0) { is_editing = false; }
+    if (is_editing) {
         (0, menu_global_functions_1.print_bold)("Current ingredient dietary restrictions: ");
         (0, menu_global_functions_1.print_alternatives)(ingredient.allergies);
         console.log();
@@ -125,14 +135,25 @@ function select_allergies(ingredient, print_contents) {
             "apply: ");
     }
     ingredient.allergies = allergy_array;
+    if (is_editing) {
+        (0, menu_global_functions_1.print_bold)("Ingredient dietary restrictions updated!");
+        console.log();
+    }
+    else { }
     return ingredient;
 }
 exports.select_allergies = select_allergies;
-// Helper function that prompts the user to select the unit of measurement
-// for an ingredient and then returns the updated ingredient.
-function select_measurement(ingredient, print_contents) {
-    if (print_contents === void 0) { print_contents = false; }
-    if (print_contents) {
+/**
+ * Helper function that prompts the user to select the unit of measurement for
+ * an ingredient.
+ * @param ingredient - The ingredient to select the unit of measurement for
+ * @param is_editing - Determines whether the current unit of measurement
+ * should be printed before prompting the user (false by default)
+ * @returns the updated ingredient.
+ */
+function select_measurement(ingredient, is_editing) {
+    if (is_editing === void 0) { is_editing = false; }
+    if (is_editing) {
         (0, menu_global_functions_1.print_bold)("Current ingredient measurement: " + ingredient.measurement);
         console.log();
     }
@@ -140,14 +161,25 @@ function select_measurement(ingredient, print_contents) {
     ingredient.measurement = (0, RoR_1.prompt)('Enter unit of measurement either as amount in the format of a ' +
         'float number, or as a float followed by a string, e.g. "0.5 dl": ').trim().toLowerCase();
     console.log();
+    if (is_editing) {
+        (0, menu_global_functions_1.print_bold)("Ingredient unit of measurement updated!");
+        console.log();
+    }
+    else { }
     return ingredient;
 }
 exports.select_measurement = select_measurement;
-// Helper function that prompts the user to select the kcal per measurement
-// for an ingredient and then returns the updated ingredient.
-function select_kcal(ingredient, print_contents) {
-    if (print_contents === void 0) { print_contents = false; }
-    if (print_contents) {
+/**
+ * Helper function that prompts the user to select the kcal per measurement for
+ * an ingredient.
+ * @param ingredient - The ingredient to select the kcal per measurement for
+ * @param is_editing - Determines whether the current kcal per measurement
+ * should be printed before prompting the user (false by default)
+ * @returns the updated ingredient.
+ */
+function select_kcal(ingredient, is_editing) {
+    if (is_editing === void 0) { is_editing = false; }
+    if (is_editing) {
         (0, menu_global_functions_1.print_bold)("Current ingredient kcal per measurement: " +
             ingredient.kcal_per_measurement.toString());
         console.log();
@@ -162,17 +194,28 @@ function select_kcal(ingredient, print_contents) {
         else {
             console.log();
             ingredient.kcal_per_measurement = kcal_input;
+            if (is_editing) {
+                (0, menu_global_functions_1.print_bold)("Ingredient kcal per measurement updated!");
+                console.log();
+            }
+            else { }
             return ingredient;
         }
     }
 }
 exports.select_kcal = select_kcal;
-// Helper function that prompts the user to select the range in which
-// an ingredients amount can be randomized, based on the ingredients
-// unit of measurement, and then returns the updated ingredient.
-function select_range(ingredient, print_contents) {
-    if (print_contents === void 0) { print_contents = false; }
-    if (print_contents) {
+/**
+ * Helper function that prompts the user to select the range in which
+ * an ingredient's amount can be randomized, based on the ingredients
+ * unit of measurement.
+ * @param ingredient - The ingredient to select the amount range for
+ * @param is_editing - Determines whether the current amount range
+ * should be printed before prompting the user (false by default)
+ * @returns the updated ingredient.
+ */
+function select_range(ingredient, is_editing) {
+    if (is_editing === void 0) { is_editing = false; }
+    if (is_editing) {
         (0, menu_global_functions_1.print_bold)("Current ingredient amount range: " +
             ingredient.range[0].toString() +
             " - " +
@@ -195,6 +238,11 @@ function select_range(ingredient, print_contents) {
         upper_range = (0, menu_global_functions_1.integer_prompt)("Please choose a new upper limit: ");
     }
     ingredient.range = (0, list_1.pair)(lower_range, upper_range);
+    if (is_editing) {
+        (0, menu_global_functions_1.print_bold)("Ingredient amount range updated!");
+        console.log();
+    }
+    else { }
     return ingredient;
 }
 exports.select_range = select_range;

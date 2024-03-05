@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createEditIngredientWrapper = exports.configure_ingredients = void 0;
+exports.configure_ingredients = void 0;
 var RoR_1 = require("../RoR");
 var save_load_data_1 = require("../data/save_load_data");
 var stack_1 = require("../lib/stack");
@@ -59,7 +59,14 @@ function configure_ingredients() {
         else { }
         console.log();
     }
-    var data = (0, save_load_data_1.load_data)();
+    // Inside this function, you can access the ingredient parameter
+    // and call edit_ingredient with the correct value
+    function edit_ingredient_wrapper(ingredient) {
+        return function () {
+            (0, edit_ingredient_menu_1.edit_ingredient)(ingredient);
+        };
+    }
+    var data = (0, save_load_data_1.get_data)();
     var valid_inputs = ["a", "e", "r", "l", "b"];
     var print_menu = ['"a" = add ingredient',
         '"e" = edit existing ingredient',
@@ -74,7 +81,7 @@ function configure_ingredients() {
     else if (user_input === "e") {
         var ingredient = find_ingredient();
         if (ingredient !== undefined) {
-            (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(createEditIngredientWrapper(ingredient), (0, menu_memory_1.get_menu_memory)()));
+            (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(edit_ingredient_wrapper(ingredient), (0, menu_memory_1.get_menu_memory)()));
         }
         else {
             (0, menu_global_functions_1.print_bold)("There is no ingredient with that name!");
@@ -95,12 +102,3 @@ function configure_ingredients() {
     }
 }
 exports.configure_ingredients = configure_ingredients;
-function createEditIngredientWrapper(ingredient) {
-    return function () {
-        // Inside this function, you can access the ingredient parameter
-        // and call edit_ingredient with the correct value
-        (0, edit_ingredient_menu_1.edit_ingredient)(ingredient);
-    };
-}
-exports.createEditIngredientWrapper = createEditIngredientWrapper;
-// Then, in the configure_ingredients function, use the wrapper function instead of bind

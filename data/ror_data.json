@@ -6,10 +6,8 @@
             "cooking_methods": [
                 [
                     "chop",
-                    "boil"
-                ],
-                [
-                    "boil"
+                    "add stock to",
+                    "simmer"
                 ],
                 [
                     "chop",
@@ -25,7 +23,8 @@
                 [
                     "chop",
                     "bake",
-                    "boil"
+                    "add stock to",
+                    "simmer"
                 ],
                 [
                     "bake"
@@ -35,7 +34,11 @@
                     "stir fry"
                 ],
                 [
-                    "stir fry"
+                    "chop"
+                ],
+                [
+                    "chop",
+                    "add"
                 ]
             ],
             "max_ingredients": 5
@@ -49,16 +52,15 @@
                     "boil"
                 ],
                 [
-                    "boil"
+                    "chop",
+                    "add stock to",
+                    "simmer"
                 ],
                 [
                     "chop",
-                    "fry"
-                ],
-                [
-                    "marinate",
-                    "chop",
-                    "fry"
+                    "fry",
+                    "add stock to",
+                    "simmer"
                 ],
                 [
                     "chop",
@@ -70,6 +72,7 @@
                     "bake"
                 ],
                 [
+                    "chop",
                     "boil",
                     "mash"
                 ]
@@ -81,13 +84,6 @@
             "name": "meat",
             "cooking_methods": [
                 [
-                    "grill"
-                ],
-                [
-                    "slice",
-                    "grill"
-                ],
-                [
                     "pound",
                     "fry"
                 ],
@@ -96,11 +92,6 @@
                     "fry"
                 ],
                 [
-                    "marinate",
-                    "slice",
-                    "fry"
-                ],
-                [
                     "slice",
                     "marinate",
                     "fry"
@@ -117,7 +108,14 @@
                 ],
                 [
                     "slice",
-                    "boil"
+                    "add stock to",
+                    "simmer"
+                ],
+                [
+                    "slice",
+                    "marinate",
+                    "add stock to",
+                    "simmer"
                 ]
             ],
             "max_ingredients": 1
@@ -349,6 +347,18 @@
                 "tag": "ingredient"
             },
             {
+                "name": "potato",
+                "category": "root vegetable",
+                "allergies": [],
+                "measurement": "0.5",
+                "kcal_per_measurement": 85,
+                "range": [
+                    1,
+                    3
+                ],
+                "tag": "ingredient"
+            },
+            {
                 "name": "parsnip",
                 "category": "root vegetable",
                 "allergies": [],
@@ -369,18 +379,6 @@
                 "range": [
                     1,
                     2
-                ],
-                "tag": "ingredient"
-            },
-            {
-                "name": "potato",
-                "category": "root vegetable",
-                "allergies": [],
-                "measurement": "0.5",
-                "kcal_per_measurement": 85,
-                "range": [
-                    1,
-                    3
                 ],
                 "tag": "ingredient"
             }

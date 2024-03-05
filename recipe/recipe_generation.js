@@ -7,7 +7,6 @@ var cooking_steps_1 = require("./cooking_steps");
 var generate_name_1 = require("./generate_name");
 var ingredients_methods_1 = require("./ingredients_methods");
 var printing_1 = require("./printing");
-var data = (0, save_load_data_1.load_data)();
 function new_recipe(portions) {
     return {
         tag: "recipe", name: "",
@@ -21,6 +20,7 @@ function generate_recipe(min_max_kcal, portions, filters) {
         throw new Error("Max kcal per portion needs to be larger than min kcal per portion");
     }
     else { }
+    var data = (0, save_load_data_1.get_data)();
     var recipe = new_recipe(portions);
     var selected_methods = (0, ingredients_methods_1.randomize_ingredients_and_methods)(min_max_kcal, recipe, filters, data);
     var steps = (0, cooking_steps_1.generate_cooking_steps)(selected_methods, data);

@@ -11,7 +11,7 @@ import {
 } from "./menu_global_functions";
 
 import {
-    type SaveData, load_data, save_new_ingredient
+    type SaveData, get_data, save_new_ingredient
 } from "../data/save_load_data";
 
 import {
@@ -94,7 +94,7 @@ export function add_ingredient(): void {
  */
 export function select_category(ingredient: Ingredient,
             is_editing: boolean = false): Ingredient {
-    let data: SaveData = load_data();
+    let data: SaveData = get_data();
 
     if (is_editing) {
         print_bold("Current ingredient category: " + ingredient.category);

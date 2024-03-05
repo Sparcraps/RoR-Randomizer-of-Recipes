@@ -1,12 +1,10 @@
 import { Ingredient } from "../basics";
 import { Pair, head, pair, tail } from "../lib/list";
-import { load_data } from "../data/save_load_data";
+import { get_data } from "../data/save_load_data";
 import { CookingStep, generate_cooking_steps } from "./cooking_steps";
 import { generate_name } from "./generate_name";
 import { randomize_ingredients_and_methods } from "./ingredients_methods";
 import { print_recipe } from "./printing";
-
-const data = load_data();
 
 /**
  * Recipe data type.
@@ -39,6 +37,7 @@ export function generate_recipe(
         );
     } else {}
 
+    const data = get_data();
     const recipe = new_recipe(portions);
 
     const selected_methods = randomize_ingredients_and_methods(
