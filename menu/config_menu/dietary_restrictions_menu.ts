@@ -1,49 +1,34 @@
 import {
-    type Pair, pair
-} from "../../lib/list";
-
-import {
     type Configuration, add_to_dietary_restrictions, load_configuration,
     remove_from_dietary_restrictions
 } from "../../data/save_config";
-
-import { valid_dietary_restrictions } from "../../RoR";
 
 import {
     check_input, print_alternatives, print_bold
 } from "../menu_global_functions";
 
-import {
-    oblivion
-} from "../menu_memory";
+import { oblivion } from "../menu_memory";
+
+import { prompt } from "../../RoR";
 
 /**
  * A subsubmenu of the configurations menu, where the user can configure
  * dietary restrictions by adding or removing them.
  */
 export function configure_dietary(): void {
-    // Helper function that prompts the user to enter a valid
-    // dietary restriction and returns the input as well as
-    // information of its existance in currently active dietary restrictions.
-    function select_valid_dietary(): Pair<boolean, string> {
-        const valid = valid_dietary_restrictions;
-
-        print_bold("Valid alternatives: ");
-        print_alternatives(valid);
-        
-        const input = check_input(
-            valid, "Choose dietary restriction of the above: "
-            );
-        const is_already_in_arr = config.dietary_restrictions.includes(input);
-        return pair(is_already_in_arr, input);
-    }
-
     // Helper function that adds a dietary restriction
     // if it is valid and not already active.
     function add_diet(): void {
-        const diet_pair = select_valid_dietary();
-        if (!diet_pair[0]) {
-            config = add_to_dietary_restrictions(diet_pair[1], config);
+        let restriction = prompt(
+            "Choose dietary restriction to add: "
+        );
+        restriction = restriction === null 
+            ? "" 
+            : restriction.trim().toLowerCase();
+
+        const is_existing = config.dietary_restrictions.includes(restriction);
+        if (!is_existing) {
+            config = add_to_dietary_restrictions(restriction, config);
             print_bold("Dietary restriction successfully added!\n");
         } else {
             print_bold(
@@ -55,9 +40,16 @@ export function configure_dietary(): void {
     // Helper function that removes a dietary restriction
     // if it is valid and active.
     function remove_diet(): void {
-        const diet_pair = select_valid_dietary();
-        if (diet_pair[0]) {
-            config = remove_from_dietary_restrictions(diet_pair[1], config);
+        let restriction= prompt(
+            "Choose dietary restriction to remove: "
+        );
+        restriction = restriction === null 
+            ? "" 
+            : restriction.trim().toLowerCase();
+
+        const is_existing = config.dietary_restrictions.includes(restriction);
+        if (is_existing) {
+            config = remove_from_dietary_restrictions(restriction, config);
             print_bold("Dietary restriction successfully removed!\n");
         } else {
             print_bold("Dietary restriction not removed; it is not active.\n");

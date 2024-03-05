@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.valid_dietary_restrictions = exports.portion_size = exports.print_bold_text = exports.prompt = exports.RoR_start = void 0;
+exports.portion_size = exports.print_bold_text = exports.prompt = exports.RoR_start = void 0;
 var PromptSync = require("prompt-sync");
 var stack_1 = require("./lib/stack");
 var main_menu_1 = require("./menu/main_menu");
@@ -36,9 +36,6 @@ exports.RoR_start = RoR_start;
 exports.prompt = PromptSync({ sigint: true });
 exports.print_bold_text = true;
 exports.portion_size = [400, 700];
-exports.valid_dietary_restrictions = [
-    "meat", "gluten", "dairy", "eggs", "nuts", "fish"
-];
 if (require.main === module) {
     RoR_start();
 }

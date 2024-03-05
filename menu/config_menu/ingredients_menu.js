@@ -1,13 +1,4 @@
 "use strict";
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.edit_ingredient_wrapper = exports.select_range = exports.select_kcal = exports.select_measurement = exports.select_allergies = exports.select_category = exports.select_name = exports.configure_ingredients = void 0;
 var RoR_1 = require("../../RoR");
@@ -21,23 +12,11 @@ var edit_ingredient_menu_1 = require("./edit_ingredient_menu");
 var menu_global_functions_1 = require("../menu_global_functions");
 var menu_memory_1 = require("../menu_memory");
 /**
- * A submenu of the configurations menu, where the user can configure
- * the ingredients used for recipe generation, by adding or removing them.
+ * A submenu of the configuration menu, where the user can configure
+ * the ingredients used for recipe generation, by adding, editing or removing
+ * them.
  */
 function configure_ingredients() {
-    // Helper function that prints the name of all 
-    // currently registered ingredients.
-    function print_all_ingredients() {
-        var data = (0, save_load_data_1.get_data)();
-        var ingr = data.ingredients;
-        (0, menu_global_functions_1.print_bold)("Currently registered ingredients: ");
-        for (var i = 0; i < ingr.length; i++) {
-            for (var j = 0; j < ingr[i].length; j++) {
-                console.log("- " + ingr[i][j].name);
-            }
-        }
-        console.log();
-    }
     // Helper function that prompts the user for an ingredient name,
     // searches for it in the data and removes it from the data if found.
     function search_and_delete() {
@@ -57,7 +36,7 @@ function configure_ingredients() {
         else { }
         console.log();
     }
-    // Helper function that returns ingredient object by name
+    // Helper function that returns an ingredient object by name
     function find_ingredient() {
         var data = (0, save_load_data_1.get_data)();
         var input = (0, RoR_1.prompt)("Enter the name of the ingredient you wish to edit, or press " +
@@ -73,6 +52,19 @@ function configure_ingredients() {
             }
         }
         else { }
+        console.log();
+    }
+    // Helper function that prints the name of all 
+    // currently registered ingredients.
+    function print_all_ingredients() {
+        var data = (0, save_load_data_1.get_data)();
+        var ingr = data.ingredients;
+        (0, menu_global_functions_1.print_bold)("Currently registered ingredients: ");
+        for (var i = 0; i < ingr.length; i++) {
+            for (var j = 0; j < ingr[i].length; j++) {
+                console.log("- " + ingr[i][j].name);
+            }
+        }
         console.log();
     }
     var valid_inputs = ["a", "e", "r", "l", "b"];
@@ -114,6 +106,8 @@ exports.configure_ingredients = configure_ingredients;
 /**
  * Helper function that prompts the user to select a name for an ingredient.
  * @param ingredient - The ingredient to select name for
+ * @param is_editing - Determines whether the current name should be
+ * printed before prompting the user or not (false by default)
  * @returns the updated ingredient.
  */
 function select_name(ingredient, is_editing) {
@@ -156,7 +150,7 @@ exports.select_name = select_name;
 * Helper function that prompts the user to select a category for an ingredient.
 * @param ingredient - The ingredient to select category for
 * @param is_editing - Determines whether the current category should be
-* printed before prompting the user (false by default)
+* printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 function select_category(ingredient, is_editing) {
@@ -182,7 +176,7 @@ exports.select_category = select_category;
 * that apply to an ingredient.
 * @param ingredient - The ingredient to select dietary restrictions for
 * @param is_editing - Determines whether the current dietary restrictions
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 function select_allergies(ingredient, is_editing) {
@@ -194,28 +188,14 @@ function select_allergies(ingredient, is_editing) {
     }
     else { }
     var allergy_array = [];
-    var valid_dietary_not_active = __spreadArray([], RoR_1.valid_dietary_restrictions, true);
-    valid_dietary_not_active.push("");
-    (0, menu_global_functions_1.print_bold)("Valid dietary restrictions: ");
-    (0, menu_global_functions_1.print_alternatives)(RoR_1.valid_dietary_restrictions);
-    var user_input = (0, menu_global_functions_1.check_input)(valid_dietary_not_active, "Enter a dietary restriction of the above that applies to the " +
-        "ingredient, or press enter if no dietary restrictions apply: ");
+    var user_input = (0, RoR_1.prompt)("Enter a dietary restriction of the above that applies to the " +
+        "ingredient, or press enter if no dietary restrictions apply: ").trim().toLowerCase();
     while (user_input !== "") {
-        var index = valid_dietary_not_active.indexOf(user_input);
-        if (index !== -1) {
-            allergy_array.push(user_input);
-            valid_dietary_not_active.splice(index, 1);
-            (0, menu_global_functions_1.print_bold)("Dietary restriction added!");
-            console.log();
-        }
-        else {
-            throw new Error("Could not find active dietary restriction");
-        }
-        (0, menu_global_functions_1.print_bold)("Valid dietary restrictions that have not yet been added: ");
-        (0, menu_global_functions_1.print_alternatives)(valid_dietary_not_active);
-        user_input = (0, menu_global_functions_1.check_input)(valid_dietary_not_active, "Enter another dietary restriction that applies to the new " +
-            "ingredient, or press enter if no more dietary restrictions " +
-            "apply: ");
+        allergy_array.push(user_input);
+        (0, menu_global_functions_1.print_bold)("Dietary restriction added!");
+        console.log();
+        user_input = (0, RoR_1.prompt)("Enter a dietary restriction of the above that applies to the " +
+            "ingredient, or press enter if no dietary restrictions apply: ").trim().toLowerCase();
     }
     ingredient.allergies = allergy_array;
     if (is_editing) {
@@ -231,7 +211,7 @@ exports.select_allergies = select_allergies;
 * an ingredient.
 * @param ingredient - The ingredient to select the unit of measurement for
 * @param is_editing - Determines whether the current unit of measurement
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 function select_measurement(ingredient, is_editing) {
@@ -257,7 +237,7 @@ exports.select_measurement = select_measurement;
 * an ingredient.
 * @param ingredient - The ingredient to select the kcal per measurement for
 * @param is_editing - Determines whether the current kcal per measurement
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 function select_kcal(ingredient, is_editing) {
@@ -293,7 +273,7 @@ exports.select_kcal = select_kcal;
 * unit of measurement.
 * @param ingredient - The ingredient to select the amount range for
 * @param is_editing - Determines whether the current amount range
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 function select_range(ingredient, is_editing) {
@@ -333,7 +313,7 @@ exports.select_range = select_range;
  * Wrap the edit_ingredient function so that it's parameters are snapshotted
  * and can be added to the stack.
  * @param ingredient - Ingredient that is being edited
- * @param old_name - The name of the ingredient before it gets edited
+ * @param old_name - Name of the ingredient before it gets edited
  * @returns the function edit_ingredient with fixated parameters
  */
 function edit_ingredient_wrapper(ingredient, old_name) {

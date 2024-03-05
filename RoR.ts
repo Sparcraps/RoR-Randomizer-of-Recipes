@@ -40,9 +40,6 @@ export function RoR_start(): void {
 export const prompt: PromptSync.Prompt = PromptSync({ sigint: true });
 export const print_bold_text: boolean = true;
 export const portion_size: Pair<number, number> = [400, 700];
-export const valid_dietary_restrictions: Array<string> = [
-    "meat", "gluten", "dairy", "eggs", "nuts", "fish"
-];
 
 if (require.main === module) {
     RoR_start();

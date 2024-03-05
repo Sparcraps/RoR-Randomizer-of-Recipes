@@ -3,7 +3,7 @@ import {
 } from "../../lib/stack";
 
 import {
-    Configuration, load_configuration
+    type Configuration, load_configuration
 } from "../../data/save_config";
 
 import {

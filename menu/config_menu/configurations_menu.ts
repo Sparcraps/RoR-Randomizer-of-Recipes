@@ -1,6 +1,4 @@
-import {
-    push
-} from "../../lib/stack";
+import { push } from "../../lib/stack";
 
 import {
     type Configuration, change_portion_amount, load_configuration
@@ -10,18 +8,14 @@ import {
     check_input, integer_prompt, print_alternatives, print_bold
 } from "../menu_global_functions";
 
-import {
-    get_menu_memory, set_menu_memory, oblivion
-} from "../menu_memory";
+import { get_menu_memory, set_menu_memory, oblivion } from "../menu_memory";
 
-import {
-    dietary_prompt
-} from "./dietary_prompt_menu";
+import { dietary_prompt } from "./dietary_prompt_menu";
 
-import {
-    configure_ingredients
-} from "./ingredients_menu";
+import { configure_ingredients } from "./ingredients_menu";
+
 import { configure_categories } from "./category_menu";
+
 import { configure_kitchenware } from "./kitchenware_menu";
 
 /**
@@ -72,7 +66,7 @@ export function configure(): void {
         set_menu_memory(push(dietary_prompt, get_menu_memory()));
     } else if (user_input === "i") {
         set_menu_memory(push(configure_ingredients, get_menu_memory()));
-    } else if (user_input === "i") {
+    } else if (user_input === "c") {
         set_menu_memory(push(configure_categories, get_menu_memory()));
     } else if (user_input === "k") {
         set_menu_memory(push(configure_kitchenware, get_menu_memory()));

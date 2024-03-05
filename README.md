@@ -23,7 +23,3 @@ red "ESC" instead.
 
 - portion_size: The interval in which each portion will be generated.
 Making this interval too small will significantly increase run time.
-
-- valid_dietary_restrictions: An array of all dietary restrictions that the
-program is able to adapt to. In case more data is added to RoR, this array can
-be expanded to contain more strings.
