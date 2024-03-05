@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.configure = void 0;
-var stack_1 = require("../lib/stack");
-var save_config_1 = require("../data/save_config");
-var menu_global_functions_1 = require("./menu_global_functions");
-var menu_memory_1 = require("./menu_memory");
+var stack_1 = require("../../lib/stack");
+var save_config_1 = require("../../data/save_config");
+var menu_global_functions_1 = require("../menu_global_functions");
+var menu_memory_1 = require("../menu_memory");
 var dietary_prompt_menu_1 = require("./dietary_prompt_menu");
 var ingredients_menu_1 = require("./ingredients_menu");
 var category_menu_1 = require("./category_menu");

@@ -1,12 +1,12 @@
-import { prompt, valid_dietary_restrictions } from "../RoR";
+import { prompt, valid_dietary_restrictions } from "../../RoR";
 
-import { type Ingredient, find_by_name } from "../basics";
+import { type Ingredient, find_by_name } from "../../basics";
 
-import { SaveData, delete_ingredient, get_data, is_ingredient_in_data } from "../data/save_load_data";
+import { SaveData, delete_ingredient, get_data, is_ingredient_in_data } from "../../data/save_load_data";
 
-import { pair } from "../lib/list";
+import { pair } from "../../lib/list";
 
-import { push } from "../lib/stack";
+import { push } from "../../lib/stack";
 
 import { add_ingredient } from "./add_ingredient_menu";
 
@@ -16,9 +16,9 @@ import { edit_ingredient } from "./edit_ingredient_menu";
 
 import {
     check_input, integer_prompt, print_alternatives, print_bold
-} from "./menu_global_functions";
+} from "../menu_global_functions";
 
-import { get_menu_memory, oblivion, set_menu_memory } from "./menu_memory";
+import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 
 /**
  * A submenu of the configurations menu, where the user can configure
@@ -131,7 +131,7 @@ export function select_name(ingredient: Ingredient,
     }
 
     if (is_editing) {
-        print_bold("Current ingredient category: " + ingredient.category);
+        print_bold("Current ingredient name: " + ingredient.name);
         console.log();
     } else {}
 

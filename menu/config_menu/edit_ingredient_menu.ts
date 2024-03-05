@@ -1,6 +1,6 @@
-import { Ingredient } from "../basics";
+import { Ingredient } from "../../basics";
 
-import { replace_ingredient } from "../data/save_load_data";
+import { replace_ingredient } from "../../data/save_load_data";
 
 import {
     select_allergies, select_category, select_kcal, select_measurement,
@@ -9,9 +9,9 @@ import {
 
 import {
     check_input, print_alternatives, print_bold
-} from "./menu_global_functions";
+} from "../menu_global_functions";
 
-import { oblivion } from "./menu_memory";
+import { oblivion } from "../menu_memory";
 
 /**
  * A subsubmenu of the ingredient menu, where the user can edit existing
@@ -20,7 +20,7 @@ import { oblivion } from "./menu_memory";
  */
 export function edit_ingredient(ingredient: Ingredient, old_name: string): void {
     let print_menu = [
-        '"n = "change ingredient name"',
+        '"n" = change ingredient name',
         '"c" = change ingredient categories',
         '"d" = change ingredient dietary restrictions',
         '"m" = change ingredient measurement',

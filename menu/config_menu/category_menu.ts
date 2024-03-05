@@ -1,14 +1,14 @@
-import { prompt } from "../RoR";
+import { prompt } from "../../RoR";
 
-import { type Category, type Method, find_by_name } from "../basics";
+import { type Category, type Method, find_by_name } from "../../basics";
 
 import {
     type SaveData, delete_category, get_data
-} from "../data/save_load_data";
+} from "../../data/save_load_data";
 
-import { push } from "../lib/stack";
+import { push } from "../../lib/stack";
 
-import { get_doable_cooking_methods } from "../recipe/filters";
+import { get_doable_cooking_methods } from "../../recipe/filters";
 
 import { add_category } from "./add_category_menu";
 
@@ -16,9 +16,9 @@ import { edit_category } from "./edit_category_menu";
 
 import {
     check_input, integer_prompt, print_alternatives, print_bold
-} from "./menu_global_functions";
+} from "../menu_global_functions";
 
-import { get_menu_memory, oblivion, set_menu_memory } from "./menu_memory";
+import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 
 /**
  * A submenu of the configurations menu, where the user can configure

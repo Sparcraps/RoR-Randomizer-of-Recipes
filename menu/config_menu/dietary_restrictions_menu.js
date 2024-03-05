@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.configure_dietary = void 0;
-var list_1 = require("../lib/list");
-var save_config_1 = require("../data/save_config");
-var RoR_1 = require("../RoR");
-var menu_global_functions_1 = require("./menu_global_functions");
-var menu_memory_1 = require("./menu_memory");
+var list_1 = require("../../lib/list");
+var save_config_1 = require("../../data/save_config");
+var RoR_1 = require("../../RoR");
+var menu_global_functions_1 = require("../menu_global_functions");
+var menu_memory_1 = require("../menu_memory");
 /**
  * A subsubmenu of the configurations menu, where the user can configure
  * dietary restrictions by adding or removing them.

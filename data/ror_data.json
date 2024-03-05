@@ -345,18 +345,6 @@
                 "tag": "ingredient"
             },
             {
-                "name": "potato",
-                "category": "root vegetable",
-                "allergies": [],
-                "measurement": "0.5",
-                "kcal_per_measurement": 85,
-                "range": [
-                    1,
-                    3
-                ],
-                "tag": "ingredient"
-            },
-            {
                 "name": "parsnip",
                 "category": "root vegetable",
                 "allergies": [],
@@ -377,6 +365,18 @@
                 "range": [
                     1,
                     2
+                ],
+                "tag": "ingredient"
+            },
+            {
+                "name": "potato",
+                "category": "root vegetable",
+                "allergies": [],
+                "measurement": "0.5",
+                "kcal_per_measurement": 85,
+                "range": [
+                    1,
+                    3
                 ],
                 "tag": "ingredient"
             }
