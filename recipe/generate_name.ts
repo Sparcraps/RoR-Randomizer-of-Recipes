@@ -97,7 +97,7 @@ export function generate_name(recipe: Recipe): string {
                                              2, 
                                              {});
         return up_first_all(title_cooking) + " " +
-            up_first_all(main_ingr_name) + " and " +
+            up_first_all(main_ingr_name) + " with " +
             up_first_all(secondary_ingr_name);
     }
 }

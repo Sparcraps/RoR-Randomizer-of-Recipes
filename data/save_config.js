@@ -39,6 +39,12 @@ function save_configuration(data) {
     fs.writeFileSync(filepath, json_data);
 }
 exports.save_configuration = save_configuration;
+/**
+ * Change the portion amounts to generate.
+ * @param {number} new_amount - the new portion amount.
+ * @param {Configuration} config - the configuration to change.
+ * @returns {Configuration} the updated configuration.
+ */
 function change_portion_amount(new_amount, config) {
     config.portion_amount = new_amount;
     save_configuration(config);
@@ -48,10 +54,10 @@ exports.change_portion_amount = change_portion_amount;
 /**
  * Add a dietary restriction to a Configuration object
  * and saves the resulting Array to config.json.
- * @param diet_input - Dietary restriction to add
- * @param config - Configuration object that the dietary restriction is added to
+ * @param {string} diet_input - Dietary restriction to add
+ * @param {Configuration} config - Configuration object that the dietary restriction is added to
  * @modifies config by adding diet_input to the end of it
- * @returns the updated Configuration.
+ * @returns {Configuration} the updated Configuration.
  */
 function add_to_dietary_restrictions(diet_input, config) {
     var rest = config.dietary_restrictions;
@@ -70,10 +76,10 @@ exports.add_to_dietary_restrictions = add_to_dietary_restrictions;
  * Search and remove a dietary restriction from a Configuration object
  * and saves the resulting Array to config.json,
  * or do nothing if the dietary restriction is not found.
- * @param diet_input - Dietary restriction to add
- * @param config - Configuration object that the dietary restriction is added to
+ * @param {string} diet_input - Dietary restriction to add
+ * @param {Configuration} config - Configuration object that the dietary restriction is added to
  * @modifies config.json and config
- * @returns the updated Configuration.
+ * @returns {Configuration} the updated Configuration.
  */
 function remove_from_dietary_restrictions(diet_input, config) {
     var rest = config.dietary_restrictions;

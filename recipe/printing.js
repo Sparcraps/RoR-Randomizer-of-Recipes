@@ -22,7 +22,7 @@ function print_recipe(recipe) {
     steps.forEach(function (step) {
         console.log(step_nr + ". " + up_first(step.cooking_method) + " the " +
             ingredient_and_ingredients(step.ingredient_names) + " " +
-            stringify_kitchenware(step.kitchenware, step.is_kw_existing, step.cooking_method));
+            stringify_kitchenware(step.kitchenware, step.is_kw_active, step.cooking_method));
         step_nr += 1;
     });
     console.log(step_nr + ". " + "Finally, add salt and pepper to taste! :-)");

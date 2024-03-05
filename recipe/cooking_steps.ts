@@ -48,15 +48,20 @@ export function generate_cooking_steps(
     // or if the method is add first looks in retired kitchenware, and
     // returns the first one that can do the method along with a boolean for
     // whether the kitchenware is from retired_kitchenware.
-    // could be improved to choose randomly if multiple kitchenware have the cooking method available
     function get_kitchenware_from_method(cooking_method: string): Pair<KitchenWare, boolean> {
+        const available_kw: Array<KitchenWare> = []
         if (cooking_method === "add") {
             for (let i = 0; i < retired_kitchenware.length; i++) {
                 const kw = retired_kitchenware[i];
                 if (kw.cooking_methods.includes(cooking_method)) {
-                    return pair(kw, true);
+                    available_kw.push(kw);
                 }
             }
+            if (available_kw.length > 0) {
+                const kw_i =  Math.floor(Math.random() * available_kw.length);
+                const selected_kw = available_kw[kw_i];
+                return pair(selected_kw, true)
+            } else {}
         } else {}
 
         for (let i = 0; i < kw_data.length; i++) {
@@ -67,7 +72,16 @@ export function generate_cooking_steps(
             }
         }
 
-        throw new Error("No kitchenware with cooking method " + cooking_method + "exists.");
+        if (available_kw.length > 0) {
+            const kw_i =  Math.floor(Math.random() * available_kw.length);
+            const selected_kw = available_kw[kw_i];
+            return pair(selected_kw, true)
+        } else {
+            throw new Error(
+                "No kitchenware with cooking method " + 
+                cooking_method + "exists."
+            );
+        }
     }
 
     // adds cooking step to steps array, removes first element in method, calls

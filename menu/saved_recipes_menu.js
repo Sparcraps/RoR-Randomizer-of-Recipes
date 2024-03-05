@@ -23,7 +23,7 @@ function saved_recipes() {
         var true_index;
         while (true) {
             int = (0, menu_global_functions_1.integer_prompt)("Enter the number corresponding to " +
-                "the recipe you want to choose: \n");
+                "the recipe you want to choose: ");
             true_index = int - 1;
             if (!(true_index < 0 || true_index >= recipes.length)) {
                 // to ensure no index out of range
