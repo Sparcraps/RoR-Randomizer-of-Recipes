@@ -47,9 +47,10 @@ export function configure_categories(): void {
     
     // Inside this function, you can access the category parameter
     // and call edit_category with the correct value
-    function edit_category_wrapper(category: Category): Function {
+    function edit_category_wrapper(category: Category,
+                                   old_name: string): Function {
         return function() {
-            edit_category(category);
+            edit_category(category, old_name);
         };
     }
 
@@ -67,9 +68,10 @@ export function configure_categories(): void {
     if (user_input === "a") {
         set_menu_memory(push(add_category, get_menu_memory()));
     } else if (user_input === "e") {
-        const ingredient = find_category();
-        if (ingredient !== undefined) {
-            set_menu_memory(push(edit_category_wrapper(ingredient),
+        const cat = find_category();
+        if (cat !== undefined) {
+            const name = cat.name;
+            set_menu_memory(push(edit_category_wrapper(cat, name),
                                  get_menu_memory()));
         } else {
             print_bold("There is no category with that name!");
