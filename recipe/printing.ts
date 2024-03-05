@@ -122,10 +122,14 @@ export function refer_to_ingredient(
     const name = ingredient.name;
     const s_u_i_o = ["s", "u", "i", "o"];
     
-    if (is_pcs || is_plural()) {
-        const inflect = new Inflectors(name);
-        return inflect.toPlural();
+    if(name == "garlic clove") {
+        return "garlic cloves";
     } else {
-        return name;
+        if (is_pcs || is_plural()) {
+            const inflect = new Inflectors(name);
+            return inflect.toPlural();
+        } else {
+            return name;
+        }
     }
 }

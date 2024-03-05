@@ -116,12 +116,17 @@ function refer_to_ingredient(ingredient, amount, is_pcs) {
     }
     var name = ingredient.name;
     var s_u_i_o = ["s", "u", "i", "o"];
-    if (is_pcs || is_plural()) {
-        var inflect = new en_inflectors_1.Inflectors(name);
-        return inflect.toPlural();
+    if (name == "garlic clove") {
+        return "garlic cloves";
     }
     else {
-        return name;
+        if (is_pcs || is_plural()) {
+            var inflect = new en_inflectors_1.Inflectors(name);
+            return inflect.toPlural();
+        }
+        else {
+            return name;
+        }
     }
 }
 exports.refer_to_ingredient = refer_to_ingredient;
