@@ -21,7 +21,7 @@ import {
 
 import {
     configure
-} from "./configurations_menu";
+} from "./config_menu/configurations_menu";
 
 /**
  * The main menu of RoR. Gives access to all content of the program

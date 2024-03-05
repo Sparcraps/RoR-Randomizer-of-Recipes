@@ -1,6 +1,6 @@
-import { type Category } from "../basics";
+import { type Category } from "../../basics";
 
-import { replace_category } from "../data/save_load_data";
+import { replace_category } from "../../data/save_load_data";
 
 import {
     select_cat_name, select_cat_methods, select_cat_max
@@ -8,9 +8,9 @@ import {
 
 import {
     check_input, print_alternatives, print_bold
-} from "./menu_global_functions";
+} from "../menu_global_functions";
 
-import { oblivion } from "./menu_memory";
+import { oblivion } from "../menu_memory";
 
 /**
  * A subsubmenu of the category menu, where the user can edit existing
@@ -19,7 +19,7 @@ import { oblivion } from "./menu_memory";
  */
 export function edit_category(cat: Category, old_name: string): void {
     let print_menu = [
-        '"n = "change category name"',
+        '"n" = change category name',
         '"c" = change category cooking methods',
         '"m" = change category max ingredient amount',
         '"b" = save category and go back to category menu'

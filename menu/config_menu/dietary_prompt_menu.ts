@@ -1,10 +1,10 @@
 import {
     push
-} from "../lib/stack";
+} from "../../lib/stack";
 
 import {
     Configuration, load_configuration
-} from "../data/save_config";
+} from "../../data/save_config";
 
 import {
     configure_dietary
@@ -12,11 +12,11 @@ import {
 
 import {
     check_input, print_alternatives, print_bold
-} from "./menu_global_functions";
+} from "../menu_global_functions";
 
 import {
     get_menu_memory, oblivion, set_menu_memory
-} from "./menu_memory";
+} from "../menu_memory";
 
 /**
  * A submenu of the configurations menu, where the user can view

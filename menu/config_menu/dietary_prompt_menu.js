@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dietary_prompt = void 0;
-var stack_1 = require("../lib/stack");
-var save_config_1 = require("../data/save_config");
+var stack_1 = require("../../lib/stack");
+var save_config_1 = require("../../data/save_config");
 var dietary_restrictions_menu_1 = require("./dietary_restrictions_menu");
-var menu_global_functions_1 = require("./menu_global_functions");
-var menu_memory_1 = require("./menu_memory");
+var menu_global_functions_1 = require("../menu_global_functions");
+var menu_memory_1 = require("../menu_memory");
 /**
  * A submenu of the configurations menu, where the user can view
  * the active dietary restrictions and choose whether they

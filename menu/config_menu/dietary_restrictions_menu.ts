@@ -1,21 +1,21 @@
 import {
     type Pair, pair
-} from "../lib/list";
+} from "../../lib/list";
 
 import {
     type Configuration, add_to_dietary_restrictions, load_configuration,
     remove_from_dietary_restrictions
-} from "../data/save_config";
+} from "../../data/save_config";
 
-import { valid_dietary_restrictions } from "../RoR";
+import { valid_dietary_restrictions } from "../../RoR";
 
 import {
     check_input, print_alternatives, print_bold
-} from "./menu_global_functions";
+} from "../menu_global_functions";
 
 import {
     oblivion
-} from "./menu_memory";
+} from "../menu_memory";
 
 /**
  * A subsubmenu of the configurations menu, where the user can configure

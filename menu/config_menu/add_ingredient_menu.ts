@@ -1,12 +1,12 @@
-import { type Ingredient, empty_ingredient } from "../basics";
+import { type Ingredient, empty_ingredient } from "../../basics";
 
-import { check_input, print_bold } from "./menu_global_functions";
+import { check_input, print_bold } from "../menu_global_functions";
 
-import { save_new_ingredient } from "../data/save_load_data";
+import { save_new_ingredient } from "../../data/save_load_data";
 
-import { get_menu_memory, oblivion, set_menu_memory } from "./menu_memory";
+import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 
-import { push } from "../lib/stack";
+import { push } from "../../lib/stack";
 
 import { edit_ingredient_wrapper, select_allergies, select_category,
     select_kcal, select_measurement, select_name, select_range

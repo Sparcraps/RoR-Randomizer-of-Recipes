@@ -6,7 +6,7 @@ var menu_memory_1 = require("./menu_memory");
 var menu_global_functions_1 = require("./menu_global_functions");
 var recipimize_menu_1 = require("./recipimize_menu");
 var saved_recipes_menu_1 = require("./saved_recipes_menu");
-var configurations_menu_1 = require("./configurations_menu");
+var configurations_menu_1 = require("./config_menu/configurations_menu");
 /**
  * The main menu of RoR. Gives access to all content of the program
  * by its submenus where the user selects how to advance through

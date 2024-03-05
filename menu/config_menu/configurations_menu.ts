@@ -1,18 +1,18 @@
 import {
     push
-} from "../lib/stack";
+} from "../../lib/stack";
 
 import {
     type Configuration, change_portion_amount, load_configuration
-} from "../data/save_config";
+} from "../../data/save_config";
 
 import {
     check_input, integer_prompt, print_alternatives, print_bold
-} from "./menu_global_functions";
+} from "../menu_global_functions";
 
 import {
     get_menu_memory, set_menu_memory, oblivion
-} from "./menu_memory";
+} from "../menu_memory";
 
 import {
     dietary_prompt

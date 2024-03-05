@@ -1,12 +1,12 @@
-import { type Category, empty_category } from "../basics";
+import { type Category, empty_category } from "../../basics";
 
-import { check_input, print_bold } from "./menu_global_functions";
+import { check_input, print_bold } from "../menu_global_functions";
 
-import { save_new_category } from "../data/save_load_data";
+import { save_new_category } from "../../data/save_load_data";
 
-import { get_menu_memory, oblivion, set_menu_memory } from "./menu_memory";
+import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 
-import { push } from "../lib/stack";
+import { push } from "../../lib/stack";
 
 import {
     edit_category_wrapper, select_cat_max, select_cat_methods, select_cat_name
