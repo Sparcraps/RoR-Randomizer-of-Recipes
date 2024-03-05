@@ -29,6 +29,7 @@ import {
 import {
     edit_ingredient
 } from "./edit_ingredient_menu";
+import { print_all_categories } from "./category_menu";
 
 /**
  * A submenu of the ingredients menu, where the user adds a new ingredient.
@@ -128,13 +129,9 @@ export function select_category(ingredient: Ingredient,
         console.log();
     } else {}
 
-    print_bold("Valid ingredient categories: ");
-    const category_names: Array<string> = [];
-    const cats: Array<Category> = data.categories;
-    for (let i = 0; i < cats.length; i++) {
-        category_names[i] = cats[i].name;
-    }
-    print_alternatives(category_names);
+    const category_names = print_all_categories(
+        "Valid ingredient categories: "
+        );
     let user_input = check_input(
         category_names,
         "Choose which category the new ingredient belongs to: "

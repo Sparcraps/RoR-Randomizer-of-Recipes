@@ -68,6 +68,7 @@ export function configure_ingredients(): void {
         console.log();
     }
 
+    // Helper function that returns ingredient object by name
     function find_ingredient(): Ingredient | undefined {
         let input = prompt(
             "Enter the name of the ingredient you wish to edit, or press " +

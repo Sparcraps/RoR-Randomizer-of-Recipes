@@ -21,6 +21,8 @@ import {
 import {
     configure_ingredients
 } from "./ingredients_menu";
+import { configure_categories } from "./category_menu";
+import { configure_kitchenware } from "./kitchenware_menu";
 
 /**
  * A submenu of the main menu, where the user can select
@@ -53,23 +55,29 @@ export function configure(): void {
 
     let config: Configuration = load_configuration();
     let print_menu = ['"p" = portion amount',
-                  '"d" = dietary restrictions',
-                  '"i" = ingredient data',
-                  '"b" = back to main menu'];
-    let valid_inputs = ["p", "d", "i", "b"];
+                      '"d" = dietary restrictions',
+                      '"i" = ingredient data',
+                      '"c" = category data',
+                      '"k" = kitchenware data',
+                      '"b" = back to main menu'];
+    let valid_inputs = ["p", "d", "i", "c", "k", "b"];
 
     print_alternatives(print_menu);
     let user_input = check_input(valid_inputs,
                                  "Choose what you want to configure: ");
 
     if (user_input === "p") {
-    set_menu_memory(push(configure_portion, get_menu_memory()));
+        set_menu_memory(push(configure_portion, get_menu_memory()));
     } else if (user_input === "d") {
-    set_menu_memory(push(dietary_prompt, get_menu_memory()));
+        set_menu_memory(push(dietary_prompt, get_menu_memory()));
     } else if (user_input === "i") {
-    set_menu_memory(push(configure_ingredients, get_menu_memory()));
+        set_menu_memory(push(configure_ingredients, get_menu_memory()));
+    } else if (user_input === "i") {
+        set_menu_memory(push(configure_categories, get_menu_memory()));
+    } else if (user_input === "k") {
+        set_menu_memory(push(configure_kitchenware, get_menu_memory()));
     } else if (user_input === "b") {
-    oblivion();
+        oblivion();
     } else {
         throw new Error("Invalid user_input has escaped.");
     }
