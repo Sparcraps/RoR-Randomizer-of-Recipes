@@ -52,7 +52,7 @@ function configure() {
     else if (user_input === "i") {
         (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(ingredients_menu_1.configure_ingredients, (0, menu_memory_1.get_menu_memory)()));
     }
-    else if (user_input === "i") {
+    else if (user_input === "c") {
         (0, menu_memory_1.set_menu_memory)((0, stack_1.push)(category_menu_1.configure_categories, (0, menu_memory_1.get_menu_memory)()));
     }
     else if (user_input === "k") {
