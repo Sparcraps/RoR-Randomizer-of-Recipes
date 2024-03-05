@@ -16,6 +16,7 @@ import { oblivion } from "../menu_memory";
  * A subsubmenu of the category menu, where the user can edit existing
  * or newly created category data.
  * @param category - The Category that is being adjusted
+ * @param old_name - The name that the kitchenware had before being edited
  */
 export function edit_category(cat: Category, old_name: string): void {
     let print_menu = [

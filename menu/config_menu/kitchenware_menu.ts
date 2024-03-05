@@ -14,6 +14,7 @@ import {
 
 import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 import { add_kitchenware } from "./add_kitchenware_menu";
+import { edit_kitchenware } from "./edit_kitchenware_menu";
 
 /**
  * A submenu of the configuration menu, where the user can configure
