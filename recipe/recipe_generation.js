@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generate_recipe = exports.new_recipe = void 0;
 var list_1 = require("../lib/list");
-var save_load_data_1 = require("../data/save_load_data");
 var cooking_steps_1 = require("./cooking_steps");
 var generate_name_1 = require("./generate_name");
 var ingredients_methods_1 = require("./ingredients_methods");
@@ -20,10 +19,9 @@ function generate_recipe(min_max_kcal, portions, filters) {
         throw new Error("Max kcal per portion needs to be larger than min kcal per portion");
     }
     else { }
-    var data = (0, save_load_data_1.get_data)();
     var recipe = new_recipe(portions);
-    var selected_methods = (0, ingredients_methods_1.randomize_ingredients_and_methods)(min_max_kcal, recipe, filters, data);
-    var steps = (0, cooking_steps_1.generate_cooking_steps)(selected_methods, data);
+    var selected_methods = (0, ingredients_methods_1.randomize_ingredients_and_methods)(min_max_kcal, recipe, filters);
+    var steps = (0, cooking_steps_1.generate_cooking_steps)(selected_methods);
     recipe.steps = steps;
     try {
         recipe.name = (0, generate_name_1.generate_name)(recipe);

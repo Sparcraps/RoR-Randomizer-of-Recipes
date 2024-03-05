@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.randomize_ingredients_and_methods = void 0;
 var list_1 = require("../lib/list");
+var save_load_data_1 = require("../data/save_load_data");
 var filters_1 = require("./filters");
 var printing_1 = require("./printing");
 /**
@@ -15,8 +16,9 @@ var printing_1 = require("./printing");
  * @returns {Array<Pair<Method, Array<name>>>} an array of pairs of Method and
  * arrays of ingredient names for which the method should be applied.
  */
-function randomize_ingredients_and_methods(_a, recipe, filters, data) {
+function randomize_ingredients_and_methods(_a, recipe, filters) {
     var min_portion = _a[0], max_portion = _a[1];
+    var data = (0, save_load_data_1.get_data)();
     var ingredient_data = JSON.parse(JSON.stringify(data.ingredients)); // creates copy of save data
     var cat_data = JSON.parse(JSON.stringify(data.categories));
     (0, filters_1.filter_ingredients)(ingredient_data, filters);

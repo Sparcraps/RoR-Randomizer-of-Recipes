@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generate_name = void 0;
 var printing_1 = require("./printing");
-var english_verbs_helper_1 = require("english-verbs-helper");
+var en_inflectors_1 = require("en-inflectors");
 /**
  * A function to find the ingredient a recipe has the most of in calories.
  * @param ingredients - an array containing pairs of the ingredients and their amounts in calories.
@@ -75,8 +75,8 @@ function generate_name(recipe) {
             main_cooking_method.cooking_method == "add") {
             main_cooking_method = find_last_cooking_step(recipe.steps, secondary_ingr);
         }
-        var title_cooking = (0, english_verbs_helper_1.getConjugation)(EnglishVerbs, main_cooking_method.cooking_method, "SIMPLE_PAST", 2, {});
-        return up_first_all(title_cooking) + " " +
+        var method_past = new en_inflectors_1.Inflectors(main_cooking_method.cooking_method).toPast();
+        return up_first_all(method_past) + " " +
             up_first_all(main_ingr_name) + " with " +
             up_first_all(secondary_ingr_name);
     }

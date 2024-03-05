@@ -3,7 +3,7 @@ import { Ingredient } from "../basics";
 import { Pair } from "../lib/list";
 import { CookingStep } from "./cooking_steps";
 import { refer_to_ingredient } from "./printing";
-import { getConjugation } from "english-verbs-helper";
+import { Inflectors } from "en-inflectors";
 
 /**
  * A function to find the ingredient a recipe has the most of in calories.
@@ -91,12 +91,10 @@ export function generate_name(recipe: Recipe): string {
             main_cooking_method = find_last_cooking_step(recipe.steps, 
                                                          secondary_ingr);
         }
-        const title_cooking = getConjugation(EnglishVerbs, 
-                                             main_cooking_method.cooking_method, 
-                                             "SIMPLE_PAST", 
-                                             2, 
-                                             {});
-        return up_first_all(title_cooking) + " " +
+        const method_past = new Inflectors(
+            main_cooking_method.cooking_method
+        ).toPast();
+        return up_first_all(method_past) + " " +
             up_first_all(main_ingr_name) + " with " +
             up_first_all(secondary_ingr_name);
     }

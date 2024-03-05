@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generate_cooking_steps = void 0;
 var basics_1 = require("../basics");
 var list_1 = require("../lib/list");
+var save_load_data_1 = require("../data/save_load_data");
 function new_cooking_step(cooking_method, ingredient_names, kitchenware, is_kw_active) {
     return {
         cooking_method: cooking_method,
@@ -25,7 +26,8 @@ function new_cooking_step(cooking_method, ingredient_names, kitchenware, is_kw_a
  * @param kw_data - Array of kitchenware to use in cooking steps generation.
  * @returns an array of CookingStep objects.
 */
-function generate_cooking_steps(selected_methods, data) {
+function generate_cooking_steps(selected_methods) {
+    var data = (0, save_load_data_1.get_data)();
     var cooking_steps = [];
     var retired_kitchenware = [];
     var kw_data = JSON.parse(JSON.stringify(// creates copy of kitchenware data
