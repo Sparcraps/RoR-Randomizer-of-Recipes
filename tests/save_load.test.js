@@ -3,13 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var save_load_data_1 = require("../data/save_load_data");
 var basics_1 = require("../basics");
 describe("testing functions to save and load data", function () {
-    test("save_data and load_data work", function () {
-        var data = (0, save_load_data_1.load_data)();
-        (0, save_load_data_1.save_data)(data);
-        expect((0, save_load_data_1.load_data)()).toStrictEqual(data);
+    test("save_data, load_data, set_data and get_data work", function () {
+        (0, save_load_data_1.load_data)();
+        var data = (0, save_load_data_1.get_data)();
+        (0, save_load_data_1.set_data)(data);
+        (0, save_load_data_1.save_data)();
+        (0, save_load_data_1.load_data)();
+        expect((0, save_load_data_1.get_data)()).toStrictEqual(data);
     });
     test("save_new_ingredient gives error when ingredient name already exists", function () {
-        var data = (0, save_load_data_1.load_data)();
+        (0, save_load_data_1.load_data)();
+        var data = (0, save_load_data_1.get_data)();
         var ingredient_data = data.ingredients;
         if (!(ingredient_data.length === 0)) {
             var console_spy = jest
@@ -22,7 +26,8 @@ describe("testing functions to save and load data", function () {
         else { }
     });
     test("save_new_category gives error when category name already exists", function () {
-        var data = (0, save_load_data_1.load_data)();
+        (0, save_load_data_1.load_data)();
+        var data = (0, save_load_data_1.get_data)();
         var cats = data.categories;
         if (!(cats.length === 0)) {
             var console_spy = jest
@@ -80,12 +85,12 @@ describe("testing functions to save and load data", function () {
         expect(test_arr).toContainEqual(ti1);
         expect(test_arr).toContainEqual(ti3);
         var ti4 = (0, basics_1.new_ingredient)("test category", "test ingredient", ["air"], "liters", 100, [800, 900]);
-        saved = (0, save_load_data_1.replace_ingredient)(ti4);
+        saved = (0, save_load_data_1.replace_ingredient)(ti1.name, ti4);
         ingredient_data = saved.ingredients;
         test_arr = ingredient_data[index];
         expect(test_arr).toContainEqual(ti4);
         expect(test_arr).toContainEqual(ti3);
-        saved = (0, save_load_data_1.replace_category)(test_category2);
+        saved = (0, save_load_data_1.replace_category)(test_category.name, test_category2);
         cat_data = saved.categories;
         expect(cat_data).toContainEqual(test_category2);
         saved = (0, save_load_data_1.delete_category)("test category");
@@ -95,13 +100,13 @@ describe("testing functions to save and load data", function () {
         expect(ingredient_data.length).toBe(index);
     });
     test("save_new_kitchenware, replace_kitchenware" +
-        " and delete_kitchenware works on test kitchenware", function () {
+        " and delete_kitchenware work on test kitchenware", function () {
         var name = "test kitchenware";
         var test_kit = (0, basics_1.new_kitchenware)(name, ["fry"]);
         var test_kit2 = (0, basics_1.new_kitchenware)(name, ["chop"]);
         var saved = (0, save_load_data_1.save_new_kitchenware)(test_kit);
         expect(saved.kitchenware).toContainEqual(test_kit);
-        saved = (0, save_load_data_1.replace_kitchenware)(test_kit2);
+        saved = (0, save_load_data_1.replace_kitchenware)(test_kit.name, test_kit2);
         expect(saved.kitchenware).toContainEqual(test_kit2);
         saved = (0, save_load_data_1.delete_kitchenware)(name);
         expect(saved.kitchenware.some(function (e) { return e.name === name; })).toBe(false);
