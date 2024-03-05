@@ -1,9 +1,11 @@
 import {
-    save_new_category, save_new_ingredient, save_new_kitchenware, delete_category, load_data
+    save_new_category, save_new_ingredient, save_new_kitchenware, load_data
 } from "./save_load_data"
+
 import {
     new_ingredient, new_category, new_kitchenware,
 } from "../basics"
+
 import {
     pair
 } from "../lib/list"
