@@ -19,6 +19,7 @@ import {
 import {
     get_menu_memory, set_menu_memory
 } from "./menu/menu_memory";
+import { load_data, save_data } from "./data/save_load_data";
 
 /**
  * Print the ASCII-art of RoR that is shown on startup and initialize
@@ -29,6 +30,8 @@ export function RoR_start(): void {
     function kill_RoR(): void {
         print_bold("Goodbye :)");
     }
+
+    load_data();
     
     console.log("----------------------------------------");
     console.log("Welcome to Randomizer of Recipes, aka");
@@ -43,6 +46,7 @@ export function RoR_start(): void {
     while (!is_stack_empty(get_menu_memory())) {
         top(get_menu_memory()!)();
     }
+
     kill_RoR();
 }
 
