@@ -106,8 +106,8 @@ export function print_all_categories(bold_print_string: string): Array<string> {
     print_bold(bold_print_string);
     for (let i = 0; i < cats.length; i++) {
         category_names[i] = cats[i].name;
+        console.log("- " + cats[i].name);
     }
-    print_alternatives(category_names);
     console.log();
     return category_names;
 }
@@ -203,11 +203,9 @@ export function select_cat_methods(
         if (!is_valid) {
             print_bold("Could not find any kitchenware with this " +
             "cooking method. Try again");
-            console.log();
         } else {
             const inner_array: Method = [];
             inner_array.push(user_input);
-            console.log();
 
             user_input = check_input(
                 valid_methods_not_active,
@@ -217,13 +215,13 @@ export function select_cat_methods(
             );
             while (user_input !== "") {
                 is_valid = valid_methods_not_active.includes(user_input);
-                if (!is_valid) {
-                    print_bold("Could not find any kitchenware with this " +
-                    "cooking method. Try again");
-                    console.log();
+                if (!is_valid ||
+                    user_input === inner_array[inner_array.length-1]) {
+                    print_bold("Either the cooking method does not exist in " +
+                    "an existing kitchenware, or the cooking method has " +
+                    "already been added.");
                 } else {
                     inner_array.push(user_input);
-                    console.log();
                 }
                 user_input = check_input(
                     valid_methods_not_active,

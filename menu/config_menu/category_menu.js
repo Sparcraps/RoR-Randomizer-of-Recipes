@@ -104,8 +104,8 @@ function print_all_categories(bold_print_string) {
     (0, menu_global_functions_1.print_bold)(bold_print_string);
     for (var i = 0; i < cats.length; i++) {
         category_names[i] = cats[i].name;
+        console.log("- " + cats[i].name);
     }
-    (0, menu_global_functions_1.print_alternatives)(category_names);
     console.log();
     return category_names;
 }
@@ -188,25 +188,23 @@ function select_cat_methods(cat, is_editing) {
         if (!is_valid) {
             (0, menu_global_functions_1.print_bold)("Could not find any kitchenware with this " +
                 "cooking method. Try again");
-            console.log();
         }
         else {
             var inner_array = [];
             inner_array.push(user_input);
-            console.log();
             user_input = (0, menu_global_functions_1.check_input)(valid_methods_not_active, "Enter a cooking method that depends on " +
                 "the cooking method you just added, " +
                 "or press enter to proceed: ");
             while (user_input !== "") {
                 is_valid = valid_methods_not_active.includes(user_input);
-                if (!is_valid) {
-                    (0, menu_global_functions_1.print_bold)("Could not find any kitchenware with this " +
-                        "cooking method. Try again");
-                    console.log();
+                if (!is_valid ||
+                    user_input === inner_array[inner_array.length - 1]) {
+                    (0, menu_global_functions_1.print_bold)("Either the cooking method does not exist in " +
+                        "an existing kitchenware, or the cooking method has " +
+                        "already been added.");
                 }
                 else {
                     inner_array.push(user_input);
-                    console.log();
                 }
                 user_input = (0, menu_global_functions_1.check_input)(valid_methods_not_active, "Enter a cooking method that depends on " +
                     "the cooking method you just added, " +

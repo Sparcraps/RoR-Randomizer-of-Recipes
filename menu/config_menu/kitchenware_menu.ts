@@ -68,8 +68,8 @@ export function configure_kitchenware(): void {
         print_bold(bold_print_string);
         for (let i = 0; i < kits.length; i++) {
             kitchenware_names[i] = kits[i].name;
+            console.log("- " + kits[i].name);
         }
-        print_alternatives(kitchenware_names);
         console.log();
         return kitchenware_names;
     }
@@ -182,18 +182,20 @@ export function select_kit_methods(
     while (user_input !== "") {
         let is_already_added = method_array.includes(user_input);
         if (is_already_added) {
+            console.log();
             print_bold("Cooking method not added; it has already been added " +
             "to the kitchenware");
-            console.log();
+            user_input = prompt(
+                "Enter a cooking method that the kitchenware can do, " + 
+                "or press enter to proceed: "
+            );
         } else {
             method_array.push(user_input);
-            console.log();
+            user_input = prompt(
+                "Enter another cooking method that the kitchenware can do, " + 
+                "or press enter to proceed: "
+            );
         }
-
-        user_input = prompt(
-            "Enter a cooking method that the kitchenware can do, " + 
-            "or press enter to proceed: "
-        );
     }
 
     kit.cooking_methods = method_array;

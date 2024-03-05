@@ -55,8 +55,8 @@ function configure_kitchenware() {
         (0, menu_global_functions_1.print_bold)(bold_print_string);
         for (var i = 0; i < kits.length; i++) {
             kitchenware_names[i] = kits[i].name;
+            console.log("- " + kits[i].name);
         }
-        (0, menu_global_functions_1.print_alternatives)(kitchenware_names);
         console.log();
         return kitchenware_names;
     }
@@ -162,16 +162,17 @@ function select_kit_methods(kit, is_editing) {
     while (user_input !== "") {
         var is_already_added = method_array.includes(user_input);
         if (is_already_added) {
+            console.log();
             (0, menu_global_functions_1.print_bold)("Cooking method not added; it has already been added " +
                 "to the kitchenware");
-            console.log();
+            user_input = (0, RoR_1.prompt)("Enter a cooking method that the kitchenware can do, " +
+                "or press enter to proceed: ");
         }
         else {
             method_array.push(user_input);
-            console.log();
+            user_input = (0, RoR_1.prompt)("Enter another cooking method that the kitchenware can do, " +
+                "or press enter to proceed: ");
         }
-        user_input = (0, RoR_1.prompt)("Enter a cooking method that the kitchenware can do, " +
-            "or press enter to proceed: ");
     }
     kit.cooking_methods = method_array;
     if (is_editing) {

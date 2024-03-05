@@ -210,7 +210,7 @@ export function select_allergies(ingredient: Ingredient,
     const allergy_array: Array<string> = [];
 
     let user_input = prompt(
-        "Enter a dietary restriction of the above that applies to the " +
+        "Enter a dietary restriction that applies to the " +
         "ingredient, or press enter if no dietary restrictions apply: "
     ).trim().toLowerCase();
     
@@ -219,7 +219,7 @@ export function select_allergies(ingredient: Ingredient,
         print_bold("Dietary restriction added!");
         console.log();
         user_input = prompt(
-            "Enter a dietary restriction of the above that applies to the " +
+            "Enter a dietary restriction that applies to the " +
             "ingredient, or press enter if no dietary restrictions apply: "
         ).trim().toLowerCase();
     }
