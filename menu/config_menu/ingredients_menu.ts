@@ -131,7 +131,7 @@ export function select_name(ingredient: Ingredient,
     }
 
     if (is_editing) {
-        print_bold("Current ingredient category: " + ingredient.category);
+        print_bold("Current ingredient name: " + ingredient.name);
         console.log();
     } else {}
 
