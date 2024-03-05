@@ -115,19 +115,18 @@ function randomize_ingredients_and_methods(_a, recipe, filters) {
         }
         else {
             var method = randomize_cooking_method(cat);
-            if (method[0] == "add") {
+            if (method[0] === "add") {
                 method_add.push((0, list_1.pair)(method, (0, printing_1.refer_to_ingredient)(ingredient, amount)));
-                recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
-                kcal += amount * kcal_per_measure;
             }
             else {
                 add_method(method, (0, printing_1.refer_to_ingredient)(ingredient, amount));
-                recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
-                kcal += amount * kcal_per_measure;
             }
+            recipe.ingredient_info.push((0, list_1.pair)(ingredient, amount));
+            kcal += amount * kcal_per_measure;
         }
     }
-    for (var i = 0; i < method_add.length; i = i + 1) {
+    for (var i = 0; i < method_add.length; i = i + 1) // adds all methods using "add"
+     {
         var current_method = method_add[i];
         add_method(current_method[0], current_method[1]);
     }

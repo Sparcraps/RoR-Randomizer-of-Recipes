@@ -97,7 +97,7 @@ function generate_cooking_steps(selected_methods) {
         else { }
         var extra_i = [];
         if ((0, basics_1.has_separable_inventory)(kw)) {
-            extra_i = do_separable_method(current_method);
+            extra_i = do_separable_method(current_method, steps);
         }
         else { }
         kw.inventory = __spreadArray(__spreadArray([], ingredient_names, true), extra_i, true);
@@ -110,15 +110,21 @@ function generate_cooking_steps(selected_methods) {
     }
     // for separable kitchenware, finds all ingredients with same cooking method
     // first in method array and returns ingredient names for method step.
-    function do_separable_method(method) {
+    function do_separable_method(method, steps) {
         var ingredient_names = [];
         for (var i = 0; i < selected_methods.length; i++) {
             var other_method = (0, list_1.head)(selected_methods[i]);
             var m = other_method[0];
-            if (m === method) {
-                var names = (0, list_1.tail)(selected_methods[i]);
-                ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
-                other_method.shift(); // removes method from other_method
+            for (var j = 0; j < other_method.length - 1; j++) {
+                var m_1 = other_method[j];
+                if (m_1 === method) {
+                    var names = (0, list_1.tail)(selected_methods[i]);
+                    ingredient_names.push.apply(ingredient_names, names); // adds ingredient for matching method to list
+                    var rest_of_method = other_method.splice(0, j + 1); // removes methods up to found method from other method array and saves these in another method
+                    rest_of_method.pop(); // removes found method
+                    add_cooking_step(rest_of_method, names, steps);
+                }
+                else { }
             }
         }
         return ingredient_names;

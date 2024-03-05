@@ -130,7 +130,7 @@ function select_name(ingredient, is_editing) {
         }
     }
     if (is_editing) {
-        (0, menu_global_functions_1.print_bold)("Current ingredient category: " + ingredient.category);
+        (0, menu_global_functions_1.print_bold)("Current ingredient name: " + ingredient.name);
         console.log();
     }
     else { }

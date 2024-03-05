@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.edit_ingredient = void 0;
-var save_load_data_1 = require("../data/save_load_data");
+var save_load_data_1 = require("../../data/save_load_data");
 var ingredients_menu_1 = require("./ingredients_menu");
-var menu_global_functions_1 = require("./menu_global_functions");
-var menu_memory_1 = require("./menu_memory");
+var menu_global_functions_1 = require("../menu_global_functions");
+var menu_memory_1 = require("../menu_memory");
 /**
  * A subsubmenu of the ingredient menu, where the user can edit existing
  * or newly created ingredient data.
@@ -12,7 +12,7 @@ var menu_memory_1 = require("./menu_memory");
  */
 function edit_ingredient(ingredient, old_name) {
     var print_menu = [
-        '"n = "change ingredient name"',
+        '"n" = change ingredient name',
         '"c" = change ingredient categories',
         '"d" = change ingredient dietary restrictions',
         '"m" = change ingredient measurement',

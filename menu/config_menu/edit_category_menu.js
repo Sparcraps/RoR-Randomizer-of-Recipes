@@ -12,7 +12,7 @@ var menu_memory_1 = require("../menu_memory");
  */
 function edit_category(cat, old_name) {
     var print_menu = [
-        '"n = "change category name"',
+        '"n" = change category name',
         '"c" = change category cooking methods',
         '"m" = change category max ingredient amount',
         '"b" = save category and go back to category menu'

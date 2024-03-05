@@ -116,7 +116,7 @@ export function generate_cooking_steps(
 
         let extra_i: Array<string> = [];
         if (has_separable_inventory(kw)) {
-            extra_i = do_separable_method(current_method);
+            extra_i = do_separable_method(current_method, steps);
         } else {}
 
         kw.inventory = [...ingredient_names, ...extra_i]
@@ -132,16 +132,24 @@ export function generate_cooking_steps(
     }
 
     // for separable kitchenware, finds all ingredients with same cooking method
-    // first in method array and returns ingredient names for method step.
-    function do_separable_method(method: string): Array<string> {
+    // somewhere in method array. Executes the methods earlier in method array
+    // and returns ingredient names for method step.
+    function do_separable_method(
+        method: string, steps: Array<CookingStep>
+    ): Array<string> {
         const ingredient_names: Array<string> = [];
         for (let i = 0; i < selected_methods.length; i++) {
             const other_method = head(selected_methods[i]);
             const m = other_method[0];
-            if (m === method) {
-                const names = tail(selected_methods[i]);
-                ingredient_names.push(...names); // adds ingredient for matching method to list
-                other_method.shift(); // removes method from other_method
+            for (let j = 0; j < other_method.length - 1; j++) {
+                const m = other_method[j];
+                if (m === method) {
+                    const names = tail(selected_methods[i]);
+                    ingredient_names.push(...names); // adds ingredient for matching method to list
+                    const rest_of_method = other_method.splice(0, j + 1); // removes methods up to found method from other method array and saves these in another method
+                    rest_of_method.pop(); // removes found method
+                    add_cooking_step(rest_of_method, names, steps);
+                } else {}
             }
         }
         return ingredient_names;
