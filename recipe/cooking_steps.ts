@@ -48,7 +48,8 @@ export function generate_cooking_steps(
     // kitchenware, then looks in saved kitchenware, and returns the first one it finds
     // in a pair with a boolean for whether of not the kitchenware was already active.
     // needs to be updated to choose randomly if multiple kitchenware have the cooking method available
-    function get_kitchenware_from_method(cooking_method: string): Pair<KitchenWare, boolean> {
+    function get_kitchenware_from_method(cooking_method: string): Pair<KitchenWare, 
+                                                                       boolean> {
         for (let i = 0; i < active_kitchenware.length; i++) {
             const kw = active_kitchenware[i];
             if (kw.cooking_methods.includes(cooking_method)) {
