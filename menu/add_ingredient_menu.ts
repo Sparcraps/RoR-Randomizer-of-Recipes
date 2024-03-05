@@ -36,13 +36,7 @@ import {
 export function add_ingredient(): void {
     // Helper function that prompts the user to select a name for
     // an ingredient and then returns the updated ingredient.
-    function select_name(ingredient: Ingredient,
-                         print_contents: boolean = false): Ingredient {
-    if (print_contents) {
-        print_bold("Current ingredient name: " + ingredient.name);
-        console.log();
-    } else {}
-
+    function select_name(ingredient: Ingredient): Ingredient {
     let name = prompt("Enter new ingredient name: ").trim().toLowerCase();
     console.log();
     while (name === "") {
@@ -83,7 +77,8 @@ export function add_ingredient(): void {
         oblivion();
     } else if (user_input === "n") {
         oblivion();
-        set_menu_memory(push(edit_ingredient.bind(new_ingredient), get_menu_memory()));
+        set_menu_memory(push(edit_ingredient.bind(new_ingredient),
+                             get_menu_memory()));
     } else {
         throw new Error("Invalid user_input has escaped.");
     }
@@ -93,15 +88,15 @@ export function add_ingredient(): void {
  * Helper function that prompts the user to select a category for
  * an ingredient.
  * @param ingredient - The ingredient to select category for
- * @param print_contents - Determines whether the current category should be
+ * @param is_editing - Determines whether the current category should be
  * printed before prompting the user (false by default)
  * @returns the updated ingredient.
  */
 export function select_category(ingredient: Ingredient,
-            print_contents: boolean = false): Ingredient {
+            is_editing: boolean = false): Ingredient {
     let data: SaveData = load_data();
 
-    if (print_contents) {
+    if (is_editing) {
         print_bold("Current ingredient category: " + ingredient.category);
         console.log();
     } else {}
@@ -119,6 +114,10 @@ export function select_category(ingredient: Ingredient,
         );
 
     ingredient.category = user_input;
+    if (is_editing) {
+        print_bold("Ingredient category updated!");
+        console.log();
+    } else {}
     return ingredient;
 }
 
@@ -126,14 +125,14 @@ export function select_category(ingredient: Ingredient,
  * Helper function that prompts the user to select the dietary restrictions
  * that apply to an ingredient.
  * @param ingredient - The ingredient to select dietary restrictions for
- * @param print_contents - Determines whether the current dietary restrictions
+ * @param is_editing - Determines whether the current dietary restrictions
  * should be printed before prompting the user (false by default)
  * @returns the updated ingredient.
  */
 
 export function select_allergies(ingredient: Ingredient,
-             print_contents: boolean = false): Ingredient {
-    if (print_contents) {
+             is_editing: boolean = false): Ingredient {
+    if (is_editing) {
         print_bold("Current ingredient dietary restrictions: ");
         print_alternatives(ingredient.allergies);
         console.log();
@@ -174,6 +173,10 @@ export function select_allergies(ingredient: Ingredient,
     }
 
     ingredient.allergies = allergy_array;
+    if (is_editing) {
+        print_bold("Ingredient dietary restrictions updated!");
+        console.log();
+    } else {}
     return ingredient;
 }
 
@@ -181,13 +184,13 @@ export function select_allergies(ingredient: Ingredient,
  * Helper function that prompts the user to select the unit of measurement for
  * an ingredient.
  * @param ingredient - The ingredient to select the unit of measurement for
- * @param print_contents - Determines whether the current unit of measurement
+ * @param is_editing - Determines whether the current unit of measurement
  * should be printed before prompting the user (false by default)
  * @returns the updated ingredient.
  */
 export function select_measurement(ingredient: Ingredient,
-               print_contents: boolean = false): Ingredient {
-    if (print_contents) {
+               is_editing: boolean = false): Ingredient {
+    if (is_editing) {
         print_bold(
             "Current ingredient measurement: " + ingredient.measurement
             );
@@ -199,6 +202,11 @@ export function select_measurement(ingredient: Ingredient,
         'float number, or as a float followed by a string, e.g. "0.5 dl": '
         ).trim().toLowerCase();
     console.log();
+
+    if (is_editing) {
+        print_bold("Ingredient unit of measurement updated!");
+        console.log();
+    } else {}
     return ingredient;
 }
 
@@ -206,13 +214,13 @@ export function select_measurement(ingredient: Ingredient,
  * Helper function that prompts the user to select the kcal per measurement for
  * an ingredient.
  * @param ingredient - The ingredient to select the kcal per measurement for
- * @param print_contents - Determines whether the current kcal per measurement
+ * @param is_editing - Determines whether the current kcal per measurement
  * should be printed before prompting the user (false by default)
  * @returns the updated ingredient.
  */
 export function select_kcal(ingredient: Ingredient,
-        print_contents: boolean = false): Ingredient {
-    if (print_contents) {
+        is_editing: boolean = false): Ingredient {
+    if (is_editing) {
         print_bold("Current ingredient kcal per measurement: " +
         ingredient.kcal_per_measurement.toString());
         console.log();
@@ -228,6 +236,11 @@ export function select_kcal(ingredient: Ingredient,
         } else {
             console.log();
             ingredient.kcal_per_measurement = kcal_input;
+
+            if (is_editing) {
+                print_bold("Ingredient kcal per measurement updated!");
+                console.log();
+            } else {}
             return ingredient;
         }
     }
@@ -238,13 +251,13 @@ export function select_kcal(ingredient: Ingredient,
  * an ingredient's amount can be randomized, based on the ingredients
  * unit of measurement.
  * @param ingredient - The ingredient to select the amount range for
- * @param print_contents - Determines whether the current amount range
+ * @param is_editing - Determines whether the current amount range
  * should be printed before prompting the user (false by default)
  * @returns the updated ingredient.
  */
 export function select_range(ingredient: Ingredient,
-         print_contents: boolean = false): Ingredient {
-    if (print_contents) {
+         is_editing: boolean = false): Ingredient {
+    if (is_editing) {
         print_bold(
             "Current ingredient amount range: " +
             ingredient.range[0].toString() +
@@ -278,5 +291,10 @@ export function select_range(ingredient: Ingredient,
     }
 
     ingredient.range = pair(lower_range, upper_range);
+
+    if (is_editing) {
+        print_bold("Ingredient amount range updated!");
+        console.log();
+    } else {}
     return ingredient;
 }

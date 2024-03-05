@@ -12,7 +12,7 @@ import {
 } from "./add_ingredient_menu";
 
 import {
-    check_input, print_alternatives
+    check_input, print_alternatives, print_bold
 } from "./menu_global_functions";
 
 import {
@@ -35,7 +35,9 @@ export function edit_ingredient(ingredient: Ingredient): void {
     ];
     let valid_inputs = ["c", "d", "m", "k", "r", "b"];
 
-    print_alternatives(print_menu)
+    print_bold("Ingredient being edited: " + ingredient.name);
+    console.log();
+    print_alternatives(print_menu);
     let user_input = check_input(
         valid_inputs, "Choose what ingredient data you want to adjust: "
         );
