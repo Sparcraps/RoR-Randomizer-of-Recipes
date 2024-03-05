@@ -1,11 +1,23 @@
+import { prompt } from "../RoR";
+
+import { type Category, type Method, find_by_name } from "../basics";
+
 import {
-    prompt
-} from "../RoR";
-import { Category, Ingredient, Method, find_by_name } from "../basics";
-import { SaveData, delete_category, load_data } from "../data/save_load_data";
+    type SaveData, delete_category, load_data
+} from "../data/save_load_data";
+
 import { push } from "../lib/stack";
+
 import { get_doable_cooking_methods } from "../recipe/filters";
-import { check_input, integer_prompt, print_alternatives, print_bold } from "./menu_global_functions";
+
+import { add_category } from "./add_category_menu";
+
+import { edit_category } from "./edit_category_menu";
+
+import {
+    check_input, integer_prompt, print_alternatives, print_bold
+} from "./menu_global_functions";
+
 import { get_menu_memory, oblivion, set_menu_memory } from "./menu_memory";
 
 /**
@@ -44,15 +56,6 @@ export function configure_categories(): void {
                     return data.categories[index];
                 } else {}
         }
-    }
-    
-    // Inside this function, you can access the category parameter
-    // and call edit_category with the correct value
-    function edit_category_wrapper(category: Category,
-                                   old_name: string): Function {
-        return function() {
-            edit_category(category, old_name);
-        };
     }
 
     let data: SaveData = load_data();
@@ -280,4 +283,18 @@ export function select_cat_max(cat: Category,
             return cat;
         }
     }
+}
+
+/**
+ * Wrap the edit_category function so that it's parameters are snapshotted 
+ * and can be added to the stack.
+ * @param category - Category that is being edited
+ * @param old_name - The name of the ingredient before it gets edited
+ * @returns the function edit_category with fixated parameters
+ */
+export function edit_category_wrapper(category: Category,
+                                      old_name: string): Function {
+    return function() {
+        edit_category(category, old_name);
+    };
 }

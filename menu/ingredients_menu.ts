@@ -1,37 +1,24 @@
-import {
-    prompt, valid_dietary_restrictions
-} from "../RoR";
+import { prompt, valid_dietary_restrictions } from "../RoR";
 
-import {
-    find_by_name,
-    type Ingredient
-} from "../basics";
+import { type Ingredient, find_by_name } from "../basics";
 
-import {
-    SaveData, delete_ingredient, load_data
-} from "../data/save_load_data";
+import { SaveData, delete_ingredient, load_data } from "../data/save_load_data";
+
 import { pair } from "../lib/list";
 
-import {
-    push
-} from "../lib/stack";
+import { push } from "../lib/stack";
 
-import {
-    add_ingredient
-} from "./add_ingredient_menu";
+import { add_ingredient } from "./add_ingredient_menu";
+
 import { print_all_categories } from "./category_menu";
 
-import {
-    edit_ingredient
-} from "./edit_ingredient_menu";
+import { edit_ingredient } from "./edit_ingredient_menu";
 
 import {
     check_input, integer_prompt, print_alternatives, print_bold
 } from "./menu_global_functions";
 
-import {
-    get_menu_memory, oblivion, set_menu_memory
-} from "./menu_memory";
+import { get_menu_memory, oblivion, set_menu_memory } from "./menu_memory";
 
 /**
  * A submenu of the configurations menu, where the user can configure
@@ -88,15 +75,6 @@ export function configure_ingredients(): void {
                 } else {}
                 console.log();
             }
-    
-    // Inside this function, you can access the ingredient parameter
-    // and call edit_ingredient with the correct value
-    function edit_ingredient_wrapper(ingredient: Ingredient,
-                                     old_name: string): Function {
-        return function() {
-            edit_ingredient(ingredient, old_name);
-        };
-    }
 
     let data: SaveData = load_data();
     let valid_inputs = ["a", "e", "r", "l", "b"];
@@ -186,8 +164,6 @@ export function select_name(ingredient: Ingredient,
 */
 export function select_category(ingredient: Ingredient,
                                 is_editing: boolean = false): Ingredient {
-    let data: SaveData = load_data();
-
     if (is_editing) {
         print_bold("Current ingredient category: " + ingredient.category);
         console.log();
@@ -217,7 +193,6 @@ export function select_category(ingredient: Ingredient,
 * should be printed before prompting the user (false by default)
 * @returns the updated ingredient.
 */
-
 export function select_allergies(ingredient: Ingredient,
                                  is_editing: boolean = false): Ingredient {
     if (is_editing) {
@@ -387,4 +362,19 @@ export function select_range(ingredient: Ingredient,
     console.log();
     } else {}
     return ingredient;
+}
+
+/**
+ * Wrap the edit_ingredient function so that it's parameters are snapshotted 
+ * and can be added to the stack.
+ * @param ingredient - Ingredient that is being edited
+ * @param old_name - The name of the ingredient before it gets edited
+ * @returns the function edit_ingredient with fixated parameters
+ */
+
+export function edit_ingredient_wrapper(ingredient: Ingredient,
+                                        old_name: string): Function {
+    return function() {
+        edit_ingredient(ingredient, old_name);
+    };
 }

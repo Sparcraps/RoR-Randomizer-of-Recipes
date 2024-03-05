@@ -23,6 +23,7 @@ import {
 } from "./edit_ingredient_menu";
 
 import {
+    edit_ingredient_wrapper,
     select_allergies, select_category, select_kcal, select_measurement,
     select_name, select_range
 } from "./ingredients_menu";
@@ -42,7 +43,6 @@ export function add_ingredient(): void {
 
     const keys = Object.keys(new_ingredient);
     const values = Object.values(new_ingredient);
-
     print_bold("Data for the new ingredient: ")
     for (let i = 0; i < values.length; i++) {
         console.log(keys[i] + ":", values[i]);
@@ -51,14 +51,15 @@ export function add_ingredient(): void {
     let valid_inputs = ["y", "n"];
     let user_input = check_input(
         valid_inputs, "Are you happy with the ingredient data? (y/n): "
-        );
+    );
 
     if (user_input === "y") {
         oblivion();
     } else if (user_input === "n") {
+        const name = new_ingredient.name;
         oblivion();
-        set_menu_memory(push(edit_ingredient.bind(new_ingredient),
-                             get_menu_memory()));
+        set_menu_memory(push(edit_ingredient_wrapper(new_ingredient, name),
+                                 get_menu_memory()));
     } else {
         throw new Error("Invalid user_input has escaped.");
     }
