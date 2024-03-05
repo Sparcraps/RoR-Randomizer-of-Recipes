@@ -1,7 +1,7 @@
 import { Recipe } from "./recipe_generation";
 import { type Method, Ingredient, Category } from "../basics"
 import { Pair, head, pair, tail } from "../lib/list";
-import { SaveData } from "../data/save_load_data";
+import { SaveData, get_data } from "../data/save_load_data";
 import { filter_cooking_methods, filter_ingredients } from "./filters";
 import { refer_to_ingredient } from "./printing";
 
@@ -20,8 +20,9 @@ export function randomize_ingredients_and_methods(
     [min_portion, max_portion]: Pair<number, number>,
     recipe: Recipe,
     filters: Array<string>,
-    data: SaveData
 ): Array<Pair<Method, Array<string>>> {
+    const data = get_data();
+
     let ingredient_data: Array<Array<Ingredient>> =
         JSON.parse(JSON.stringify(data.ingredients)); // creates copy of save data
     let cat_data: Array<Category> =

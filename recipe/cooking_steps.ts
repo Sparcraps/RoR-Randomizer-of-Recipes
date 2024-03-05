@@ -2,7 +2,7 @@ import {
     type  KitchenWare, type  Method, has_separable_inventory
 } from "../basics";
 import { type Pair, head, pair, tail } from "../lib/list";
-import { type SaveData } from "../data/save_load_data";
+import { get_data, type SaveData } from "../data/save_load_data";
 
 /**
  * CookingStep data type.
@@ -35,8 +35,9 @@ function new_cooking_step(
 */
 export function generate_cooking_steps(
     selected_methods: Array<Pair<Method, Array<string>>>,
-    data: SaveData
 ): Array<CookingStep> {
+    const data = get_data();
+
     const cooking_steps: Array<CookingStep> = [];
     const retired_kitchenware: Array<KitchenWare> = [];
 

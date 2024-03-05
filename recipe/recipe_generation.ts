@@ -37,14 +37,13 @@ export function generate_recipe(
         );
     } else {}
 
-    const data = get_data();
     const recipe = new_recipe(portions);
 
     const selected_methods = randomize_ingredients_and_methods(
-        min_max_kcal, recipe, filters, data
+        min_max_kcal, recipe, filters
     );
 
-    const steps = generate_cooking_steps(selected_methods, data);
+    const steps = generate_cooking_steps(selected_methods);
     recipe.steps = steps;
     try{
         recipe.name = generate_name(recipe);
