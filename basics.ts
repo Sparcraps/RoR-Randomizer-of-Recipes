@@ -335,8 +335,20 @@ export function new_ingredient(
 
 export function empty_ingredient(): Ingredient {
     return {
-        name: "", category: "", allergies: [], measurement: "", 
-        kcal_per_measurement: 0, range: pair(0, 0), tag: "ingredient"
+        tag: "ingredient", name: "", category: "", allergies: [],
+        measurement: "", kcal_per_measurement: 0, range: pair(0, 0)
+    };
+}
+
+export function empty_category(): Category {
+    return {
+        tag: "category", name: "", cooking_methods: [], max_ingredients: 0
+    };
+}
+
+export function empty_kitchenware(): KitchenWare {
+    return {
+        tag: "kitchenware", name: "", cooking_methods: [], inventory: []
     };
 }
 

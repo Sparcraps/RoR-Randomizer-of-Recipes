@@ -231,10 +231,9 @@ export function delete_category(...names: Array<string>): SaveData {
     
     for (let i = 0; i < names.length; i++) {
         const name = names[i];
-        console.error(
-            new Error(
-                "There is no saved category with the name " + name + "."
-                ));
+        throw new Error(
+            "There is no saved category with the name " + name + "."
+        );
     }
 
     data.ingredients = updated_ingredients;

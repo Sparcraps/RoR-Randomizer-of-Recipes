@@ -43,7 +43,9 @@ export function filter_ingredients(
  * @returns A set of strings representing parts of cooking methods available to
  * the kitchenware.
  */
-export function get_doable_cooking_methods(kw_data: Array<KitchenWare>): Set<string> {
+export function get_doable_cooking_methods(
+    kw_data: Array<KitchenWare>
+): Set<string> {
     const methods: Set<string> = new Set();
     kw_data.forEach(kw => {
         const kw_methods = kw.cooking_methods;
