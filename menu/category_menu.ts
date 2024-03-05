@@ -1,8 +1,8 @@
 import {
     prompt
 } from "../RoR";
-import { Category } from "../basics";
-import { SaveData } from "../data/save_load_data";
+import { Category, Ingredient, find_by_name } from "../basics";
+import { SaveData, delete_category, load_data } from "../data/save_load_data";
 import { push } from "../lib/stack";
 import { check_input, print_alternatives, print_bold } from "./menu_global_functions";
 import { get_menu_memory, oblivion, set_menu_memory } from "./menu_memory";
@@ -11,18 +11,18 @@ import { get_menu_memory, oblivion, set_menu_memory } from "./menu_memory";
  * A submenu of the configurations menu, where the user can configure
  * the categories used for recipe generation, by adding or removing them.
  */
-export function configure_category(): void {
+export function configure_categories(): void {
     // Helper function that prompts the user for an ingredient name,
     // searches for it in the data and removes it from the data if found.
     function search_and_delete(): void {
         let input = prompt(
-            "Enter search string, or press enter to go back without removing " +
-            "an ingredient: "
+            "Enter the name of the category you wish to edit, or press " +
+            "enter to go back without removing a category: "
             ).trim().toLowerCase();
         if (input !== "") {
             try {
-                data = delete_ingredient(input);
-                print_bold("\nIngredient removed from data!");
+                data = delete_category(input);
+                print_bold("\nCategory removed from data!");
             } catch (error) {
                 console.log();
                 console.error(error.message);
@@ -31,30 +31,25 @@ export function configure_category(): void {
         console.log();
     }
 
-    // Helper function that returns ingredient object by name
-    function find_ingredient(): Ingredient | undefined {
+    // Helper function that returns category object by name
+    function find_category(): Category | undefined {
         let input = prompt(
-            "Enter the name of the ingredient you wish to edit, or press " +
-            "enter to go back without removing an ingredient: "
+            "Enter the name of the category you wish to edit: "
             ).trim().toLowerCase();
             if (input !== "") {
-                for (let i = 0; i < data.ingredients.length; i++) {
-                    for (let j = 0; j < data.ingredients[i].length; j++) {
-                        if (data.ingredients[i][j].name === input) {
-                            console.log();
-                            return data.ingredients[i][j];
-                        }
-                    }
-                }
-            } else {}
-            console.log();
+                let index = find_by_name(input, data.categories)
+                if (index !== -1) {
+                    console.log();
+                    return data.categories[index];
+                } else {}
         }
+    }
     
-    // Inside this function, you can access the ingredient parameter
-    // and call edit_ingredient with the correct value
-    function edit_ingredient_wrapper(ingredient: Ingredient): Function {
+    // Inside this function, you can access the category parameter
+    // and call edit_category with the correct value
+    function edit_category_wrapper(category: Category): Function {
         return function() {
-            edit_ingredient(ingredient);
+            edit_category(category);
         };
     }
 
@@ -72,12 +67,12 @@ export function configure_category(): void {
     if (user_input === "a") {
         set_menu_memory(push(add_category, get_menu_memory()));
     } else if (user_input === "e") {
-        const ingredient = find_ingredient();
+        const ingredient = find_category();
         if (ingredient !== undefined) {
-            set_menu_memory(push(edit_ingredient_wrapper(ingredient),
+            set_menu_memory(push(edit_category_wrapper(ingredient),
                                  get_menu_memory()));
         } else {
-            print_bold("There is no ingredient with that name!");
+            print_bold("There is no category with that name!");
             console.log();
         }
     } else if (user_input === "r") {
@@ -94,9 +89,11 @@ export function configure_category(): void {
 // Helper function that prints the name of all 
 // currently registered ingredients.
 export function print_all_categories(bold_print_string: string): Array<string> {
-    print_bold(bold_print_string);
+    let data: SaveData = load_data();
     const category_names: Array<string> = [];
     const cats: Array<Category> = data.categories;
+
+    print_bold(bold_print_string);
     for (let i = 0; i < cats.length; i++) {
         category_names[i] = cats[i].name;
     }

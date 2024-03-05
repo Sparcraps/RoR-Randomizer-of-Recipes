@@ -48,9 +48,8 @@ export function add_ingredient(): void {
     const values = Object.values(new_ingredient);
 
     print_bold("Data for the new ingredient: ")
-    print_alternatives(keys);
     for (let i = 0; i < values.length; i++) {
-        console.log(values[i]);
+        console.log(keys[i] + ":", values[i]);
     }
 
     let valid_inputs = ["y", "n"];

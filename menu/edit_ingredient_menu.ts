@@ -8,8 +8,7 @@ import {
 
 import {
     select_allergies, select_category, select_kcal, select_measurement,
-    select_name,
-    select_range
+    select_name, select_range
 } from "./add_ingredient_menu";
 
 import {
@@ -25,7 +24,7 @@ import {
  * or newly created ingredient data.
  * @param ingredient - The ingredient that is being 
  */
-export function edit_ingredient(ingredient: Ingredient): void {
+export function edit_ingredient(ingredient: Ingredient, old_name: string): void {
     let print_menu = [
         '"n = "change ingredient name"',
         '"c" = change ingredient categories',
@@ -57,7 +56,7 @@ export function edit_ingredient(ingredient: Ingredient): void {
     } else if (user_input === "r") {
         ingredient = select_range(ingredient, true);
     } else if (user_input === "b") {
-        replace_ingredient(ingredient);
+        replace_ingredient(old_name, ingredient);
         oblivion();
     } else {
         throw new Error("Invalid user_input has escaped.");

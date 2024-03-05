@@ -3,6 +3,7 @@ import {
 } from "../RoR";
 
 import {
+    find_by_name,
     type Ingredient
 } from "../basics";
 
@@ -53,8 +54,8 @@ export function configure_ingredients(): void {
     // searches for it in the data and removes it from the data if found.
     function search_and_delete(): void {
         let input = prompt(
-            "Enter search string, or press enter to go back without removing " +
-            "an ingredient: "
+            "Enter the name of the ingredient you wish to remove, or press " +
+            "enter to go back without removing an ingredient: "
             ).trim().toLowerCase();
         if (input !== "") {
             try {
@@ -72,26 +73,26 @@ export function configure_ingredients(): void {
     function find_ingredient(): Ingredient | undefined {
         let input = prompt(
             "Enter the name of the ingredient you wish to edit, or press " +
-            "enter to go back without removing an ingredient: "
+            "enter to go back: "
             ).trim().toLowerCase();
             if (input !== "") {
                 for (let i = 0; i < data.ingredients.length; i++) {
-                    for (let j = 0; j < data.ingredients[i].length; j++) {
-                        if (data.ingredients[i][j].name === input) {
+                    let j = find_by_name(input, data.ingredients[i]);
+                        if (j !== -1) {
                             console.log();
                             return data.ingredients[i][j];
-                        }
+                        } else {}
                     }
-                }
-            } else {}
-            console.log();
-        }
+                } else {}
+                console.log();
+            }
     
     // Inside this function, you can access the ingredient parameter
     // and call edit_ingredient with the correct value
-    function edit_ingredient_wrapper(ingredient: Ingredient): Function {
+    function edit_ingredient_wrapper(ingredient: Ingredient,
+                                     old_name: string): Function {
         return function() {
-            edit_ingredient(ingredient);
+            edit_ingredient(ingredient, old_name);
         };
     }
 
@@ -111,7 +112,8 @@ export function configure_ingredients(): void {
     } else if (user_input === "e") {
         const ingredient = find_ingredient();
         if (ingredient !== undefined) {
-            set_menu_memory(push(edit_ingredient_wrapper(ingredient),
+            const name = ingredient.name;
+            set_menu_memory(push(edit_ingredient_wrapper(ingredient, name),
                                  get_menu_memory()));
         } else {
             print_bold("There is no ingredient with that name!");
