@@ -1,7 +1,10 @@
 import {
     prompt
 } from "../RoR";
-import { Ingredient } from "../basics";
+
+import {
+    type Ingredient
+} from "../basics";
 
 import {
     SaveData, delete_ingredient, load_data
@@ -107,7 +110,8 @@ export function configure_ingredients(): void {
     } else if (user_input === "e") {
         const ingredient = find_ingredient();
         if (ingredient !== undefined) {
-            set_menu_memory(push(edit_ingredient_wrapper(ingredient), get_menu_memory()));
+            set_menu_memory(push(edit_ingredient_wrapper(ingredient),
+                                 get_menu_memory()));
         } else {
             print_bold("There is no ingredient with that name!");
             console.log();
