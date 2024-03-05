@@ -1,6 +1,6 @@
 {
   "name": "ror-randomizer-of-recipes",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Project for the course Program Design and Data Structures - 1DL201 at Uppsala University",
   "main": "RoR.js",
   "scripts": {
