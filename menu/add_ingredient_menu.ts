@@ -34,22 +34,6 @@ import {
  * A submenu of the ingredients menu, where the user adds a new ingredient.
  */
 export function add_ingredient(): void {
-    // Helper function that prompts the user to select a name for
-    // an ingredient and then returns the updated ingredient.
-    function select_name(ingredient: Ingredient): Ingredient {
-    let name = prompt("Enter new ingredient name: ").trim().toLowerCase();
-    console.log();
-    while (name === "") {
-        print_bold(
-            "Ingredient name cannot be empty or only contain whitespace."
-            );
-        name = prompt("Enter new ingredient name: ").trim().toLowerCase();
-    }
-
-    ingredient.name = name;
-    return ingredient;
-    }
-
     let new_ingredient: Ingredient = empty_ingredient();
     new_ingredient = select_name(new_ingredient);
     new_ingredient = select_category(new_ingredient);
@@ -85,8 +69,51 @@ export function add_ingredient(): void {
 }
 
 /**
- * Helper function that prompts the user to select a category for
- * an ingredient.
+ * Helper function that prompts the user to select a name for an ingredient.
+ * @param ingredient - The ingredient to select name for
+ * @returns the updated ingredient.
+ */
+export function select_name(ingredient: Ingredient,
+                            is_editing: boolean = false): Ingredient {
+        // helper function used to avoid duplicate ingredient names
+        function is_name_taken(ingredient_name: string): boolean {
+            let name_taken: boolean;
+            if (is_editing) {
+                return name_taken = is_ingredient_in_data(name) &&
+                                    name !== ingredient.name;
+            } else {
+                return name_taken = is_ingredient_in_data(name)
+            }
+        }
+
+    if (is_editing) {
+        print_bold("Current ingredient category: " + ingredient.category);
+        console.log();
+    } else {}
+
+    let name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+    var name_taken = is_name_taken(name);
+    console.log();
+
+    while (name === "" || name_taken) {
+        print_bold(
+            "Ingredient name cannot be empty, only contain whitespace or " + 
+            "already taken by another ingredient."
+            );
+        name = prompt("Enter new ingredient name: ").trim().toLowerCase();
+        name_taken = is_name_taken(name)
+    }
+
+    ingredient.name = name;
+    if (is_editing) {
+        print_bold("Ingredient category updated!");
+        console.log();
+    } else {}
+    return ingredient;
+    }
+
+/**
+ * Helper function that prompts the user to select a category for an ingredient.
  * @param ingredient - The ingredient to select category for
  * @param is_editing - Determines whether the current category should be
  * printed before prompting the user (false by default)

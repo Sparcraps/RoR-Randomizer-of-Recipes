@@ -8,6 +8,7 @@ import {
 
 import {
     select_allergies, select_category, select_kcal, select_measurement,
+    select_name,
     select_range
 } from "./add_ingredient_menu";
 
@@ -26,6 +27,7 @@ import {
  */
 export function edit_ingredient(ingredient: Ingredient): void {
     let print_menu = [
+        '"n = "change ingredient name"',
         '"c" = change ingredient categories',
         '"d" = change ingredient dietary restrictions',
         '"m" = change ingredient measurement',
@@ -33,7 +35,7 @@ export function edit_ingredient(ingredient: Ingredient): void {
         '"r" = change ingredient amount range',
         '"b" = save ingredient and go back to ingredient menu'
     ];
-    let valid_inputs = ["c", "d", "m", "k", "r", "b"];
+    let valid_inputs = ["n", "c", "d", "m", "k", "r", "b"];
 
     print_bold("Ingredient being edited: " + ingredient.name);
     console.log();
@@ -42,7 +44,9 @@ export function edit_ingredient(ingredient: Ingredient): void {
         valid_inputs, "Choose what ingredient data you want to adjust: "
         );
 
-    if (user_input === "c") {
+    if (user_input === "n") {
+        ingredient = select_name(ingredient, true);
+    } else if (user_input === "c") {
         ingredient = select_category(ingredient, true);
     } else if (user_input === "d") {
         ingredient = select_allergies(ingredient, true);
