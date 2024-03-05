@@ -3,7 +3,7 @@ import { prompt } from "../RoR";
 import { type Category, type Method, find_by_name } from "../basics";
 
 import {
-    type SaveData, delete_category, load_data
+    type SaveData, delete_category, get_data
 } from "../data/save_load_data";
 
 import { push } from "../lib/stack";
@@ -58,7 +58,7 @@ export function configure_categories(): void {
         }
     }
 
-    let data: SaveData = load_data();
+    let data: SaveData = get_data();
     let valid_inputs = ["a", "e", "r", "l", "b"];
     let print_menu = ['"a" = add category',
                       '"e" = edit existing category',
@@ -95,7 +95,7 @@ export function configure_categories(): void {
 // Helper function that prints the name of all 
 // currently registered categories.
 export function print_all_categories(bold_print_string: string): Array<string> {
-    let data: SaveData = load_data();
+    let data: SaveData = get_data();
     const category_names: Array<string> = [];
     const cats: Array<Category> = data.categories;
 
@@ -117,7 +117,7 @@ export function select_cat_name(cat: Category,
                                 is_editing: boolean = false): Category {
     // helper function used to avoid duplicate category names
     function is_name_taken(category_name: string): boolean {
-        let data: SaveData = load_data();
+        let data: SaveData = get_data();
         let name_taken: boolean;
         const index = find_by_name(category_name, data.categories);
 
@@ -166,7 +166,7 @@ export function select_cat_name(cat: Category,
 export function select_cat_methods(
     cat: Category, is_editing: boolean = false
 ): Category | undefined {
-    let data: SaveData = load_data();
+    let data: SaveData = get_data();
     if (is_editing) {
         print_bold("Current category cooking methods: " + cat.cooking_methods);
         console.log();

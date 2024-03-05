@@ -2,7 +2,7 @@ import { prompt, valid_dietary_restrictions } from "../RoR";
 
 import { type Ingredient, find_by_name } from "../basics";
 
-import { SaveData, delete_ingredient, load_data } from "../data/save_load_data";
+import { SaveData, delete_ingredient, get_data, is_ingredient_in_data } from "../data/save_load_data";
 
 import { pair } from "../lib/list";
 
@@ -28,6 +28,7 @@ export function configure_ingredients(): void {
     // Helper function that prints the name of all 
     // currently registered ingredients.
     function print_all_ingredients(): void {
+        let data: SaveData = get_data();
         const ingr = data.ingredients;
 
         print_bold("Currently registered ingredients: ")
@@ -42,6 +43,7 @@ export function configure_ingredients(): void {
     // Helper function that prompts the user for an ingredient name,
     // searches for it in the data and removes it from the data if found.
     function search_and_delete(): void {
+        let data: SaveData = get_data();
         let input = prompt(
             "Enter the name of the ingredient you wish to remove, or press " +
             "enter to go back without removing an ingredient: "
@@ -60,6 +62,7 @@ export function configure_ingredients(): void {
 
     // Helper function that returns ingredient object by name
     function find_ingredient(): Ingredient | undefined {
+        let data: SaveData = get_data();
         let input = prompt(
             "Enter the name of the ingredient you wish to edit, or press " +
             "enter to go back: "
@@ -76,7 +79,6 @@ export function configure_ingredients(): void {
                 console.log();
             }
 
-    let data: SaveData = get_data();
     let valid_inputs = ["a", "e", "r", "l", "b"];
     let print_menu = ['"a" = add ingredient',
                       '"e" = edit existing ingredient',
@@ -110,7 +112,6 @@ export function configure_ingredients(): void {
     }
 }
 
-
 /**
  * Helper function that prompts the user to select a name for an ingredient.
  * @param ingredient - The ingredient to select name for
@@ -122,10 +123,10 @@ export function select_name(ingredient: Ingredient,
     function is_name_taken(ingredient_name: string): boolean {
         let name_taken: boolean;
         if (is_editing) {
-            return name_taken = is_ingredient_in_data(name) &&
-                                name !== ingredient.name;
+            return name_taken = is_ingredient_in_data(ingredient_name) &&
+                                ingredient_name !== ingredient.name;
         } else {
-            return name_taken = is_ingredient_in_data(name);
+            return name_taken = is_ingredient_in_data(ingredient_name);
         }
     }
 

@@ -6,7 +6,9 @@ import {
     select_cat_name, select_cat_methods, select_cat_max
 } from "./category_menu";
 
-import { check_input, print_alternatives, print_bold } from "./menu_global_functions";
+import {
+    check_input, print_alternatives, print_bold
+} from "./menu_global_functions";
 
 import { oblivion } from "./menu_memory";
 
