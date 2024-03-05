@@ -1,6 +1,4 @@
-import {
-    type Pair, pair
-} from "../../lib/list";
+import { type Pair, pair } from "../../lib/list";
 
 import {
     type Configuration, add_to_dietary_restrictions, load_configuration,
@@ -13,9 +11,7 @@ import {
     check_input, print_alternatives, print_bold
 } from "../menu_global_functions";
 
-import {
-    oblivion
-} from "../menu_memory";
+import { oblivion } from "../menu_memory";
 
 /**
  * A subsubmenu of the configurations menu, where the user can configure

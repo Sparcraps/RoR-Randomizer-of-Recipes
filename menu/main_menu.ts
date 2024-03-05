@@ -1,27 +1,17 @@
 
-import { 
-    push
-} from "../lib/stack";
+import { push } from "../lib/stack";
 
-import {
-    get_menu_memory, set_menu_memory, oblivion
-} from "./menu_memory";
+import { get_menu_memory, set_menu_memory, oblivion } from "./menu_memory";
 
 import {
     print_alternatives, check_input, print_bold
 } from "./menu_global_functions";
 
-import {
-    recipimize
-} from "./recipimize_menu";
+import { recipimize } from "./recipimize_menu";
 
-import {
-    saved_recipes
-} from "./saved_recipes_menu";
+import { saved_recipes } from "./saved_recipes_menu";
 
-import {
-    configure
-} from "./config_menu/configurations_menu";
+import { configure } from "./config_menu/configurations_menu";
 
 /**
  * The main menu of RoR. Gives access to all content of the program

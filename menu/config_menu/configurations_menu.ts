@@ -1,6 +1,4 @@
-import {
-    push
-} from "../../lib/stack";
+import { push } from "../../lib/stack";
 
 import {
     type Configuration, change_portion_amount, load_configuration
@@ -10,18 +8,14 @@ import {
     check_input, integer_prompt, print_alternatives, print_bold
 } from "../menu_global_functions";
 
-import {
-    get_menu_memory, set_menu_memory, oblivion
-} from "../menu_memory";
+import { get_menu_memory, set_menu_memory, oblivion } from "../menu_memory";
 
-import {
-    dietary_prompt
-} from "./dietary_prompt_menu";
+import { dietary_prompt } from "./dietary_prompt_menu";
 
-import {
-    configure_ingredients
-} from "./ingredients_menu";
+import { configure_ingredients } from "./ingredients_menu";
+
 import { configure_categories } from "./category_menu";
+
 import { configure_kitchenware } from "./kitchenware_menu";
 
 /**
