@@ -8,7 +8,9 @@ import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 
 import { push } from "../../lib/stack";
 
-import { edit_kitchenware_wrapper, select_kit_methods, select_kit_name } from "./kitchenware_menu";
+import {
+    edit_kitchenware_wrapper, select_kit_methods, select_kit_name
+} from "./kitchenware_menu";
 
 /**
  * A submenu of the kitchenware menu, where the user adds a new kitchenware.

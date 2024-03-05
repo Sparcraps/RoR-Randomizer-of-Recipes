@@ -1,4 +1,4 @@
-import { Ingredient } from "../../basics";
+import { type Ingredient } from "../../basics";
 
 import { replace_ingredient } from "../../data/save_load_data";
 
@@ -17,8 +17,10 @@ import { oblivion } from "../menu_memory";
  * A subsubmenu of the ingredient menu, where the user can edit existing
  * or newly created ingredient data.
  * @param ingredient - The ingredient that is being 
+ * @param old_name - The name that the ingredient had before being edited
  */
-export function edit_ingredient(ingredient: Ingredient, old_name: string): void {
+export function edit_ingredient(ingredient: Ingredient,
+                                old_name: string): void {
     let print_menu = [
         '"n" = change ingredient name',
         '"c" = change ingredient categories',

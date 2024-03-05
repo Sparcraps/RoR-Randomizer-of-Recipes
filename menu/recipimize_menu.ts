@@ -1,22 +1,12 @@
-import {
-    Recipe, generate_recipe
-} from "../recipe/recipe_generation";
+import { type Recipe, generate_recipe } from "../recipe/recipe_generation";
 
-import {
-    print_recipe
-} from "../recipe/printing";
+import { print_recipe } from "../recipe/printing";
 
-import {
-    push
-} from "../lib/stack";
+import { push } from "../lib/stack";
 
-import {
-    Configuration, load_configuration
-} from "../data/save_config";
+import { type Configuration, load_configuration } from "../data/save_config";
 
-import {
-    load_recipes, save_new_recipe
-} from "../data/save_recipe";
+import { load_recipes, save_new_recipe } from "../data/save_recipe";
 
 import { portion_size } from "../RoR";
 
@@ -24,9 +14,7 @@ import {
     check_input, print_alternatives, print_bold, wait_for_keypress
 } from "./menu_global_functions";
 
-import {
-    get_menu_memory, set_menu_memory, oblivion
-} from "./menu_memory";
+import { get_menu_memory, set_menu_memory, oblivion } from "./menu_memory";
 
 /**
  * A submenu of the main menu, responsible for recipe generation.

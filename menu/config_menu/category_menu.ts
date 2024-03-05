@@ -45,7 +45,7 @@ export function configure_categories(): void {
         console.log();
     }
 
-    // Helper function that returns category object by name
+    // Helper function that returns a category object by name
     function find_category(): Category | undefined {
         let data: SaveData = get_data();
         let input = prompt(
@@ -93,8 +93,11 @@ export function configure_categories(): void {
     }
 }
 
-// Helper function that prints the name of all 
-// currently registered categories.
+/**
+ * Helper function that prints the name of all currently registered categories.
+ * @param bold_print_string - Header that is printed in bold font
+ * @returns the category names in an Array.
+ */
 export function print_all_categories(bold_print_string: string): Array<string> {
     let data: SaveData = get_data();
     const category_names: Array<string> = [];
@@ -112,6 +115,8 @@ export function print_all_categories(bold_print_string: string): Array<string> {
 /**
  * Helper function that prompts the user to select a name for a category.
  * @param cat - The category to select name for
+ * @param is_editing - Determines whether the current name should be
+ * printed before prompting the user or not (false by default)
  * @returns the updated category.
  */
 export function select_cat_name(cat: Category,
@@ -143,7 +148,7 @@ export function select_cat_name(cat: Category,
             "is already taken by another category."
             );
         name = prompt("Enter new category name: ").trim().toLowerCase();
-        name_taken = is_name_taken(name)
+        name_taken = is_name_taken(name);
     }
 
     cat.name = name;
@@ -176,7 +181,7 @@ export function select_cat_methods(
         get_doable_cooking_methods(data.kitchenware)
     )];
 
-    if (valid_methods_not_active.length === 0) { // To avoid assigning cooking methods to Categories when no valid cooking methods can be fetched from Kitchenwares.
+    if (valid_methods_not_active.length === 0) { // To avoid assigning cooking methods to categories when no valid cooking methods can be fetched from kitchenwares.
         console.log("Add cooking methods to kitchenware before adding " +
         "a category");
         return;
@@ -230,7 +235,7 @@ export function select_cat_methods(
     
             method_array.push(inner_array);
             print_bold("Cooking method added to category!");
-            user_input = "temp"; // to not exit both while loops at the same time
+            user_input = "temp"; // to not exit both while-loops at the same time
 
             user_input = check_input(
                 valid_methods_not_active,
@@ -288,7 +293,7 @@ export function select_cat_max(cat: Category,
  * Wrap the edit_category function so that it's parameters are snapshotted 
  * and can be added to the stack.
  * @param category - Category that is being edited
- * @param old_name - The name of the category before it gets edited
+ * @param old_name - Name of the category before it gets edited
  * @returns the function edit_category with fixated parameters.
  */
 export function edit_category_wrapper(category: Category,

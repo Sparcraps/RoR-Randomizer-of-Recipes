@@ -13,7 +13,9 @@ import {
 } from "../menu_global_functions";
 
 import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
+
 import { add_kitchenware } from "./add_kitchenware_menu";
+
 import { edit_kitchenware } from "./edit_kitchenware_menu";
 
 /**
@@ -41,7 +43,7 @@ export function configure_kitchenware(): void {
         console.log();
     }
 
-    // Helper function that returns kitchenware object by name
+    // Helper function that returns a kitchenware object by name
     function find_kitchenware(): KitchenWare | undefined {
         let data: SaveData = get_data();
         let input = prompt(
@@ -54,6 +56,22 @@ export function configure_kitchenware(): void {
                     return data.kitchenware[index];
                 } else {}
         }
+    }
+
+    // Helper function that prints the name of all
+    // currently registered kitchenware.
+    function print_all_kitchenware(bold_print_string: string): Array<string> {
+        let data: SaveData = get_data();
+        const kitchenware_names: Array<string> = [];
+        const kits: Array<KitchenWare> = data.kitchenware;
+    
+        print_bold(bold_print_string);
+        for (let i = 0; i < kits.length; i++) {
+            kitchenware_names[i] = kits[i].name;
+        }
+        print_alternatives(kitchenware_names);
+        console.log();
+        return kitchenware_names;
     }
 
     let valid_inputs = ["a", "e", "r", "l", "b"];
@@ -89,24 +107,11 @@ export function configure_kitchenware(): void {
     }
 }
 
-// Helper function that prints the name of all currently registered kitchenware.
-export function print_all_kitchenware(bold_print_string: string): Array<string> {
-    let data: SaveData = get_data();
-    const kitchenware_names: Array<string> = [];
-    const kits: Array<KitchenWare> = data.kitchenware;
-
-    print_bold(bold_print_string);
-    for (let i = 0; i < kits.length; i++) {
-        kitchenware_names[i] = kits[i].name;
-    }
-    print_alternatives(kitchenware_names);
-    console.log();
-    return kitchenware_names;
-}
-
 /**
  * Helper function that prompts the user to select a name for a kitchenware.
- * @param cat - The kitchenware to select name for
+ * @param kit - The kitchenware to select name for
+ * @param is_editing - Determines whether the current name should be
+ * printed before prompting the user or not (false by default)
  * @returns the updated kitchenware.
  */
 export function select_kit_name(kit: KitchenWare,
@@ -150,8 +155,8 @@ export function select_kit_name(kit: KitchenWare,
 }
 
 /**
-* Helper function that prompts the user to select the applicable cooking methods
-* for a kitchenware.
+* Helper function that prompts the user to select what cooking methods
+* a kitchenware can do.
 * @param kit - The kitchenware to select cooking methods for
 * @param is_editing - Determines whether the current cooking methods should be
 * printed before prompting the user or not (false by default)
@@ -203,7 +208,7 @@ export function select_kit_methods(
  * Wrap the edit_kitchenware function so that it's parameters are snapshotted 
  * and can be added to the stack.
  * @param kitchenware - Kitchenware that is being edited
- * @param old_name - The name of the kitchenware before it gets edited
+ * @param old_name - Name of the kitchenware before it gets edited
  * @returns the function edit_kitchenware with fixated parameters.
  */
 export function edit_kitchenware_wrapper(kitchenware: KitchenWare,

@@ -8,7 +8,8 @@ import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 
 import { push } from "../../lib/stack";
 
-import { edit_ingredient_wrapper, select_allergies, select_category,
+import {
+    edit_ingredient_wrapper, select_allergies, select_category,
     select_kcal, select_measurement, select_name, select_range
 } from "./ingredients_menu";
 

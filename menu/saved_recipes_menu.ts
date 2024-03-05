@@ -1,26 +1,18 @@
-import {
-    Recipe
-} from "../recipe/recipe_generation";
+import { type Recipe } from "../recipe/recipe_generation";
 
-import {
-    print_recipe
-} from "../recipe/printing";
+import { print_recipe } from "../recipe/printing";
 
-import {
-    delete_recipe, load_recipes
-} from "../data/save_recipe";
+import { delete_recipe, load_recipes } from "../data/save_recipe";
 
 import {
     check_input, integer_prompt, print_alternatives, print_bold,
     wait_for_keypress
 } from "./menu_global_functions";
 
-import {
-    oblivion
-} from "./menu_memory";
+import { oblivion } from "./menu_memory";
 
 /**
- * A submenu of the main menu, responsible fetching saved recipes so that
+ * A submenu of the main menu, responsible for fetching saved recipes so that
  * the user can view and delete them.
  */
 export function saved_recipes(): void {

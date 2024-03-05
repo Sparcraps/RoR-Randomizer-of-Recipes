@@ -22,7 +22,7 @@ export function edit_kitchenware(kit: KitchenWare, old_name: string): void {
         '"c" = change kitchenware cooking methods',
         '"b" = save kitchenware and go back to kitchenware menu'
     ];
-    let valid_inputs = ["n", "c", "m", "b"];
+    let valid_inputs = ["n", "c", "b"];
 
     print_bold("kitchenware being edited: " + kit.name);
     console.log();

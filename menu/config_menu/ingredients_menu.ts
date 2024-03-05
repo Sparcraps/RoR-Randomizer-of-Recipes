@@ -2,7 +2,9 @@ import { prompt, valid_dietary_restrictions } from "../../RoR";
 
 import { type Ingredient, find_by_name } from "../../basics";
 
-import { SaveData, delete_ingredient, get_data, is_ingredient_in_data } from "../../data/save_load_data";
+import {
+    type SaveData, delete_ingredient, get_data, is_ingredient_in_data
+} from "../../data/save_load_data";
 
 import { pair } from "../../lib/list";
 
@@ -26,21 +28,6 @@ import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
  * them.
  */
 export function configure_ingredients(): void {
-    // Helper function that prints the name of all 
-    // currently registered ingredients.
-    function print_all_ingredients(): void {
-        let data: SaveData = get_data();
-        const ingr = data.ingredients;
-
-        print_bold("Currently registered ingredients: ")
-        for (let i = 0; i < ingr.length; i++) {
-            for (let j = 0; j < ingr[i].length; j++) {
-                console.log("- " + ingr[i][j].name);
-            }
-        }
-        console.log();
-    }
-
     // Helper function that prompts the user for an ingredient name,
     // searches for it in the data and removes it from the data if found.
     function search_and_delete(): void {
@@ -61,7 +48,7 @@ export function configure_ingredients(): void {
         console.log();
     }
 
-    // Helper function that returns ingredient object by name
+    // Helper function that returns an ingredient object by name
     function find_ingredient(): Ingredient | undefined {
         let data: SaveData = get_data();
         let input = prompt(
@@ -79,6 +66,21 @@ export function configure_ingredients(): void {
                 } else {}
                 console.log();
             }
+
+    // Helper function that prints the name of all 
+    // currently registered ingredients.
+    function print_all_ingredients(): void {
+        let data: SaveData = get_data();
+        const ingr = data.ingredients;
+
+        print_bold("Currently registered ingredients: ")
+        for (let i = 0; i < ingr.length; i++) {
+            for (let j = 0; j < ingr[i].length; j++) {
+                console.log("- " + ingr[i][j].name);
+            }
+        }
+        console.log();
+    }
 
     let valid_inputs = ["a", "e", "r", "l", "b"];
     let print_menu = ['"a" = add ingredient',
@@ -116,6 +118,8 @@ export function configure_ingredients(): void {
 /**
  * Helper function that prompts the user to select a name for an ingredient.
  * @param ingredient - The ingredient to select name for
+ * @param is_editing - Determines whether the current name should be
+ * printed before prompting the user or not (false by default)
  * @returns the updated ingredient.
  */
 export function select_name(ingredient: Ingredient,
@@ -146,7 +150,7 @@ export function select_name(ingredient: Ingredient,
             "is already taken by another ingredient."
             );
         name = prompt("Enter new ingredient name: ").trim().toLowerCase();
-        name_taken = is_name_taken(name)
+        name_taken = is_name_taken(name);
     }
 
     ingredient.name = name;
@@ -370,7 +374,7 @@ export function select_range(ingredient: Ingredient,
  * Wrap the edit_ingredient function so that it's parameters are snapshotted 
  * and can be added to the stack.
  * @param ingredient - Ingredient that is being edited
- * @param old_name - The name of the ingredient before it gets edited
+ * @param old_name - Name of the ingredient before it gets edited
  * @returns the function edit_ingredient with fixated parameters
  */
 
