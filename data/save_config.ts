@@ -1,12 +1,22 @@
-const fs = require('fs');
-const filepath = __dirname + "/config.json";
+import {
+    print_bold
+} from "../menu/menu_global_functions";
 
+/**
+ * Configuration data type.
+ * Contains data about the user's current configurations.
+ */
 export type Configuration = {
     portion_amount: number,
     dietary_restrictions: Array<string>
 }
 
-function new_configuration() { // configuration object with default settings (in case the file gets deleted...)
+/**
+ * Creates a new configurations object with default settings.
+ * Can be used in case the config.json gets deleted.
+ * @returns a Configuration object
+ */
+function new_configuration(): Configuration {
     return { portion_amount: 4, dietary_restrictions: [] }
 }
 
@@ -38,7 +48,8 @@ export function save_configuration(data: Configuration): void {
     fs.writeFileSync(filepath, json_data);
 }
 
-export function change_portion_amount(new_amount: number, config: Configuration): Configuration {
+export function change_portion_amount(new_amount: number,
+                                      config: Configuration): Configuration {
     config.portion_amount = new_amount;
     save_configuration(config);
     return config;
@@ -52,16 +63,17 @@ export function change_portion_amount(new_amount: number, config: Configuration)
  * @modifies config by adding diet_input to the end of it
  * @returns the updated Configuration.
  */
-export function add_to_dietary_restrictions(diet_input: string, config: Configuration): Configuration {
+export function add_to_dietary_restrictions(
+    diet_input: string, config: Configuration
+    ): Configuration {
     const rest = config.dietary_restrictions;
     diet_input = diet_input.toLowerCase()
 
     if (!rest.includes(diet_input)) {
         rest.push(diet_input);
         save_configuration(config);
-        // console.log("Dietary restriction successfully added!")
     } else {
-        console.log("Dietary restriction not added; it is already active.")
+        print_bold("Dietary restriction not added; it is already active.");
     }
 
     return config;
@@ -76,7 +88,9 @@ export function add_to_dietary_restrictions(diet_input: string, config: Configur
  * @modifies config.json and config
  * @returns the updated Configuration.
  */
-export function remove_from_dietary_restrictions(diet_input: string, config: Configuration): Configuration {
+export function remove_from_dietary_restrictions(
+    diet_input: string, config: Configuration
+    ): Configuration {
     const rest = config.dietary_restrictions;
     diet_input = diet_input.toLowerCase();
     const i = rest.indexOf(diet_input);
@@ -84,10 +98,13 @@ export function remove_from_dietary_restrictions(diet_input: string, config: Con
     if (i !== -1) {
         rest.splice(i, 1);
         save_configuration(config);
-        // console.log("Dietary restriction successfully removed!")
     } else {
-        console.log("Dietary restriction not removed; it is currently not active.")
+        print_bold("Dietary restriction not removed; " +
+        "it is currently not active.");
     }
 
     return config;
 }
+
+const fs = require('fs');
+const filepath = __dirname + "/config.json";

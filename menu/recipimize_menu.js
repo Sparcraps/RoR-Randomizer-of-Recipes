@@ -6,7 +6,7 @@ var printing_1 = require("../recipe/printing");
 var stack_1 = require("../lib/stack");
 var save_config_1 = require("../data/save_config");
 var save_recipe_1 = require("../data/save_recipe");
-var main_menu_1 = require("./main_menu");
+var RoR_1 = require("../RoR");
 var menu_global_functions_1 = require("./menu_global_functions");
 var menu_memory_1 = require("./menu_memory");
 /**
@@ -36,7 +36,7 @@ function recipimize() {
         '"s" = save recipe',
         '"b" = back to main menu'];
     var valid_inputs = ["r", "s", "b"];
-    var recipe = (0, recipe_generation_1.generate_recipe)(main_menu_1.portion_size, portion_amount, restrictions);
+    var recipe = (0, recipe_generation_1.generate_recipe)(RoR_1.portion_size, portion_amount, restrictions);
     (0, printing_1.print_recipe)(recipe);
     (0, menu_global_functions_1.wait_for_keypress)();
     (0, menu_global_functions_1.print_alternatives)(print_menu);

@@ -1,4 +1,16 @@
 import {
+    prompt
+} from "../RoR";
+
+import {
+    type Ingredient
+} from "../basics";
+
+import {
+    SaveData, delete_ingredient, load_data
+} from "../data/save_load_data";
+
+import {
     push
 } from "../lib/stack";
 
@@ -7,25 +19,87 @@ import {
 } from "./add_ingredient_menu";
 
 import {
-    check_input, print_alternatives
+    edit_ingredient
+} from "./edit_ingredient_menu";
+
+import {
+    check_input, print_alternatives, print_bold
 } from "./menu_global_functions";
 
 import {
     get_menu_memory, oblivion, set_menu_memory
 } from "./menu_memory";
 
-import {
-    remove_ingredient
-} from "./remove_ingredient_menu";
-
 /**
  * A submenu of the configurations menu, where the user can configure
  * the ingredients used for recipe generation, by adding or removing them.
  */
 export function configure_ingredients(): void {
-    let valid_inputs = ["a", "r", "b"];
+    // Helper function that prints the name of all 
+    // currently registered ingredients.
+    function print_all_ingredients(): void {
+        const ingr = data.ingredients;
+
+        print_bold("Currently registered ingredients: ")
+        for (let i = 0; i < ingr.length; i++) {
+            for (let j = 0; j < ingr[i].length; j++) {
+                console.log("- " + ingr[i][j].name);
+            }
+        }
+        console.log();
+    }
+
+    // Helper function that prompts the user for an ingredient name,
+    // searches for it in the data and removes it from the data if found.
+    function search_and_delete(): void {
+        let input = prompt(
+            "Enter search string, or press enter to go back without removing " +
+            "an ingredient: "
+            ).trim().toLowerCase();
+        if (input !== "") {
+            try {
+                data = delete_ingredient(input);
+                print_bold("\nIngredient removed from data!");
+            } catch (error) {
+                console.log();
+                console.error(error.message);
+            }
+        } else {}
+        console.log();
+    }
+
+    function find_ingredient(): Ingredient | undefined {
+        let input = prompt(
+            "Enter the name of the ingredient you wish to edit, or press " +
+            "enter to go back without removing an ingredient: "
+            ).trim().toLowerCase();
+            if (input !== "") {
+                for (let i = 0; i < data.ingredients.length; i++) {
+                    for (let j = 0; j < data.ingredients[i].length; j++) {
+                        if (data.ingredients[i][j].name === input) {
+                            console.log();
+                            return data.ingredients[i][j];
+                        }
+                    }
+                }
+            } else {}
+            console.log();
+        }
+    
+    // Inside this function, you can access the ingredient parameter
+    // and call edit_ingredient with the correct value
+    function edit_ingredient_wrapper(ingredient: Ingredient): Function {
+        return function() {
+            edit_ingredient(ingredient);
+        };
+    }
+
+    let data: SaveData = load_data();
+    let valid_inputs = ["a", "e", "r", "l", "b"];
     let print_menu = ['"a" = add ingredient',
+                      '"e" = edit existing ingredient',
                       '"r" = remove ingredient',
+                      '"l" = display a list of all existing ingredients',
                       '"b" = back to configurations menu'];
 
     print_alternatives(print_menu);
@@ -33,8 +107,19 @@ export function configure_ingredients(): void {
 
     if (user_input === "a") {
         set_menu_memory(push(add_ingredient, get_menu_memory()));
+    } else if (user_input === "e") {
+        const ingredient = find_ingredient();
+        if (ingredient !== undefined) {
+            set_menu_memory(push(edit_ingredient_wrapper(ingredient),
+                                 get_menu_memory()));
+        } else {
+            print_bold("There is no ingredient with that name!");
+            console.log();
+        }
     } else if (user_input === "r") {
-        set_menu_memory(push(remove_ingredient, get_menu_memory()));
+        search_and_delete();
+    } else if (user_input === "l") {
+        print_all_ingredients();
     } else if (user_input === "b") {
         oblivion();
     } else {

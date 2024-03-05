@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.configure_dietary = void 0;
 var list_1 = require("../lib/list");
 var save_config_1 = require("../data/save_config");
-var main_menu_1 = require("./main_menu");
+var RoR_1 = require("../RoR");
 var menu_global_functions_1 = require("./menu_global_functions");
 var menu_memory_1 = require("./menu_memory");
 /**
@@ -15,7 +15,7 @@ function configure_dietary() {
     // dietary restriction and returns the input as well as
     // information of its existance in currently active dietary restrictions.
     function select_valid_dietary() {
-        var valid = main_menu_1.valid_dietary_restrictions;
+        var valid = RoR_1.valid_dietary_restrictions;
         (0, menu_global_functions_1.print_bold)("Valid alternatives: ");
         (0, menu_global_functions_1.print_alternatives)(valid);
         var input = (0, menu_global_functions_1.check_input)(valid, "Choose dietary restriction of the above: ");

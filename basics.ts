@@ -1,6 +1,5 @@
 import {
-    pair,
-    type Pair
+    type Pair, pair,
 } from "./lib/list";
 
 /**
