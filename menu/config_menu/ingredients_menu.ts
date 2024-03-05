@@ -21,8 +21,9 @@ import {
 import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 
 /**
- * A submenu of the configurations menu, where the user can configure
- * the ingredients used for recipe generation, by adding or removing them.
+ * A submenu of the configuration menu, where the user can configure
+ * the ingredients used for recipe generation, by adding, editing or removing
+ * them.
  */
 export function configure_ingredients(): void {
     // Helper function that prints the name of all 
@@ -160,7 +161,7 @@ export function select_name(ingredient: Ingredient,
 * Helper function that prompts the user to select a category for an ingredient.
 * @param ingredient - The ingredient to select category for
 * @param is_editing - Determines whether the current category should be
-* printed before prompting the user (false by default)
+* printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 export function select_category(ingredient: Ingredient,
@@ -191,7 +192,7 @@ export function select_category(ingredient: Ingredient,
 * that apply to an ingredient.
 * @param ingredient - The ingredient to select dietary restrictions for
 * @param is_editing - Determines whether the current dietary restrictions
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 export function select_allergies(ingredient: Ingredient,
@@ -251,7 +252,7 @@ export function select_allergies(ingredient: Ingredient,
 * an ingredient.
 * @param ingredient - The ingredient to select the unit of measurement for
 * @param is_editing - Determines whether the current unit of measurement
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 export function select_measurement(ingredient: Ingredient,
@@ -281,7 +282,7 @@ export function select_measurement(ingredient: Ingredient,
 * an ingredient.
 * @param ingredient - The ingredient to select the kcal per measurement for
 * @param is_editing - Determines whether the current kcal per measurement
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 export function select_kcal(ingredient: Ingredient,
@@ -318,7 +319,7 @@ export function select_kcal(ingredient: Ingredient,
 * unit of measurement.
 * @param ingredient - The ingredient to select the amount range for
 * @param is_editing - Determines whether the current amount range
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 export function select_range(ingredient: Ingredient,

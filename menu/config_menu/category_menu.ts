@@ -21,11 +21,12 @@ import {
 import { get_menu_memory, oblivion, set_menu_memory } from "../menu_memory";
 
 /**
- * A submenu of the configurations menu, where the user can configure
- * the categories used for recipe generation, by adding or removing them.
+ * A submenu of the configuration menu, where the user can configure
+ * the categories used for recipe generation, by adding, editing or removing
+ * them.
  */
 export function configure_categories(): void {
-    // Helper function that prompts the user for an ingredient name,
+    // Helper function that prompts the user for a category name,
     // searches for it in the data and removes it from the data if found.
     function search_and_delete(): void {
         let input = prompt(
@@ -34,7 +35,7 @@ export function configure_categories(): void {
             ).trim().toLowerCase();
         if (input !== "") {
             try {
-                data = delete_category(input);
+                delete_category(input);
                 print_bold("\nCategory removed from data!");
             } catch (error) {
                 console.log();
@@ -46,6 +47,7 @@ export function configure_categories(): void {
 
     // Helper function that returns category object by name
     function find_category(): Category | undefined {
+        let data: SaveData = get_data();
         let input = prompt(
             "Enter the name of the category you wish to edit: "
             ).trim().toLowerCase();
@@ -58,7 +60,6 @@ export function configure_categories(): void {
         }
     }
 
-    let data: SaveData = get_data();
     let valid_inputs = ["a", "e", "r", "l", "b"];
     let print_menu = ['"a" = add category',
                       '"e" = edit existing category',
@@ -118,14 +119,12 @@ export function select_cat_name(cat: Category,
     // helper function used to avoid duplicate category names
     function is_name_taken(category_name: string): boolean {
         let data: SaveData = get_data();
-        let name_taken: boolean;
         const index = find_by_name(category_name, data.categories);
 
         if (is_editing) {
-            return name_taken = index !== -1 &&
-                                name !== cat.name;
+            return !(index === -1 || name === cat.name);
         } else {
-            return name_taken = index !== -1;
+            return index !== -1;
         }
     }
 
@@ -160,7 +159,7 @@ export function select_cat_name(cat: Category,
 * for a category.
 * @param cat - The category to select cooking methods for
 * @param is_editing - Determines whether the current cooking methods should be
-* printed before prompting the user (false by default)
+* printed before prompting the user or not (false by default)
 * @returns the updated category.
 */
 export function select_cat_methods(
@@ -254,7 +253,7 @@ export function select_cat_methods(
 * from a category that can be generated in one recipe.
 * @param cat - The category to select max amount for
 * @param is_editing - Determines whether the current dietary restrictions
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 export function select_cat_max(cat: Category,
@@ -289,8 +288,8 @@ export function select_cat_max(cat: Category,
  * Wrap the edit_category function so that it's parameters are snapshotted 
  * and can be added to the stack.
  * @param category - Category that is being edited
- * @param old_name - The name of the ingredient before it gets edited
- * @returns the function edit_category with fixated parameters
+ * @param old_name - The name of the category before it gets edited
+ * @returns the function edit_category with fixated parameters.
  */
 export function edit_category_wrapper(category: Category,
                                       old_name: string): Function {
