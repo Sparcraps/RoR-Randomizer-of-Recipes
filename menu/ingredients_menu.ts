@@ -147,7 +147,7 @@ export function select_name(ingredient: Ingredient,
             return name_taken = is_ingredient_in_data(name) &&
                                 name !== ingredient.name;
         } else {
-            return name_taken = is_ingredient_in_data(name)
+            return name_taken = is_ingredient_in_data(name);
         }
     }
 
@@ -163,7 +163,7 @@ export function select_name(ingredient: Ingredient,
     while (name === "" || name_taken) {
         print_bold(
             "Ingredient name cannot be empty, only contain whitespace or " + 
-            "already taken by another ingredient."
+            "is already taken by another ingredient."
             );
         name = prompt("Enter new ingredient name: ").trim().toLowerCase();
         name_taken = is_name_taken(name)
@@ -235,29 +235,31 @@ export function select_allergies(ingredient: Ingredient,
     let user_input = check_input(
         valid_dietary_not_active,
         "Enter a dietary restriction of the above that applies to the " +
-        "new ingredient, or press enter if no dietary restrictions apply: "
-        );
+        "ingredient, or press enter if no dietary restrictions apply: "
+    );
     while (user_input !== "") {
-        allergy_array.push(user_input);
         const index = valid_dietary_not_active.indexOf(user_input);
         if (index !== -1) {
+            allergy_array.push(user_input);
             valid_dietary_not_active.splice(index, 1);
+            print_bold("Dietary restriction added!");
+            console.log();
         } else {
             throw new Error(
                 "Could not find active dietary restriction"
-                );
+            );
         }
 
         print_bold(
             "Valid dietary restrictions that have not yet been added: "
-            );
+        );
         print_alternatives(valid_dietary_not_active);
         user_input = check_input(
             valid_dietary_not_active,
             "Enter another dietary restriction that applies to the new " +
             "ingredient, or press enter if no more dietary restrictions " +
             "apply: "
-            );
+        );
     }
 
     ingredient.allergies = allergy_array;

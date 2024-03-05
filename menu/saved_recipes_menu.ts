@@ -39,7 +39,7 @@ export function saved_recipes(): void {
 
         while (true) {
             int = integer_prompt("Enter the number corresponding to " +
-            "the recipe you want to choose: \n");
+            "the recipe you want to choose: ");
             true_index = int - 1;
 
             if (!(true_index < 0 || true_index >= recipes.length)) {

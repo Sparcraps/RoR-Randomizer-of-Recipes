@@ -9,7 +9,7 @@ import {
 import {
     select_allergies, select_category, select_kcal, select_measurement,
     select_name, select_range
-} from "./add_ingredient_menu";
+} from "./ingredients_menu";
 
 import {
     check_input, print_alternatives, print_bold
@@ -20,7 +20,7 @@ import {
 } from "./menu_memory";
 
 /**
- * A subsubmenu of the ingredients menu, where the user can edit existing
+ * A subsubmenu of the ingredient menu, where the user can edit existing
  * or newly created ingredient data.
  * @param ingredient - The ingredient that is being 
  */

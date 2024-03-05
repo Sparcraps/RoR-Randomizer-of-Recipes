@@ -8,9 +8,8 @@ import {
 } from "../data/save_load_data";
 
 import {
-    select_allergies, select_category, select_kcal, select_measurement,
-    select_name, select_range
-} from "./add_ingredient_menu";
+    select_cat_name, select_cat_methods, select_cat_max
+} from "./category_menu";
 
 import {
     check_input, print_alternatives, print_bold
@@ -42,11 +41,14 @@ export function edit_category(cat: Category, old_name: string): void {
         );
 
     if (user_input === "n") {
-        cat = select_name(cat, true);
+        cat = select_cat_name(cat, true);
     } else if (user_input === "c") {
-        cat = select_category(cat, true);
+        const temp = select_cat_methods(cat, true);
+        if (temp !== undefined) {
+            cat = temp;
+        } else {}
     } else if (user_input === "m") {
-        cat = select_allergies(cat, true);
+        cat = select_cat_max(cat, true);
     } else if (user_input === "b") {
         replace_category(old_name, cat);
         oblivion();
