@@ -1,7 +1,6 @@
 import {
     type Ingredient, type Category, type KitchenWare, find_by_name
 } from "../basics"
-import { Pair, pair } from "../lib/list";
 
 export type SaveData = {
     categories: Array<Category>,

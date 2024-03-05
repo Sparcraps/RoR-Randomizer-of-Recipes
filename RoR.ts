@@ -1,25 +1,11 @@
 import * as PromptSync from "prompt-sync";
 
-import {
-    type Pair
-} from "./lib/list";
-
-import {
-    is_empty as is_stack_empty, push, top
-} from "./lib/stack";
-
-import {
-    main_menu
-} from "./menu/main_menu";
-
-import {
-    print_bold
-} from "./menu/menu_global_functions";
-
-import {
-    get_menu_memory, set_menu_memory
-} from "./menu/menu_memory";
-import { load_data, save_data } from "./data/save_load_data";
+import { type Pair } from "./lib/list";
+import { is_empty as is_stack_empty, push, top } from "./lib/stack";
+import { main_menu } from "./menu/main_menu";
+import { print_bold } from "./menu/menu_global_functions";
+import { get_menu_memory, set_menu_memory } from "./menu/menu_memory";
+import { load_data } from "./data/save_load_data";
 
 /**
  * Print the ASCII-art of RoR that is shown on startup and initialize
