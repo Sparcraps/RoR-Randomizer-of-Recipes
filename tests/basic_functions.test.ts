@@ -1,17 +1,16 @@
 import {
     type TaggedRecord, type Ingredient, type Category, type KitchenWare,
     is_ingredient, is_category, is_kitchenware, get_ingredient_name,
-    get_ingredient_allergies, get_ingredient_history,
-    get_ingredient_measurement, get_ingredient_kcal, get_ingredient_kcal_range,
-    get_ingredient_category_name, get_ingredient_category, get_category_name,
-    get_ingredient_cooking_methods, get_kitchenware_name,
-    get_kitchenware_inventory, new_kitchenware, add_to_ingredient_history,
-    add_ingredient_to_kitchenware, is_vegetarian, is_vegan, is_lactose_friendly, new_category,
-    get_category_max
+    get_ingredient_allergies, get_ingredient_measurement, get_ingredient_kcal, 
+    get_ingredient_kcal_range, get_ingredient_category_name, 
+    get_ingredient_category, get_category_name, get_ingredient_cooking_methods, 
+    get_kitchenware_name, get_kitchenware_inventory, new_kitchenware, 
+    add_ingredient_to_kitchenware, is_vegetarian, is_vegan, is_lactose_friendly, 
+    new_category, get_category_max
 } from "../basics";
 
 import {
-    type Pair, pair
+    pair
 } from "../lib/list";
 
 describe('testing basic ingredients.ts functions', () => {
@@ -22,7 +21,6 @@ describe('testing basic ingredients.ts functions', () => {
         name: "beef",
         category: "meat",
         allergies: ["meat"],
-        history: ["slice"],
         measurement: "g",
         kcal_per_measurement: 2.5,
         range: pair(250, 2500)
@@ -33,7 +31,6 @@ describe('testing basic ingredients.ts functions', () => {
         name: "water",
         category: "liquid",
         allergies: [],
-        history: ["boil"],
         measurement: "ml",
         kcal_per_measurement: 1,
         range: pair(10, 100)
@@ -44,7 +41,6 @@ describe('testing basic ingredients.ts functions', () => {
         name: "milk",
         category: "liquid",
         allergies: ["lactose", "dairy"],
-        history: ["boil"],
         measurement: "ml",
         kcal_per_measurement: 1,
         range: pair(10, 100)
@@ -53,7 +49,7 @@ describe('testing basic ingredients.ts functions', () => {
     let test_category: Category = {
         tag: "category",
         name: "meat",
-        cooking_methods: ["fry"],
+        cooking_methods: [["fry"]],
         max_ingredients: 10
     };
 
@@ -61,7 +57,7 @@ describe('testing basic ingredients.ts functions', () => {
         tag: "kitchenware",
         name: "frying pan",
         cooking_methods: [],
-        inventory: [test_ingredient_meat]
+        inventory: ["beef"]
     };
 
     let category_data: Array<Category> = [test_category];
@@ -91,10 +87,6 @@ describe('testing basic ingredients.ts functions', () => {
 
     test('function get_ingredient_allergies works', () => {
         expect(get_ingredient_allergies(test_ingredient_meat)).toEqual(["meat"]);
-    })
-
-    test('function get_ingredient_history works', () => {
-        expect(get_ingredient_history(test_ingredient_meat)).toEqual(["slice"]);
     })
 
     test('function get_ingredient_measurement works', () => {
@@ -148,10 +140,6 @@ describe('testing basic ingredients.ts functions', () => {
         const RoR_kit: KitchenWare = new_kitchenware("The best kitchenware ever made", []);
         expect(is_kitchenware(RoR_kit)).toBe(true);
         expect(get_kitchenware_name(RoR_kit)).toEqual("The best kitchenware ever made");
-    })
-
-    test('function add_to_ingredient_history works', () => {
-        expect(get_ingredient_history(add_to_ingredient_history(test_ingredient_meat, "boil"))).toStrictEqual(["slice", "boil"]);
     })
 
     test('function add_ingredient_to_kitchenware works', () => {

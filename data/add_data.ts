@@ -50,7 +50,7 @@ const asparagus = new_ingredient(
     "vegetable", "asparagus", [], "", 3, pair(1, 4)
 );
 const cabbage = new_ingredient(
-    "vegetable", "cabbage", [], "g", 0.24, pair(50, 150)
+    "vegetable", "cabbage", [], "50g", 0.24, pair(1, 3)
 );
 const aubergine = new_ingredient(
     "vegetable", "aubergine", [], "0.25", 61, pair(1, 2)

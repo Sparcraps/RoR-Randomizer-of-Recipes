@@ -1,9 +1,9 @@
 import {
     delete_recipe,
     load_recipes, save_new_recipe, save_recipes
-} from "../save_recipe"
+} from "../data/save_recipe"
 
-import { new_recipe } from "../RoR"
+import { new_recipe } from "../recipe/recipe_generation"
 import { find_by_name } from "../basics";
 
 describe("testing functions for saving and loading recipes", () => {
