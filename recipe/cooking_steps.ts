@@ -2,7 +2,7 @@ import {
     type  KitchenWare, type  Method, has_separable_inventory
 } from "../basics";
 import { type Pair, head, pair, tail } from "../lib/list";
-import { get_data, type SaveData } from "../data/save_load_data";
+import { get_data } from "../data/save_load_data";
 
 /**
  * CookingStep data type.

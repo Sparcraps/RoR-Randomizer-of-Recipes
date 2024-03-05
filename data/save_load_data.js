@@ -212,7 +212,7 @@ function delete_category() {
     }
     for (var i = 0; i < names.length; i++) {
         var name_1 = names[i];
-        console.error(new Error("There is no saved category with the name " + name_1 + "."));
+        throw new Error("There is no saved category with the name " + name_1 + ".");
     }
     data.ingredients = updated_ingredients;
     data.categories = updated_cats;
