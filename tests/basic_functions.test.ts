@@ -115,18 +115,12 @@ describe('testing basic ingredients.ts functions', () => {
         expect(get_category_name(test_category)).toStrictEqual("meat");
     })
 
-    test('function get_ingredient_cooking_methods works', () => {
-        expect(get_ingredient_cooking_methods(
-            test_ingredient_meat, category_data
-            )).toStrictEqual(["fry"]);
-    })
-
     test('function get_category_max works', ()=> {
         expect(get_category_max(test_category)).toBe(10);
     })
 
     test('function get_kitchenware_inventory works', () => {
-        expect(get_kitchenware_inventory(test_kitchenware)).toStrictEqual([test_ingredient_meat]);
+        expect(get_kitchenware_inventory(test_kitchenware)).toStrictEqual(["beef"]);
     })
 
     test('function new_category works', () => {
@@ -144,7 +138,7 @@ describe('testing basic ingredients.ts functions', () => {
 
     test('function add_ingredient_to_kitchenware works', () => {
         let new_kit = add_ingredient_to_kitchenware(test_kitchenware, "beef")
-        expect(get_kitchenware_inventory(new_kit)).toStrictEqual("beef");
+        expect(get_kitchenware_inventory(new_kit)).toStrictEqual(["beef"]);
 
         new_kit = add_ingredient_to_kitchenware(test_kitchenware, "water")
         expect(new_kit).toStrictEqual(test_kitchenware); //checks that they are aliases

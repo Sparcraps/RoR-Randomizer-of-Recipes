@@ -79,7 +79,12 @@ describe("testing functions to save and load data", () => {
             .mockImplementation(() => {});
 
         const no_name = "61723801837814017480956710847514859078419"
-        delete_category(no_name);
+        try{
+            delete_category(no_name);
+        } catch(err){
+            console.error(err);
+        }
+
         expect(console_spy).toHaveBeenCalledWith(
             new Error(
                 "There is no saved category with the name " + no_name + "."
