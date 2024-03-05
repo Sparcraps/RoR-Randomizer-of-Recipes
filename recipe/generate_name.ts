@@ -50,7 +50,6 @@ function find_last_cooking_step(cooking_steps: Array<CookingStep>,
     return cooking_steps[cooking_steps.length - 1];
 }
 
-const EnglishVerbs = require('english-verbs-helper');
 /**
 * A function to generate a new name based on the ingredients and cooking steps in a recipe.
 * @param a recipe - consisting of ingredients and the cooking steps applied to them.
