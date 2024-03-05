@@ -181,5 +181,209 @@
             }
         ],
         "kcal_per_portion": 400
+    },
+    {
+        "tag": "recipe",
+        "name": "Simmered Parsnip and Salmon Filet",
+        "portions": 4,
+        "ingredient_info": [
+            [
+                {
+                    "name": "parsnip",
+                    "category": "root vegetable",
+                    "allergies": [],
+                    "measurement": "0.5",
+                    "kcal_per_measurement": 105,
+                    "range": [
+                        1,
+                        3
+                    ],
+                    "tag": "ingredient"
+                },
+                9
+            ],
+            [
+                {
+                    "name": "aubergine",
+                    "category": "vegetable",
+                    "allergies": [],
+                    "measurement": "0.25",
+                    "kcal_per_measurement": 61,
+                    "range": [
+                        1,
+                        2
+                    ],
+                    "tag": "ingredient"
+                },
+                6
+            ],
+            [
+                {
+                    "name": "broccoli",
+                    "category": "vegetable",
+                    "allergies": [],
+                    "measurement": "50g",
+                    "kcal_per_measurement": 17,
+                    "range": [
+                        1,
+                        4
+                    ],
+                    "tag": "ingredient"
+                },
+                12
+            ],
+            [
+                {
+                    "name": "salmon filet",
+                    "category": "meat",
+                    "allergies": [
+                        "meat"
+                    ],
+                    "measurement": "",
+                    "kcal_per_measurement": 83,
+                    "range": [
+                        1,
+                        2
+                    ],
+                    "tag": "ingredient"
+                },
+                7
+            ]
+        ],
+        "steps": [
+            {
+                "cooking_method": "chop",
+                "ingredient_names": [
+                    "parsnips",
+                    "aubergines",
+                    "broccoli"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "cutting board",
+                    "cooking_methods": [
+                        "chop",
+                        "slice",
+                        "pound"
+                    ],
+                    "inventory": [
+                        "parsnips",
+                        "aubergines",
+                        "broccoli"
+                    ]
+                },
+                "is_kw_existing": false
+            },
+            {
+                "cooking_method": "bake",
+                "ingredient_names": [
+                    "aubergines"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "oven",
+                    "cooking_methods": [
+                        "bake",
+                        "add"
+                    ],
+                    "inventory": [
+                        "aubergines"
+                    ]
+                },
+                "is_kw_existing": false
+            },
+            {
+                "cooking_method": "add stock to",
+                "ingredient_names": [
+                    "parsnips",
+                    "aubergines"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "pot",
+                    "cooking_methods": [
+                        "boil",
+                        "reduce",
+                        "mash",
+                        "saute",
+                        "add",
+                        "simmer",
+                        "add stock to"
+                    ],
+                    "inventory": [
+                        "parsnips",
+                        "aubergines"
+                    ]
+                },
+                "is_kw_existing": false
+            },
+            {
+                "cooking_method": "simmer",
+                "ingredient_names": [
+                    "parsnips",
+                    "aubergines"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "pot",
+                    "cooking_methods": [
+                        "boil",
+                        "reduce",
+                        "mash",
+                        "saute",
+                        "add",
+                        "simmer",
+                        "add stock to"
+                    ],
+                    "inventory": [
+                        "parsnips",
+                        "aubergines"
+                    ]
+                },
+                "is_kw_existing": true
+            },
+            {
+                "cooking_method": "slice",
+                "ingredient_names": [
+                    "salmon filet"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "cutting board",
+                    "cooking_methods": [
+                        "chop",
+                        "slice",
+                        "pound"
+                    ],
+                    "inventory": [
+                        "salmon filet"
+                    ]
+                },
+                "is_kw_existing": false
+            },
+            {
+                "cooking_method": "fry",
+                "ingredient_names": [
+                    "broccoli",
+                    "salmon filet"
+                ],
+                "kitchenware": {
+                    "tag": "kitchenware",
+                    "name": "frying pan",
+                    "cooking_methods": [
+                        "fry",
+                        "simmer",
+                        "add",
+                        "stir fry"
+                    ],
+                    "inventory": [
+                        "broccoli",
+                        "salmon filet"
+                    ]
+                },
+                "is_kw_existing": false
+            }
+        ],
+        "kcal_per_portion": 500
     }
 ]

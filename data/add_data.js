@@ -15,7 +15,7 @@ var root_vegetable = (0, basics_1.new_category)("root vegetable", [
 ], 2);
 var meat = (0, basics_1.new_category)("meat", [
     ["pound", "fry"], ["marinate", "fry"], ["slice", "marinate", "fry"],
-    ["fry"], ["slice", "fry"], ["boil"], ["slice", "add stock to", "simmer"],
+    ["fry"], ["slice", "fry"], ["slice", "add stock to", "simmer"],
     ["slice", "marinate", "add stock to", "simmer"]
 ], 1);
 var spice = (0, basics_1.new_category)("spice", [["add"]], 5);
@@ -67,17 +67,12 @@ var onion_powder = (0, basics_1.new_ingredient)("spice", "onion powder", [], "1 
 var garlic_powder = (0, basics_1.new_ingredient)("spice", "garlic powder", [], "1 tsp", 9, (0, list_1.pair)(1, 2));
 var turmeric = (0, basics_1.new_ingredient)("spice", "turmeric", [], "1 tsp", 9, (0, list_1.pair)(1, 2));
 var chili_flakes = (0, basics_1.new_ingredient)("spice", "chili flakes", [], "1 tsp", 15, (0, list_1.pair)(1, 2));
-var pot = (0, basics_1.new_kitchenware)("pot", ["boil", "reduce", "mash", "saute", "add", "simmer"]);
+var pot = (0, basics_1.new_kitchenware)("pot", ["boil", "reduce", "mash", "saute", "add", "simmer", "add stock to"]);
 var cutting_board = (0, basics_1.new_kitchenware)("cutting board", ["chop", "slice", "pound"]);
 var frying_pan = (0, basics_1.new_kitchenware)("frying pan", ["fry", "simmer", "add", "stir fry"]);
-var oven = (0, basics_1.new_kitchenware)("oven", ["bake", "add"]);
+var oven = (0, basics_1.new_kitchenware)("oven dish", ["bake", "add"]);
 var bowl = (0, basics_1.new_kitchenware)("bowl", ["marinate"]);
 (0, save_load_data_1.load_data)();
 (0, save_load_data_1.save_new_category)(vegetable, root_vegetable, meat, spice, carbohydrate);
 (0, save_load_data_1.save_new_ingredient)(broccoli, celery, yellow_onion, red_onion, paprika, asparagus, spaghetti, white_rice, brown_rice, carrot, potato, parsnip, sweet_potato, chicken_breast, chicken_thigh, pork_cutlet, minced_meat, steak, cabbage, aubergine, garlic_clove, tomato, pork_belly, sausage, salmon_filet, cod_filet, shrimp, tarragon, oregano, sage, basil, rosemary, mint, ginger_powder, thyme, paprika_powder, cardamom, coriander, anise_powder, cinnamon, cloves, onion_powder, garlic_powder, turmeric, chili_flakes, noodles, shallot);
 (0, save_load_data_1.save_new_kitchenware)(pot, cutting_board, frying_pan, oven, bowl);
-// const data = load_data();
-// const cats = data.categories;
-// const cat_i = find_by_name("root vegetable", cats);
-// cats[cat_i] = root_vegetable;
-// save_data(data);

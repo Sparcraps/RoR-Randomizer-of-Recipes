@@ -1,5 +1,5 @@
 import {
-    save_new_category, save_new_ingredient, save_new_kitchenware, delete_category, load_data
+    save_new_category, save_new_ingredient, save_new_kitchenware, load_data
 } from "./save_load_data"
 import {
     new_ingredient, new_category, new_kitchenware,
@@ -14,21 +14,20 @@ const vegetable = new_category("vegetable", [
     ["chop", "bake"], ["chop", "bake", "add stock to", "simmer"], ["bake"],
     ["chop", "stir fry"], ["chop"], ["chop", "add"]
 ], 5);
-
 const root_vegetable = new_category("root vegetable", [
     ["chop", "boil"], ["chop", "add stock to", "simmer"],
     ["chop", "fry", "add stock to", "simmer"], ["chop", "marinate", "fry"],
     ["chop", "bake"], ["chop", "boil", "mash"]
 ], 2);
-
 const meat = new_category("meat", [
     ["pound", "fry"], ["marinate", "fry"], ["slice", "marinate", "fry"],
-    ["fry"], ["slice", "fry"], ["boil"], ["slice", "add stock to", "simmer"],
+    ["fry"], ["slice", "fry"], ["slice", "add stock to", "simmer"],
     ["slice", "marinate", "add stock to", "simmer"]
 ], 1);
-
 const spice = new_category("spice", [["add"]], 5);
-const carbohydrate = new_category("carbohydrate", [["boil"], ["boil", "fry"]], 1)
+const carbohydrate = new_category(
+    "carbohydrate", [["boil"], ["boil", "fry"]], 1
+)
 
 const broccoli = new_ingredient(
     "vegetable", "broccoli", [], "50g", 17, pair(1, 4)
@@ -165,7 +164,7 @@ const chili_flakes = new_ingredient(
 );
 
 const pot = new_kitchenware(
-    "pot", ["boil", "reduce", "mash", "saute", "add", "simmer"]
+    "pot", ["boil", "reduce", "mash", "saute", "add", "simmer", "add stock to"]
 );
 const cutting_board = new_kitchenware(
     "cutting board", ["chop", "slice", "pound"]
@@ -173,7 +172,7 @@ const cutting_board = new_kitchenware(
 const frying_pan = new_kitchenware(
     "frying pan", ["fry", "simmer", "add", "stir fry"]
 );
-const oven  = new_kitchenware("oven", ["bake", "add"]);
+const oven  = new_kitchenware("oven dish", ["bake", "add"]);
 const bowl = new_kitchenware("bowl", ["marinate"]);
 
 load_data();
@@ -192,9 +191,3 @@ save_new_ingredient(
     );
 
 save_new_kitchenware(pot, cutting_board, frying_pan, oven, bowl);
-
-// const data = load_data();
-// const cats = data.categories;
-// const cat_i = find_by_name("root vegetable", cats);
-// cats[cat_i] = root_vegetable;
-// save_data(data);

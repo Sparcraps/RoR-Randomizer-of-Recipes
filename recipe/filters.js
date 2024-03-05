@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.filter_cooking_methods = exports.filter_ingredients = void 0;
+exports.filter_cooking_methods = exports.get_doable_cooking_methods = exports.filter_ingredients = void 0;
 /**
  * Function for filtering out ingredients according to allergies.
  * @param ingredients - a 2D array of ingredients to be
@@ -37,6 +37,7 @@ function get_doable_cooking_methods(kw_data) {
     });
     return methods;
 }
+exports.get_doable_cooking_methods = get_doable_cooking_methods;
 /**
  * Filters method arrays of Category objects by removing all methods with parts
  * that are not available to kitchenware in array.

@@ -104,9 +104,6 @@
                     "fry"
                 ],
                 [
-                    "boil"
-                ],
-                [
                     "slice",
                     "add stock to",
                     "simmer"
@@ -155,7 +152,8 @@
                 "mash",
                 "saute",
                 "add",
-                "simmer"
+                "simmer",
+                "add stock to"
             ],
             "inventory": []
         },
@@ -182,7 +180,7 @@
         },
         {
             "tag": "kitchenware",
-            "name": "oven",
+            "name": "oven dish",
             "cooking_methods": [
                 "bake",
                 "add"
