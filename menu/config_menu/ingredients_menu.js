@@ -1,13 +1,4 @@
 "use strict";
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.edit_ingredient_wrapper = exports.select_range = exports.select_kcal = exports.select_measurement = exports.select_allergies = exports.select_category = exports.select_name = exports.configure_ingredients = void 0;
 var RoR_1 = require("../../RoR");
@@ -197,28 +188,14 @@ function select_allergies(ingredient, is_editing) {
     }
     else { }
     var allergy_array = [];
-    var valid_dietary_not_active = __spreadArray([], RoR_1.valid_dietary_restrictions, true);
-    valid_dietary_not_active.push("");
-    (0, menu_global_functions_1.print_bold)("Valid dietary restrictions: ");
-    (0, menu_global_functions_1.print_alternatives)(RoR_1.valid_dietary_restrictions);
-    var user_input = (0, menu_global_functions_1.check_input)(valid_dietary_not_active, "Enter a dietary restriction of the above that applies to the " +
-        "ingredient, or press enter if no dietary restrictions apply: ");
+    var user_input = (0, RoR_1.prompt)("Enter a dietary restriction of the above that applies to the " +
+        "ingredient, or press enter if no dietary restrictions apply: ").trim().toLowerCase();
     while (user_input !== "") {
-        var index = valid_dietary_not_active.indexOf(user_input);
-        if (index !== -1) {
-            allergy_array.push(user_input);
-            valid_dietary_not_active.splice(index, 1);
-            (0, menu_global_functions_1.print_bold)("Dietary restriction added!");
-            console.log();
-        }
-        else {
-            throw new Error("Could not find active dietary restriction");
-        }
-        (0, menu_global_functions_1.print_bold)("Valid dietary restrictions that have not yet been added: ");
-        (0, menu_global_functions_1.print_alternatives)(valid_dietary_not_active);
-        user_input = (0, menu_global_functions_1.check_input)(valid_dietary_not_active, "Enter another dietary restriction that applies to the new " +
-            "ingredient, or press enter if no more dietary restrictions " +
-            "apply: ");
+        allergy_array.push(user_input);
+        (0, menu_global_functions_1.print_bold)("Dietary restriction added!");
+        console.log();
+        user_input = (0, RoR_1.prompt)("Enter a dietary restriction of the above that applies to the " +
+            "ingredient, or press enter if no dietary restrictions apply: ").trim().toLowerCase();
     }
     ingredient.allergies = allergy_array;
     if (is_editing) {

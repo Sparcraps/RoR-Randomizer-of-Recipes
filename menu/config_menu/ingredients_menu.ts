@@ -1,4 +1,4 @@
-import { prompt, valid_dietary_restrictions } from "../../RoR";
+import { prompt } from "../../RoR";
 
 import { type Ingredient, find_by_name } from "../../basics";
 
@@ -208,39 +208,20 @@ export function select_allergies(ingredient: Ingredient,
     } else {}
 
     const allergy_array: Array<string> = [];
-    const valid_dietary_not_active = [...valid_dietary_restrictions];
-    valid_dietary_not_active.push("");
 
-    print_bold("Valid dietary restrictions: ");
-    print_alternatives(valid_dietary_restrictions);
-    let user_input = check_input(
-        valid_dietary_not_active,
+    let user_input = prompt(
         "Enter a dietary restriction of the above that applies to the " +
         "ingredient, or press enter if no dietary restrictions apply: "
-    );
+    ).trim().toLowerCase();
+    
     while (user_input !== "") {
-        const index = valid_dietary_not_active.indexOf(user_input);
-        if (index !== -1) {
-            allergy_array.push(user_input);
-            valid_dietary_not_active.splice(index, 1);
-            print_bold("Dietary restriction added!");
-            console.log();
-        } else {
-            throw new Error(
-                "Could not find active dietary restriction"
-            );
-        }
-
-        print_bold(
-            "Valid dietary restrictions that have not yet been added: "
-        );
-        print_alternatives(valid_dietary_not_active);
-        user_input = check_input(
-            valid_dietary_not_active,
-            "Enter another dietary restriction that applies to the new " +
-            "ingredient, or press enter if no more dietary restrictions " +
-            "apply: "
-        );
+        allergy_array.push(user_input);
+        print_bold("Dietary restriction added!");
+        console.log();
+        user_input = prompt(
+            "Enter a dietary restriction of the above that applies to the " +
+            "ingredient, or press enter if no dietary restrictions apply: "
+        ).trim().toLowerCase();
     }
 
     ingredient.allergies = allergy_array;

@@ -1,33 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.configure_dietary = void 0;
-var list_1 = require("../../lib/list");
 var save_config_1 = require("../../data/save_config");
-var RoR_1 = require("../../RoR");
 var menu_global_functions_1 = require("../menu_global_functions");
 var menu_memory_1 = require("../menu_memory");
+var RoR_1 = require("../../RoR");
 /**
  * A subsubmenu of the configurations menu, where the user can configure
  * dietary restrictions by adding or removing them.
  */
 function configure_dietary() {
-    // Helper function that prompts the user to enter a valid
-    // dietary restriction and returns the input as well as
-    // information of its existance in currently active dietary restrictions.
-    function select_valid_dietary() {
-        var valid = RoR_1.valid_dietary_restrictions;
-        (0, menu_global_functions_1.print_bold)("Valid alternatives: ");
-        (0, menu_global_functions_1.print_alternatives)(valid);
-        var input = (0, menu_global_functions_1.check_input)(valid, "Choose dietary restriction of the above: ");
-        var is_already_in_arr = config.dietary_restrictions.includes(input);
-        return (0, list_1.pair)(is_already_in_arr, input);
-    }
     // Helper function that adds a dietary restriction
     // if it is valid and not already active.
     function add_diet() {
-        var diet_pair = select_valid_dietary();
-        if (!diet_pair[0]) {
-            config = (0, save_config_1.add_to_dietary_restrictions)(diet_pair[1], config);
+        var restriction = (0, RoR_1.prompt)("Choose dietary restriction to add: ");
+        restriction = restriction === null
+            ? ""
+            : restriction.trim().toLowerCase();
+        var is_existing = config.dietary_restrictions.includes(restriction);
+        if (!is_existing) {
+            config = (0, save_config_1.add_to_dietary_restrictions)(restriction, config);
             (0, menu_global_functions_1.print_bold)("Dietary restriction successfully added!\n");
         }
         else {
@@ -37,9 +29,13 @@ function configure_dietary() {
     // Helper function that removes a dietary restriction
     // if it is valid and active.
     function remove_diet() {
-        var diet_pair = select_valid_dietary();
-        if (diet_pair[0]) {
-            config = (0, save_config_1.remove_from_dietary_restrictions)(diet_pair[1], config);
+        var restriction = (0, RoR_1.prompt)("Choose dietary restriction to remove: ");
+        restriction = restriction === null
+            ? ""
+            : restriction.trim().toLowerCase();
+        var is_existing = config.dietary_restrictions.includes(restriction);
+        if (is_existing) {
+            config = (0, save_config_1.remove_from_dietary_restrictions)(restriction, config);
             (0, menu_global_functions_1.print_bold)("Dietary restriction successfully removed!\n");
         }
         else {
