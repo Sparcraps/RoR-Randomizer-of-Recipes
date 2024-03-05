@@ -6,7 +6,7 @@ var save_recipe_1 = require("../data/save_recipe");
 var menu_global_functions_1 = require("./menu_global_functions");
 var menu_memory_1 = require("./menu_memory");
 /**
- * A submenu of the main menu, responsible fetching saved recipes so that
+ * A submenu of the main menu, responsible for fetching saved recipes so that
  * the user can view and delete them.
  */
 function saved_recipes() {

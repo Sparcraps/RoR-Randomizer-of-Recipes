@@ -20,18 +20,19 @@ var edit_category_menu_1 = require("./edit_category_menu");
 var menu_global_functions_1 = require("../menu_global_functions");
 var menu_memory_1 = require("../menu_memory");
 /**
- * A submenu of the configurations menu, where the user can configure
- * the categories used for recipe generation, by adding or removing them.
+ * A submenu of the configuration menu, where the user can configure
+ * the categories used for recipe generation, by adding, editing or removing
+ * them.
  */
 function configure_categories() {
-    // Helper function that prompts the user for an ingredient name,
+    // Helper function that prompts the user for a category name,
     // searches for it in the data and removes it from the data if found.
     function search_and_delete() {
         var input = (0, RoR_1.prompt)("Enter the name of the category you wish to edit, or press " +
             "enter to go back without removing a category: ").trim().toLowerCase();
         if (input !== "") {
             try {
-                data = (0, save_load_data_1.delete_category)(input);
+                (0, save_load_data_1.delete_category)(input);
                 (0, menu_global_functions_1.print_bold)("\nCategory removed from data!");
             }
             catch (error) {
@@ -42,8 +43,9 @@ function configure_categories() {
         else { }
         console.log();
     }
-    // Helper function that returns category object by name
+    // Helper function that returns a category object by name
     function find_category() {
+        var data = (0, save_load_data_1.get_data)();
         var input = (0, RoR_1.prompt)("Enter the name of the category you wish to edit: ").trim().toLowerCase();
         if (input !== "") {
             var index = (0, basics_1.find_by_name)(input, data.categories);
@@ -54,7 +56,6 @@ function configure_categories() {
             else { }
         }
     }
-    var data = (0, save_load_data_1.get_data)();
     var valid_inputs = ["a", "e", "r", "l", "b"];
     var print_menu = ['"a" = add category',
         '"e" = edit existing category',
@@ -91,8 +92,11 @@ function configure_categories() {
     }
 }
 exports.configure_categories = configure_categories;
-// Helper function that prints the name of all 
-// currently registered categories.
+/**
+ * Helper function that prints the name of all currently registered categories.
+ * @param bold_print_string - Header that is printed in bold font
+ * @returns the category names in an Array.
+ */
 function print_all_categories(bold_print_string) {
     var data = (0, save_load_data_1.get_data)();
     var category_names = [];
@@ -109,6 +113,8 @@ exports.print_all_categories = print_all_categories;
 /**
  * Helper function that prompts the user to select a name for a category.
  * @param cat - The category to select name for
+ * @param is_editing - Determines whether the current name should be
+ * printed before prompting the user or not (false by default)
  * @returns the updated category.
  */
 function select_cat_name(cat, is_editing) {
@@ -116,14 +122,12 @@ function select_cat_name(cat, is_editing) {
     // helper function used to avoid duplicate category names
     function is_name_taken(category_name) {
         var data = (0, save_load_data_1.get_data)();
-        var name_taken;
         var index = (0, basics_1.find_by_name)(category_name, data.categories);
         if (is_editing) {
-            return name_taken = index !== -1 &&
-                name !== cat.name;
+            return !(index === -1 || name === cat.name);
         }
         else {
-            return name_taken = index !== -1;
+            return index !== -1;
         }
     }
     if (is_editing) {
@@ -154,7 +158,7 @@ exports.select_cat_name = select_cat_name;
 * for a category.
 * @param cat - The category to select cooking methods for
 * @param is_editing - Determines whether the current cooking methods should be
-* printed before prompting the user (false by default)
+* printed before prompting the user or not (false by default)
 * @returns the updated category.
 */
 function select_cat_methods(cat, is_editing) {
@@ -167,7 +171,7 @@ function select_cat_methods(cat, is_editing) {
     else { }
     var method_array = [];
     var valid_methods_not_active = __spreadArray([], Array.from((0, filters_1.get_doable_cooking_methods)(data.kitchenware)), true);
-    if (valid_methods_not_active.length === 0) { // To avoid assigning cooking methods to Categories when no valid cooking methods can be fetched from Kitchenwares.
+    if (valid_methods_not_active.length === 0) { // To avoid assigning cooking methods to categories when no valid cooking methods can be fetched from kitchenwares.
         console.log("Add cooking methods to kitchenware before adding " +
             "a category");
         return;
@@ -210,7 +214,7 @@ function select_cat_methods(cat, is_editing) {
             }
             method_array.push(inner_array);
             (0, menu_global_functions_1.print_bold)("Cooking method added to category!");
-            user_input = "temp"; // to not exit both while loops at the same time
+            user_input = "temp"; // to not exit both while-loops at the same time
             user_input = (0, menu_global_functions_1.check_input)(valid_methods_not_active, "Enter another cooking method that applies to the new " +
                 "ingredient, or press enter if no more cooking methods apply: ");
         }
@@ -229,7 +233,7 @@ exports.select_cat_methods = select_cat_methods;
 * from a category that can be generated in one recipe.
 * @param cat - The category to select max amount for
 * @param is_editing - Determines whether the current dietary restrictions
-* should be printed before prompting the user (false by default)
+* should be printed before prompting the user or not (false by default)
 * @returns the updated ingredient.
 */
 function select_cat_max(cat, is_editing) {
@@ -263,8 +267,8 @@ exports.select_cat_max = select_cat_max;
  * Wrap the edit_category function so that it's parameters are snapshotted
  * and can be added to the stack.
  * @param category - Category that is being edited
- * @param old_name - The name of the ingredient before it gets edited
- * @returns the function edit_category with fixated parameters
+ * @param old_name - Name of the category before it gets edited
+ * @returns the function edit_category with fixated parameters.
  */
 function edit_category_wrapper(category, old_name) {
     return function () {

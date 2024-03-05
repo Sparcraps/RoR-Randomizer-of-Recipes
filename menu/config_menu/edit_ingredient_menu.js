@@ -9,6 +9,7 @@ var menu_memory_1 = require("../menu_memory");
  * A subsubmenu of the ingredient menu, where the user can edit existing
  * or newly created ingredient data.
  * @param ingredient - The ingredient that is being
+ * @param old_name - The name that the ingredient had before being edited
  */
 function edit_ingredient(ingredient, old_name) {
     var print_menu = [
