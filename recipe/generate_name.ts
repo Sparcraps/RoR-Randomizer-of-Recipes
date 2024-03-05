@@ -90,12 +90,20 @@ export function generate_name(recipe: Recipe): string {
 
             main_cooking_method = find_last_cooking_step(recipe.steps, 
                                                          secondary_ingr);
+            const method_past = new Inflectors(
+                main_cooking_method.cooking_method
+            ).toPast();
+            return up_first_all(method_past) + " " +
+            up_first_all(secondary_ingr_name) + " with " +
+            up_first_all(main_ingr_name);
         }
-        const method_past = new Inflectors(
-            main_cooking_method.cooking_method
-        ).toPast();
-        return up_first_all(method_past) + " " +
-            up_first_all(main_ingr_name) + " with " +
-            up_first_all(secondary_ingr_name);
+        else {
+            const method_past = new Inflectors(
+                main_cooking_method.cooking_method
+            ).toPast();
+            return up_first_all(method_past) + " " +
+                up_first_all(main_ingr_name) + " with " +
+                up_first_all(secondary_ingr_name);
+        }
     }
 }

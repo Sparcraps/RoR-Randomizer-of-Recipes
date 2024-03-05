@@ -109,7 +109,8 @@ function generate_cooking_steps(selected_methods) {
         return add_cooking_step(method, ingredient_names, steps, kw);
     }
     // for separable kitchenware, finds all ingredients with same cooking method
-    // first in method array and returns ingredient names for method step.
+    // somewhere in method array. Executes the methods earlier in method array
+    // and returns ingredient names for method step.
     function do_separable_method(method, steps) {
         var ingredient_names = [];
         for (var i = 0; i < selected_methods.length; i++) {

@@ -74,11 +74,17 @@ function generate_name(recipe) {
         if (main_cooking_method.cooking_method == "boil" ||
             main_cooking_method.cooking_method == "add") {
             main_cooking_method = find_last_cooking_step(recipe.steps, secondary_ingr);
+            var method_past = new en_inflectors_1.Inflectors(main_cooking_method.cooking_method).toPast();
+            return up_first_all(method_past) + " " +
+                up_first_all(secondary_ingr_name) + " with " +
+                up_first_all(main_ingr_name);
         }
-        var method_past = new en_inflectors_1.Inflectors(main_cooking_method.cooking_method).toPast();
-        return up_first_all(method_past) + " " +
-            up_first_all(main_ingr_name) + " with " +
-            up_first_all(secondary_ingr_name);
+        else {
+            var method_past = new en_inflectors_1.Inflectors(main_cooking_method.cooking_method).toPast();
+            return up_first_all(method_past) + " " +
+                up_first_all(main_ingr_name) + " with " +
+                up_first_all(secondary_ingr_name);
+        }
     }
 }
 exports.generate_name = generate_name;
