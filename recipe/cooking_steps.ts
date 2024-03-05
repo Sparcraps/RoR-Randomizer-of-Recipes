@@ -15,16 +15,16 @@ export type CookingStep = {
     ingredient_names: Array<string>,
     cooking_method: string,
     kitchenware: KitchenWare
-    is_kw_existing: boolean
+    is_kw_active: boolean
 };
 
 function new_cooking_step(
     cooking_method: string, ingredient_names: Array<string>,
     kitchenware: KitchenWare,
-    is_kw_existing: boolean
+    is_kw_active: boolean
     ): CookingStep {
     return {
-        cooking_method, ingredient_names, kitchenware, is_kw_existing
+        cooking_method, ingredient_names, kitchenware, is_kw_active
     };
 }
 
@@ -106,10 +106,10 @@ export function generate_cooking_steps(
         const current_method = method[0];
         method.shift(); // removes current method from method
 
-        let kw_exists = true;
+        let is_active = true;
         if (kw === undefined || !kw.cooking_methods.includes(current_method)) {
             retire_kitchenware(kw);
-            [kw, kw_exists] = get_kitchenware_from_method(current_method);
+            [kw, is_active] = get_kitchenware_from_method(current_method);
         } else {}
 
         let extra_i: Array<string> = [];
@@ -119,7 +119,7 @@ export function generate_cooking_steps(
 
         kw.inventory = [...ingredient_names, ...extra_i]
         const current_step = new_cooking_step(
-            current_method, [...ingredient_names, ...extra_i], kw, kw_exists
+            current_method, [...ingredient_names, ...extra_i], kw, is_active
             );
         steps.push(current_step);
 

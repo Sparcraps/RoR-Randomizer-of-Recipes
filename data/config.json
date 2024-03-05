@@ -1,4 +1,6 @@
 {
     "portion_amount": 4,
-    "dietary_restrictions": []
+    "dietary_restrictions": [
+        "meat"
+    ]
 }
