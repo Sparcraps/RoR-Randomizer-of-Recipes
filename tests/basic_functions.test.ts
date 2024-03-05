@@ -130,10 +130,10 @@ describe('testing basic ingredients.ts functions', () => {
     })
 
     test('function new_category works', () => {
-        const RoR_cat: Category = new_category("The best category ever made", ["qwe"], 5);
+        const RoR_cat: Category = new_category("The best category ever made", [["qwe"]], 5);
         expect(is_category(RoR_cat)).toBe(true);
         expect(get_category_name(RoR_cat)).toEqual("The best category ever made");
-        expect(RoR_cat.cooking_methods).toEqual(["qwe"]);
+        expect(RoR_cat.cooking_methods).toEqual([["qwe"]]);
     }) 
 
     test('function new_kitchenware works', () => {
@@ -143,12 +143,12 @@ describe('testing basic ingredients.ts functions', () => {
     })
 
     test('function add_ingredient_to_kitchenware works', () => {
-        let new_kit = add_ingredient_to_kitchenware(test_ingredient_meat, test_kitchenware)
-        expect(get_kitchenware_inventory(new_kit)).toStrictEqual([test_ingredient_meat]);
+        let new_kit = add_ingredient_to_kitchenware(test_kitchenware, "beef")
+        expect(get_kitchenware_inventory(new_kit)).toStrictEqual("beef");
 
-        new_kit = add_ingredient_to_kitchenware(test_ingredient_vegan, test_kitchenware)
+        new_kit = add_ingredient_to_kitchenware(test_kitchenware, "water")
         expect(new_kit).toStrictEqual(test_kitchenware); //checks that they are aliases
-        expect(get_kitchenware_inventory(new_kit)).toStrictEqual([test_ingredient_meat, test_ingredient_vegan]);
+        expect(get_kitchenware_inventory(new_kit)).toStrictEqual(["beef", "water"]);
     })
 
     test('function is_vegan works', () => {
