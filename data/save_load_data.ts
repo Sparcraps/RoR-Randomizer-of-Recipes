@@ -392,7 +392,6 @@ export function replace_ingredient(
     old_ingredient_name: string,
     new_ingredient: Ingredient
 ): SaveData {
-    const name_arr: Array<string> = [];
     const data = get_data();
     const cat = new_ingredient.category;
     const cat_i = find_by_name(cat, data.categories);
