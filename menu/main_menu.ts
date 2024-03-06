@@ -65,14 +65,14 @@ export function main_menu(): void {
         print_bold("saved recipes: ");
         console.log("View a menu of all previously saved recipes.");
         console.log(
-            "The recipes can be selected to have their contents viewed.\n"
+            "The saved recipes can be viewed or deleted\n"
         );
     
         print_bold("configure: ");
         console.log("View a menu of recipe generation configurations.");
         console.log(
             "Number of portions, active dietary restrictions " +
-            "and ingredient data can be adjusted.\n"
+            "and ingredient, category and kitchenware data can be adjusted.\n"
             );
     }
 }
