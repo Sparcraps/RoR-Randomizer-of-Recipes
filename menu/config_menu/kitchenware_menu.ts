@@ -199,6 +199,7 @@ export function select_kit_methods(
     }
 
     kit.cooking_methods = method_array;
+    console.log();
     if (is_editing) {
         print_bold("Kitchenware cooking methods updated!");
         console.log();
@@ -216,6 +217,7 @@ export function select_kit_methods(
 export function edit_kitchenware_wrapper(kitchenware: KitchenWare,
                                       old_name: string): Function {
     return function() {
+        kitchenware = JSON.parse(JSON.stringify(kitchenware));
         edit_kitchenware(kitchenware, old_name);
     };
 }

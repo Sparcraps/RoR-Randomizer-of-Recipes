@@ -225,6 +225,7 @@ export function select_allergies(ingredient: Ingredient,
     }
 
     ingredient.allergies = allergy_array;
+    console.log();
     if (is_editing) {
         print_bold("Ingredient dietary restrictions updated!");
         console.log();
@@ -362,6 +363,7 @@ export function select_range(ingredient: Ingredient,
 export function edit_ingredient_wrapper(ingredient: Ingredient,
                                         old_name: string): Function {
     return function() {
+        ingredient = JSON.parse(JSON.stringify(ingredient));
         edit_ingredient(ingredient, old_name);
     };
 }

@@ -188,13 +188,13 @@ function select_allergies(ingredient, is_editing) {
     }
     else { }
     var allergy_array = [];
-    var user_input = (0, RoR_1.prompt)("Enter a dietary restriction of the above that applies to the " +
+    var user_input = (0, RoR_1.prompt)("Enter a dietary restriction that applies to the " +
         "ingredient, or press enter if no dietary restrictions apply: ").trim().toLowerCase();
     while (user_input !== "") {
         allergy_array.push(user_input);
         (0, menu_global_functions_1.print_bold)("Dietary restriction added!");
         console.log();
-        user_input = (0, RoR_1.prompt)("Enter a dietary restriction of the above that applies to the " +
+        user_input = (0, RoR_1.prompt)("Enter a dietary restriction that applies to the " +
             "ingredient, or press enter if no dietary restrictions apply: ").trim().toLowerCase();
     }
     ingredient.allergies = allergy_array;
@@ -318,6 +318,7 @@ exports.select_range = select_range;
  */
 function edit_ingredient_wrapper(ingredient, old_name) {
     return function () {
+        ingredient = JSON.parse(JSON.stringify(ingredient));
         (0, edit_ingredient_menu_1.edit_ingredient)(ingredient, old_name);
     };
 }

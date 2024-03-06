@@ -192,6 +192,7 @@ exports.select_kit_methods = select_kit_methods;
  */
 function edit_kitchenware_wrapper(kitchenware, old_name) {
     return function () {
+        kitchenware = JSON.parse(JSON.stringify(kitchenware));
         (0, edit_kitchenware_menu_1.edit_kitchenware)(kitchenware, old_name);
     };
 }

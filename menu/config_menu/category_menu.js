@@ -270,6 +270,7 @@ exports.select_cat_max = select_cat_max;
  */
 function edit_category_wrapper(category, old_name) {
     return function () {
+        category = JSON.parse(JSON.stringify(category));
         (0, edit_category_menu_1.edit_category)(category, old_name);
     };
 }

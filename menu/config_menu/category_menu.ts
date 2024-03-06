@@ -297,6 +297,7 @@ export function select_cat_max(cat: Category,
 export function edit_category_wrapper(category: Category,
                                       old_name: string): Function {
     return function() {
+        category = JSON.parse(JSON.stringify(category));
         edit_category(category, old_name);
     };
 }
