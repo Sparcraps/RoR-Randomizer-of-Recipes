@@ -192,9 +192,8 @@ function select_cat_methods(cat, is_editing) {
         else {
             var inner_array = [];
             inner_array.push(user_input);
-            user_input = (0, menu_global_functions_1.check_input)(valid_methods_not_active, "Enter a cooking method that depends on " +
-                "the cooking method you just added, " +
-                "or press enter to proceed: ");
+            user_input = (0, menu_global_functions_1.check_input)(valid_methods_not_active, "Enter the next step in the cooking method, " +
+                "or press enter if you are done.");
             while (user_input !== "") {
                 is_valid = valid_methods_not_active.includes(user_input);
                 if (!is_valid ||

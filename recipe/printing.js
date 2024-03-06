@@ -4,7 +4,69 @@ exports.refer_to_ingredient = exports.print_recipe = void 0;
 var en_inflectors_1 = require("en-inflectors");
 var list_1 = require("../lib/list");
 var menu_global_functions_1 = require("../menu/menu_global_functions");
+/**
+ * Prints a recipe in a readable format! :)
+ * @param recipe - Recipe to be printed
+ */
 function print_recipe(recipe) {
+    // converts the first character in a string to uppercase (if possible)
+    function up_first(str) {
+        return str[0].toUpperCase() + str.slice(1);
+    }
+    // Creates a nicely printable string from ingredient information
+    // for ingredient list.
+    function stringify_ingredient_info(ingredient, amount) {
+        var measurement = ingredient.measurement;
+        var _a = num_rest_of_measurement(measurement), num = _a[0], rest = _a[1];
+        amount = num * amount;
+        if (rest === "" && amount > 1) {
+            return amount + " " +
+                refer_to_ingredient(ingredient, amount, true);
+        }
+        else {
+            return amount + rest + " of " + ingredient.name;
+        }
+    }
+    // Creates a nicely printable string from kitchenware with the, an och a
+    // followed by kitchenware name.
+    function stringify_kitchenware(kw, exists, cm) {
+        var str = kw.name;
+        var vowels = ["e", "u", "i", "o", "a"];
+        if (exists) {
+            str = "the " + str;
+        }
+        else if (vowels.includes(str[0])) {
+            str = "an " + str;
+        }
+        else {
+            str = "a " + str;
+        }
+        if (cm == "add") {
+            str = "to " + str;
+        }
+        else if (kw.name === "cutting board") {
+            str = "on " + str;
+        }
+        else {
+            str = "in " + str;
+        }
+        return str;
+    }
+    // lists ingredient names with commas in between, and "and" before the final
+    // ingredient name.
+    function ingredient_and_ingredients(ingredients) {
+        var ingredient_str = ingredients[0];
+        var i_amount = ingredients.length;
+        if (i_amount > 1) {
+            var i = 1;
+            for (i; i < i_amount - 1; i++) {
+                ingredient_str += ", " + ingredients[i];
+            }
+            ingredient_str += " and " + ingredients[i];
+        }
+        else { }
+        return ingredient_str;
+    }
     console.log("-----------------------------------");
     (0, menu_global_functions_1.print_bold)(recipe.name);
     console.log("-----------------------------------");
@@ -29,9 +91,12 @@ function print_recipe(recipe) {
     console.log("-----------------------------------");
 }
 exports.print_recipe = print_recipe;
-function up_first(str) {
-    return str[0].toUpperCase() + str.slice(1);
-}
+/**
+ * Separates a measurement string into its amount and its measurement.
+ * @param measurement - the measurement string to separate
+ * @returns a pair of the amount of the measurement, as a number,
+ * and the measurement, as a string
+ */
 function num_rest_of_measurement(measurement) {
     measurement = measurement.trim().toLowerCase().replace("e", "ε"); // replaces e since parseFloat interprets e as exponent (assumes no measurement includes ε)
     var num = parseFloat(measurement);
@@ -43,54 +108,6 @@ function num_rest_of_measurement(measurement) {
         var rest = measurement.slice(length_of_num);
         return (0, list_1.pair)(num, rest.replace("ε", "e"));
     }
-}
-function stringify_ingredient_info(ingredient, amount) {
-    var measurement = ingredient.measurement;
-    var _a = num_rest_of_measurement(measurement), num = _a[0], rest = _a[1];
-    amount = num * amount;
-    if (rest === "" && amount > 1) {
-        return amount + " " +
-            refer_to_ingredient(ingredient, amount, true);
-    }
-    else {
-        return amount + rest + " of " + ingredient.name;
-    }
-}
-function stringify_kitchenware(kw, exists, cm) {
-    var str = kw.name;
-    var vowels = ["e", "u", "i", "o", "a"];
-    if (exists) {
-        str = "the " + str;
-    }
-    else if (vowels.includes(str[0])) {
-        str = "an " + str;
-    }
-    else {
-        str = "a " + str;
-    }
-    if (cm == "add") {
-        str = "to " + str;
-    }
-    else if (kw.name === "cutting board") {
-        str = "on " + str;
-    }
-    else {
-        str = "in " + str;
-    }
-    return str;
-}
-function ingredient_and_ingredients(ingredients) {
-    var ingredient_str = ingredients[0];
-    var i_amount = ingredients.length;
-    if (i_amount > 1) {
-        var i = 1;
-        for (i; i < i_amount - 1; i++) {
-            ingredient_str += ", " + ingredients[i];
-        }
-        ingredient_str += " and " + ingredients[i];
-    }
-    else { }
-    return ingredient_str;
 }
 /**
  * Returns ingredient name with correct(ish) conjugation depending on if it

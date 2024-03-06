@@ -52,11 +52,11 @@ function main_menu() {
             "the next time RoR is run.\n");
         (0, menu_global_functions_1.print_bold)("saved recipes: ");
         console.log("View a menu of all previously saved recipes.");
-        console.log("The recipes can be selected to have their contents viewed.\n");
+        console.log("The saved recipes can be viewed or deleted\n");
         (0, menu_global_functions_1.print_bold)("configure: ");
         console.log("View a menu of recipe generation configurations.");
         console.log("Number of portions, active dietary restrictions " +
-            "and ingredient data can be adjusted.\n");
+            "and ingredient, category and kitchenware data can be adjusted.\n");
     }
 }
 exports.main_menu = main_menu;

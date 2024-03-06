@@ -198,6 +198,7 @@ function select_allergies(ingredient, is_editing) {
             "ingredient, or press enter if no dietary restrictions apply: ").trim().toLowerCase();
     }
     ingredient.allergies = allergy_array;
+    console.log();
     if (is_editing) {
         (0, menu_global_functions_1.print_bold)("Ingredient dietary restrictions updated!");
         console.log();

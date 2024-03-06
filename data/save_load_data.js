@@ -360,7 +360,6 @@ exports.replace_kitchenware = replace_kitchenware;
  * @returns {SaveData} - Updated save data.
  */
 function replace_ingredient(old_ingredient_name, new_ingredient) {
-    var name_arr = [];
     var data = (0, exports.get_data)();
     var cat = new_ingredient.category;
     var cat_i = (0, basics_1.find_by_name)(cat, data.categories);

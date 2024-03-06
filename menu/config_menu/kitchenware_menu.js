@@ -175,6 +175,7 @@ function select_kit_methods(kit, is_editing) {
         }
     }
     kit.cooking_methods = method_array;
+    console.log();
     if (is_editing) {
         (0, menu_global_functions_1.print_bold)("Kitchenware cooking methods updated!");
         console.log();
