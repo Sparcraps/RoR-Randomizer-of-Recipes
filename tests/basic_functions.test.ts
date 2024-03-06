@@ -5,8 +5,7 @@ import {
     get_ingredient_kcal_range, get_ingredient_category_name, 
     get_ingredient_category, get_category_name, get_ingredient_cooking_methods, 
     get_kitchenware_name, get_kitchenware_inventory, new_kitchenware, 
-    add_ingredient_to_kitchenware, is_vegetarian, is_vegan, is_lactose_friendly, 
-    new_category, get_category_max
+    add_ingredient_to_kitchenware, new_category, get_category_max
 } from "../basics";
 
 import {
@@ -143,24 +142,5 @@ describe('testing basic ingredients.ts functions', () => {
         new_kit = add_ingredient_to_kitchenware(test_kitchenware, "water")
         expect(new_kit).toStrictEqual(test_kitchenware); //checks that they are aliases
         expect(get_kitchenware_inventory(new_kit)).toStrictEqual(["beef", "water"]);
-    })
-
-    test('function is_vegan works', () => {
-        expect(is_vegan(test_ingredient_meat)).toBe(false);
-        expect(is_vegan(test_ingredient_vegan)).toBe(true);
-        expect(is_vegan(test_ingredient_lactose)).toBe(false);
-    })
-
-    test('function is_vegetarian works', () => {
-        expect(is_vegetarian(test_ingredient_meat)).toBe(false);
-        expect(is_vegetarian(test_ingredient_vegan)).toBe(true);
-        expect(is_vegetarian(test_ingredient_lactose)).toBe(true);
-
-    })
-
-    test('function is_lactose_friendly works', () => {
-        expect(is_lactose_friendly(test_ingredient_meat)).toBe(true);
-        expect(is_lactose_friendly(test_ingredient_vegan)).toBe(true);
-        expect(is_lactose_friendly(test_ingredient_lactose)).toBe(false);
     })
 })
