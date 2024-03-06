@@ -209,9 +209,8 @@ export function select_cat_methods(
 
             user_input = check_input(
                 valid_methods_not_active,
-                "Enter a cooking method that depends on " +
-                "the cooking method you just added, " + 
-                "or press enter to proceed: "
+                "Enter the next step in the cooking method, " +
+                "or press enter if you are done."
             );
             while (user_input !== "") {
                 is_valid = valid_methods_not_active.includes(user_input);
