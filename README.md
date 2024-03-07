@@ -3,7 +3,7 @@ Project for the course Program Design and Data Structures - 1DL201
 at Uppsala University
 
 -------------------------------------------------------------------------------
-RoR - Randomizer of Recipes is a one-of-a-kind program that
+RoR - Randomizer of Recipes is a one-of-a-kind JavaScript program that
 generates a completely random, step-by-step recipe with random ingredients
 and cooking instructions which takes your dietary restrictions into account.
 
